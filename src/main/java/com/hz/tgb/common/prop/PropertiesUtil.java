@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.util.Properties;
 
 /** 属性文件读写工具类
@@ -33,7 +34,7 @@ public class PropertiesUtil {
     public PropertiesUtil(String fileName) throws IOException {  
         if (fileName == null) {  
             throw new RuntimeException("fileName is null,please set fileName");  
-        }  
+        }
         this.fileName = fileName;  
         getFile();  
     }  
@@ -100,8 +101,8 @@ public class PropertiesUtil {
         }  
     }  
   
-    private File getFile() throws IOException {  
-        File file = new File(fileName);  
+    private File getFile() throws IOException {
+        File file = new File(this.fileName);
         if (!file.exists()) {  
             if (!file.createNewFile()) {  
             	logger.error("create file failed!");  
@@ -310,36 +311,37 @@ public class PropertiesUtil {
     /** 测试例子 
      * Created by likun on 2015/12/26. 
      */  
-        public static void main(String[] args) throws IOException {  
-        	Student2 student = null;
-            String fileName = "config/studentConfig.properties";  
-      
-            PropertiesUtil util = new PropertiesUtil(fileName);  
-      
-            student = util.loadProperties(Student2.class);  
-            if (student == null) {  
-                //重置对象  
-                util.resetProperties(Student2.class);  
-            }  
-            //加载对象  
-            student = util.loadProperties(Student2.class);  
-            System.out.println(student);  
-      
-            student.setName("李坤 -- " + System.currentTimeMillis());  
-            student.setAge(30);  
-            student.setSex("man");  
-            //保存对象  
-            util.saveProperties(Student2.class, student);  
-            System.out.println(util.loadProperties(Student2.class));  
-      
-      
-            //清空所有属性  
-            //util.clearProperties();  
-      
-            //测试单个属性的读取  
-            util.setValueByKey("student.name", "LiKun~李坤");  
-            util.getValueByKey("student.name");  
-      
+    public static void main(String[] args) throws IOException {
+        Student2 student = null;
+        URL url = PropertiesUtil.class.getClassLoader().getResource("studentConfig.properties");
+        String fileName = url.getPath();
+
+        PropertiesUtil util = new PropertiesUtil(fileName);
+
+        student = util.loadProperties(Student2.class);
+        if (student == null) {
+            //重置对象
+            util.resetProperties(Student2.class);
         }
+        //加载对象
+        student = util.loadProperties(Student2.class);
+        System.out.println(student);
+
+        student.setName("李坤 -- " + System.currentTimeMillis());
+        student.setAge(30);
+        student.setSex("man");
+        //保存对象
+        util.saveProperties(Student2.class, student);
+        System.out.println(util.loadProperties(Student2.class));
+
+
+        //清空所有属性
+        //util.clearProperties();
+
+        //测试单个属性的读取
+        util.setValueByKey("student.name", "LiKun~李坤");
+        util.getValueByKey("student.name");
+
+    }
   
 } 

@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.hsqldb.lib.StringUtil;
+import com.hz.tgb.common.StringUtil;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
