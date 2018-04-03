@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>拍贝场景电商</title>
+<!-- Tell the browser to be responsive to screen width -->
+<meta
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+	name="viewport">
+<link rel="shortcut icon" href="../resources/img/logo.png"
+	type="image/x-icon" />
+<!-- Bootstrap 3.3.5 -->
+<link rel="stylesheet"
+	href="../resources/bootstrap/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	href="../resources/font-awesome-4.1.0/css/font-awesome.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="../resources/dist/css/AdminLTE.min.css">
+<!-- iCheck -->
+<link rel="stylesheet"
+	href="../resources/plugins/iCheck/square/blue.css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="hold-transition login-page"
+	style="background-image: url('../resources/img/back1.jpg');">
+	<div class="login-box">
+		<div class="login-logo">
+			<a href="#" style="color: white;"><b>拍贝场景电商</b></a>
+		</div>
+		<!-- /.login-logo -->
+		<div class="login-box-body">
+			<p class="login-box-msg">请输入用户名和密码登陆</p>
+			<form action="/bishop/sys/index" method="post" id="form">
+				<div class="form-group has-feedback" style="height: 50px;">
+					<input type="text" name="username" id="username"
+						class="form-control" placeholder="请输入用户名..."
+						onblur="validateUserName()"> <span
+						class="glyphicon glyphicon-envelope form-control-feedback"></span>
+					<label id="usernamel"> <font id="usernamef"
+						style="color: red;"></font>
+					</label>
+				</div>
+				<div class="form-group has-feedback" style="height: 50px;">
+					<input type="password" class="form-control" name="password"
+						id="password" placeholder="请输入密码..." onblur="validatePass()">
+					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+					<label id="passwordl"> <font id="passwordf"
+						style="color: red;"></font>
+					</label>
+				</div>
+				<div style="height: 70px;">
+					<div class="row form-group has-feedback">
+						<div class="col-xs-7" style="padding-right: 0px;">
+							<input type="text" class="form-control" maxlength="5" name="code"
+								id="code" placeholder="请输入验证码..." onblur="validateCode()">
+						</div>
+						<div class="col-xs-4" onclick="createCode()"
+							style="background-color: olive; height: 34px;padding-right: 0px;line-height:34px;">
+							<a href="javascript:void(0);" id="discode"></a>
+						</div>
+					</div>
+					<div style="padding-top: 0px;margin-top: -10px;">
+						<label id="codel"> <font id="codef" style="color: red;"></font>
+						</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12" align="center">
+						<button type="button" class="btn btn-primary" onclick="on()">登录</button>
+						&nbsp;&nbsp;
+						<button type="button" class="btn btn-primary" onclick="chonset()">重置</button>
+					</div>
+					<!-- /.col -->
+				</div>
+			</form>
+
+		</div>
+		<!-- /.login-box-body -->
+	</div>
+	<!-- /.login-box -->
+
+	<!-- jQuery 2.1.4 -->
+	<script src="../resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+	<!-- Bootstrap 3.3.5 -->
+	<script src="../resources/bootstrap/js/bootstrap.min.js"></script>
+	<script>
+		$(function() {
+			createCode();
+			var res = '${res}';
+			if ('${res}' == 'error') {
+				$('#passwordf').html('输入密码错误');
+				$('#passwordl').css('display', 'block');
+			}
+
+		});
+		function on() {
+			var name = $.trim($('#username').val());
+			var pass = $.trim($('#password').val());
+			var code = $.trim($('#code').val());
+			var discode = $.trim($('#discode').html());
+			if (name == '') {
+				$('#usernamef').html('请输入用户名');
+				$('#usernamef').css('display', 'block');
+				return false;
+			} else {
+				if (!validateName()) {
+					return false;
+				}
+			}
+			if (pass == '') {
+				$('#passwordf').html('请输入密码');
+				$('#passwordf').css('display', 'block');
+				return false;
+			} else {
+				$('#passwordf').html('');
+				$('#passwordf').css('display', 'none');
+			}
+			if (code == '') {
+				$('#codef').html('请输入验证码');
+				$('#codef').css('display', 'block');
+				return false;
+			} else {
+				if (code.toUpperCase() != discode.toUpperCase()) {
+					$('#codef').html('验证码不正确');
+					$('#codef').css('display', 'block');
+					return false;
+				} else {
+					$('#codef').html('');
+					$('#codef').css('display', 'none');
+				}
+			}
+			$('#form').submit();
+		}
+		function validateUserName() {
+			var name = $.trim($('#username').val());
+			if (name == '') {
+				$('#usernamef').html('请输入用户名');
+				$('#usernamef').css('display', 'block');
+				return false;
+			} else {
+				$('#usernamef').html('');
+				$('#usernamef').css('display', 'none');
+			}
+		}
+		function validateName() {
+			var username = $.trim($('#username').val());
+			var flag = false;
+			$
+					.ajax({
+						type : "POST",
+						url : "/bishop/sys/validate",
+						data : {
+							"username" : username
+						},
+						dataType : "json",
+						contentType : "application/x-www-form-urlencoded; charset=utf-8",
+						cache : false,
+						async : false,
+						success : function(data) {
+							if (data.res == 'error') {
+								$('#usernamef').html('用户名不存在');
+								$('#usernamel').css('display', 'block');
+							} else {
+								$('#usernamef').html('');
+								$('#usernamel').css('display', 'none');
+								flag = true;
+							}
+						},
+						error : function(msg) {
+							$('#usernamef').html('用户名校验出现异常');
+							$('#usernamel').css('display', 'block');
+						}
+					});
+			return flag;
+		}
+		function validatePass() {
+			var pass = $.trim($('#password').val());
+			if (pass.length < 6) {
+				$('#passwordf').html('密码最少6位');
+				$('#passwordl').css('display', 'block');
+				return false;
+			}
+			$('#passwordf').html('');
+			$('#passwordl').css('display', 'none');
+		}
+		function validateCode() {
+			var code = $.trim($('#code').val());
+			var discode = $.trim($('#discode').html());
+			if (code == '') {
+				$('#codef').html('请输入验证码');
+				$('#codel').css('display', 'block');
+				return false;
+			} else {
+				if (code.toUpperCase() != discode.toUpperCase()) {
+					$('#codef').html('验证码不正确');
+					$('#codel').css('display', 'block');
+					return false;
+				} else {
+					$('#codef').html('');
+					$('#codel').css('display', 'none');
+				}
+			}
+		}
+		//生成验证码
+		function createCode() { //创建验证码函数
+			code = "";
+			var codeLength = 5;//验证码的长度
+			var selectChar = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B',
+					'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
+					'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');//所有候选组成验证码的字符，当然也可以用中文的
+
+			for (var i = 0; i < codeLength; i++) {
+				var charIndex = Math.floor(Math.random() * 36);
+				code += selectChar[charIndex];
+			}// 设置验证码的显示样式，并显示
+			document.getElementById("discode").style.fontFamily = " Tahoma,Helvetica,Arial"; //设置字体
+			document.getElementById("discode").style.letterSpacing = "10px"; //字体间距
+			document.getElementById("discode").style.color = "#ff0000"; //字体颜色
+			document.getElementById("discode").innerHTML = code; // 显示
+		}
+
+		function chonset() {
+			$('#username').val('');
+			$('#usernamef').html('');
+			$('#usernamel').css('display', 'none');
+
+			$('#password').val('');
+			$('#passwordf').html('');
+			$('#passwordl').css('display', 'none');
+
+			$('#code').val('');
+			$('#codef').html('');
+			$('#codel').css('display', 'none');
+		}
+	</script>
+</body>
+</html>
