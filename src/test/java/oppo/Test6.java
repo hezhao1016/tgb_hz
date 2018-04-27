@@ -1,6 +1,7 @@
 package oppo;
 
 import com.hz.tgb.common.datetime.DateUtil;
+import com.hz.tgb.common.number.AmountUtil;
 import com.hz.tgb.common.number.NumberToCN;
 import com.hz.tgb.common.number.NumberUtil;
 
@@ -24,13 +25,13 @@ public class Test6 {
         String s = "0.00";
 
 
-        String s0 = NumberUtil.changeF2Y("46521565484989489.50");
+        String s0 = AmountUtil.changeF2Y("46521565484989489.50");
         System.out.println(NumberUtil.formatFloatNumber(s0));
 
-        String s1 = NumberUtil.changeF2YRound("46521565484989489.50");
+        String s1 = AmountUtil.changeF2YRound("46521565484989489.50");
         System.out.println(NumberUtil.formatFloatNumber(s1));
 
-        String s2 = NumberUtil.changeF2Y("46521565484989489.50");
+        String s2 = AmountUtil.changeF2Y("46521565484989489.50");
 
 
         System.out.println("------------------");
@@ -45,7 +46,7 @@ public class Test6 {
         System.out.println( new BigDecimal(46521569489.25).movePointLeft(2));
 
         System.out.println("--------------------");
-        Double amount = Double.valueOf(NumberUtil.changeF2YRound(123110456789.0+""));
+        Double amount = Double.valueOf(AmountUtil.changeF2YRound(123110456789.0+""));
         String amountChinese = NumberToCN.number2CNMontrayUnit(new BigDecimal(Double.valueOf(NumberUtil.formatFloatNumber(amount))));
         System.out.println(amount);
         System.out.println(NumberUtil.formatFloatNumber(amount));
@@ -54,7 +55,7 @@ public class Test6 {
 
         System.out.println("----------------------");
         //分转元
-        String realIncomeYuan = NumberUtil.changeF2YRound(String.valueOf(108505152.50));
+        String realIncomeYuan = AmountUtil.changeF2YRound(String.valueOf(108505152.50));
         String s3 = NumberUtil.formatFloatNumber(realIncomeYuan);
         System.out.println(s3);
 

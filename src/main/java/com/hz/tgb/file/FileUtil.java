@@ -28,7 +28,7 @@ public class FileUtil {
 	public static final String separator = "/";
 
 	private FileUtil() {
-		// 私用构造主法.因为此类是工具类.
+		// 私有类构造方法
 	}
 
 	public static void main(String[] args) throws Exception {

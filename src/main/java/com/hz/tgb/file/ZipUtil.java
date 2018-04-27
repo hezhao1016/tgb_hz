@@ -32,7 +32,7 @@ public class ZipUtil {
     private static final int CACHE_SIZE = 1024;
     
     private ZipUtil(){
-    	// 私用构造主法.因为此类是工具类.
+    	// 私有类构造方法
     }
 
     /** 

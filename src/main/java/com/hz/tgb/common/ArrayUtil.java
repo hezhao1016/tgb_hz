@@ -441,6 +441,13 @@ public class ArrayUtil {
 		return newArray;
 	}
 
+	public static String[] toStringArray(Collection<String> collection) {
+		if (collection == null) {
+			return null;
+		}
+		return collection.toArray(new String[collection.size()]);
+	}
+
 	public static int[] toIntArray(String[] array) {
 		int[] newArray = new int[array.length];
 		if (isEmpty(array))

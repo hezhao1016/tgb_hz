@@ -20,6 +20,10 @@ import java.security.spec.X509EncodedKeySpec;
 public class RSASignature {
 
     private static final Logger LOG = LoggerFactory.getLogger(RSASignature.class);
+    /**
+     * 签名算法
+     */
+    public static final String SIGN_ALGORITHMS = "SHA1WithRSA";
 
     private RSASignature() {
     }
@@ -37,7 +41,7 @@ public class RSASignature {
             PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(Base64.decodeBase64(privateKey));
             KeyFactory keyf = KeyFactory.getInstance("RSA");
             PrivateKey priKey = keyf.generatePrivate(priPKCS8);
-            Signature signature = Signature.getInstance("SHA1WithRSA");
+            Signature signature = Signature.getInstance(SIGN_ALGORITHMS);
             signature.initSign(priKey);
             signature.update(content.getBytes(charset));
             byte[] signed = signature.sign();
@@ -77,7 +81,7 @@ public class RSASignature {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             byte[] encodedKey = Base64.decodeBase64(publicKey);
             PublicKey pubKey = keyFactory.generatePublic(new X509EncodedKeySpec(encodedKey));
-            Signature signature = Signature.getInstance("SHA1WithRSA");
+            Signature signature = Signature.getInstance(SIGN_ALGORITHMS);
             signature.initVerify(pubKey);
             signature.update(content.getBytes(charset));
             return signature.verify(Base64.decodeBase64(sign));

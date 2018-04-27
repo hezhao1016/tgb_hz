@@ -1,6 +1,7 @@
 package oppo;
 
-import com.hz.tgb.common.number.AmountUtils;
+
+import com.hz.tgb.common.number.AmountUtil;
 
 import java.math.BigDecimal;
 
@@ -21,14 +22,14 @@ public class Test4 {
         System.out.println(s);
 
         try {
-            String s1 = AmountUtils.changeF2Y(String.valueOf(bigDecimal));
-            String s2 = AmountUtils.changeF2YRound(String.valueOf(bigDecimal.doubleValue()));
+            String s1 = AmountUtil.changeF2Y(String.valueOf(bigDecimal));
+            String s2 = AmountUtil.changeF2YRound(String.valueOf(bigDecimal.doubleValue()));
 
             System.out.println(s1);
             System.out.println(s2);
-            System.out.println(Double.valueOf(AmountUtils.changeY2F("22.465147")));
-            System.out.println(Double.valueOf(AmountUtils.changeY2FRound("22.465147")));
-            System.out.println(String.format("%.2f",Double.valueOf(AmountUtils.changeY2FRound("22.465147"))));
+            System.out.println(Double.valueOf(AmountUtil.changeY2F("22.465147")));
+            System.out.println(Double.valueOf(AmountUtil.changeY2FRound("22.465147")));
+            System.out.println(String.format("%.2f",Double.valueOf(AmountUtil.changeY2FRound("22.465147"))));
 
         } catch (Exception e) {
             e.printStackTrace();

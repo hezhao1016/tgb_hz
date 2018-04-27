@@ -1,4 +1,4 @@
-package com.hz.tgb.doc.test;
+package tgb.doc;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

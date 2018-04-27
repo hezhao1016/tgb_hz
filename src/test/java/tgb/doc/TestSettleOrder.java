@@ -1,6 +1,7 @@
-package com.hz.tgb.doc.test;
+package tgb.doc;
 
-import com.hz.tgb.common.number.NumberUtil;
+import com.hz.tgb.common.StringUtil;
+import com.hz.tgb.common.number.AmountUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -15,41 +16,6 @@ import java.util.List;
  */
 public class TestSettleOrder {
 
-	/**
-	 * 数字金额大写转换，思想先写个完整的然后将如零拾替换成零 要用到正则表达式
-	 */
-	public static String moneyUppercase(double n) {
-		String fraction[] = { "角", "分" };
-		String digit[] = { "零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖" };
-		String unit[][] = { { "圆", "万", "亿" }, { "", "拾", "佰", "仟" } };
-
-		String head = n < 0 ? "负" : "";
-		n = Math.abs(n);
-
-		String s = "";
-		for (int i = 0; i < fraction.length; i++) {
-			s += (digit[(int) (Math.floor(n * 10 * Math.pow(10, i)) % 10)] + fraction[i])
-					.replaceAll("(零.)+", "");
-		}
-//		if (s.length() < 1) {
-//			s = "整";
-//		}
-		int integerPart = (int) Math.floor(n);
-
-		for (int i = 0; i < unit[0].length && integerPart > 0; i++) {
-			String p = "";
-			for (int j = 0; j < unit[1].length && n > 0; j++) {
-				p = digit[integerPart % 10] + unit[1][j] + p;
-				integerPart = integerPart / 10;
-			}
-			s = p.replaceAll("(零.)*零$", "").replaceAll("^$", "零") + unit[0][i]
-					+ s;
-		}
-		return head
-				+ s.replaceAll("(零.)*零圆", "圆").replaceFirst("(零.)+", "")
-						.replaceAll("(零.)+", "零")/*.replaceAll("^整$", "零圆整")*/;
-	}
-	
 	public static void main(String[] args)  {
 		List<SettleFileDto> list = new ArrayList<>();
 		SettleFileDto sfd = new SettleFileDto();
@@ -63,7 +29,7 @@ public class TestSettleOrder {
 		sfd.setShareRatio(0.007);
 		sfd.setPlatformCost(684L);
 		sfd.setUserCost(1596L);
-		
+
 		sfd.setAppName("王者荣耀");
 		sfd.setPrice(1000L);
 		sfd.setNotClear(500L);
@@ -71,8 +37,8 @@ public class TestSettleOrder {
 		sfd.setRatioCost(10L);
 		sfd.setRealIncome(60L);
 		sfd.setPackageName("com.oppo.pay.settlement");
-		
-		
+
+
 		SettleFileDto sfd2 = new SettleFileDto();
 		sfd2.setSettleMonth("201707");
 		sfd2.setOrderType((byte) 0);
@@ -84,7 +50,7 @@ public class TestSettleOrder {
 		sfd2.setShareRatio(0.007);
 		sfd2.setPlatformCost(684L);
 		sfd2.setUserCost(1596L);
-		
+
 		sfd2.setAppName("王者荣耀2");
 		sfd2.setPrice(1000L);
 		sfd2.setNotClear(500L);
@@ -92,10 +58,10 @@ public class TestSettleOrder {
 		sfd2.setRatioCost(10L);
 		sfd2.setRealIncome(60L);
 		sfd2.setPackageName("com.oppo.pay.settlement2");
-		
+
 		list.add(sfd);
 		list.add(sfd2);
-		
+
 		//企业名称
 		String userName = "XXX";
 		//订单类型
@@ -105,7 +71,7 @@ public class TestSettleOrder {
 		//合计
 		Double amount = 0.0;
 		String amountChinese = "";
-		
+
 		for (SettleFileDto dto : list) {
 			Long money = 0L;
 			if(orderType == 0 || orderType == 2 || orderType == 3){
@@ -114,24 +80,24 @@ public class TestSettleOrder {
 				money = dto.getRealIncome();
 			}
 			if(money != null && money > 0L){
-				Double dou = Double.valueOf(NumberUtil.moneyFenToYuan(money.toString()));
+				Double dou = Double.valueOf(AmountUtil.moneyFenToYuan(money.toString()));
 				amount += dou;
 			}
 		}
-		amountChinese = moneyUppercase(amount);
-		
+		amountChinese = StringUtil.moneyUppercase(amount);
+
 		// 创建HSSFWorkbook对象(excel的文档对象)
 		HSSFWorkbook wkb = new HSSFWorkbook();
 		// 建立新的sheet对象（excel的表单）
 		HSSFSheet sheet = wkb.createSheet("结算单");
-		// 设置表格默认列宽度 
-        sheet.setDefaultColumnWidth(12);  
-        
- 		//在sheet里创建第一行  
-		HSSFRow row0=sheet.createRow(0);   
+		// 设置表格默认列宽度
+        sheet.setDefaultColumnWidth(12);
+
+ 		//在sheet里创建第一行
+		HSSFRow row0=sheet.createRow(0);
 		//设置高度
 		row0.setHeight((short) (20 * 15));
-		
+
 		///////////////////订单类型 0下载付费 1游戏中心 2内嵌支付 3主题商店 4直充
 		if(orderType == 0 || orderType == 3){/////////////////////////下载,主题商店
 			// 创建单元格并设置单元格内容
@@ -146,52 +112,52 @@ public class TestSettleOrder {
 			row0.createCell(8).setCellValue("合作比例");
 			row0.createCell(9).setCellValue("平台所得");
 			row0.createCell(10).setCellValue("开发者所得");
-			
+
 			//设置各列宽度
-	        sheet.setColumnWidth(0, (short) (35.7 * 10 * 7.666));  
-	        sheet.setColumnWidth(1, (short) (35.7 * 10 * 7.666));  
-	        sheet.setColumnWidth(2, (short) (35.7 * 14 * 7.666));  
-	        sheet.setColumnWidth(3, (short) (35.7 * 21 * 7.666));  
-	        sheet.setColumnWidth(6, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(7, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(8, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(9, (short) (35.7 * 15 * 7.666));  
-			
+	        sheet.setColumnWidth(0, (short) (35.7 * 10 * 7.666));
+	        sheet.setColumnWidth(1, (short) (35.7 * 10 * 7.666));
+	        sheet.setColumnWidth(2, (short) (35.7 * 14 * 7.666));
+	        sheet.setColumnWidth(3, (short) (35.7 * 21 * 7.666));
+	        sheet.setColumnWidth(6, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(7, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(8, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(9, (short) (35.7 * 15 * 7.666));
+
 			if (list.size() != 0) {
 				SettleFileDto fileDto;
-				
+
 				Double unitPrice = 0D;
 				Double saleMoney = 0D;
 				Double channelCost = 0D;
 				Double platformCost = 0D;
 				Double userCost = 0D;
-				
+
 				for (int i = 0; i < list.size(); i++) {
 					fileDto = list.get(i);
-					unitPrice = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf((int)fileDto.getUnitPrice())));
+					unitPrice = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf((int)fileDto.getUnitPrice())));
 					saleMoney = unitPrice * fileDto.getBuyCount();
-					channelCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getChannelCost())));
-					platformCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getPlatformCost())));
-					userCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getUserCost())));
-					
+					channelCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getChannelCost())));
+					platformCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getPlatformCost())));
+					userCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getUserCost())));
+
 					HSSFRow row = sheet.createRow(i + 1);
 					//设置高度
 					row.setHeight((short) (20 * 15));
-					
+
 					row.createCell(0).setCellValue(fileDto.getSettleMonth());
 					row.createCell(1).setCellValue(orderTypeName);
 					row.createCell(2).setCellValue(fileDto.getUserId());
 					row.createCell(3).setCellValue(fileDto.getProductName());
-					row.createCell(4).setCellValue(unitPrice);				
+					row.createCell(4).setCellValue(unitPrice);
 					row.createCell(5).setCellValue(fileDto.getBuyCount());
 					row.createCell(6).setCellValue(saleMoney);
-					row.createCell(7).setCellValue(channelCost);				
-					row.createCell(8).setCellValue(fileDto.getShareRatio());				
+					row.createCell(7).setCellValue(channelCost);
+					row.createCell(8).setCellValue(fileDto.getShareRatio());
 					row.createCell(9).setCellValue(platformCost);
 					row.createCell(10).setCellValue(userCost);
 				}
 			}
-			
+
 		}else if(orderType == 1){////////////////////////////////游戏中心
 			// 创建单元格并设置单元格内容
 			row0.createCell(0).setCellValue("结算期");
@@ -203,53 +169,53 @@ public class TestSettleOrder {
 			row0.createCell(6).setCellValue("税费");
 			row0.createCell(7).setCellValue("分成比例");
 			row0.createCell(8).setCellValue("合作方分成金额");
-			
+
 			//设置各列宽度
-	        sheet.setColumnWidth(0, (short) (35.7 * 10 * 7.666));  
-	        sheet.setColumnWidth(1, (short) (35.7 * 20 * 7.666));  
-	        sheet.setColumnWidth(2, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(3, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(4, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(5, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(6, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(7, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(8, (short) (35.7 * 15 * 7.666));  
-			
+	        sheet.setColumnWidth(0, (short) (35.7 * 10 * 7.666));
+	        sheet.setColumnWidth(1, (short) (35.7 * 20 * 7.666));
+	        sheet.setColumnWidth(2, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(3, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(4, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(5, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(6, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(7, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(8, (short) (35.7 * 15 * 7.666));
+
 			if (list.size() != 0) {
 				SettleFileDto fileDto;
-				
+
 				Double price = 0D;
 				Double notClear = 0D;
 				Double shareBaseCost = 0D;
 				Double ratioCost = 0D;
 				Double realIncome = 0D;
 				Double channelCost = 0D;
-				
+
 				for (int i = 0; i < list.size(); i++) {
 					fileDto = list.get(i);
-					price = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getPrice())));
-					notClear = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getNotClear())));
-					shareBaseCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getShareBaseCost())));
-					ratioCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getRatioCost())));
-					realIncome = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getRealIncome())));
-					channelCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getChannelCost())));
-					
+					price = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getPrice())));
+					notClear = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getNotClear())));
+					shareBaseCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getShareBaseCost())));
+					ratioCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getRatioCost())));
+					realIncome = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getRealIncome())));
+					channelCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getChannelCost())));
+
 					HSSFRow row = sheet.createRow(i + 1);
 					//设置高度
 					row.setHeight((short) (20 * 15));
-					
+
 					row.createCell(0).setCellValue(fileDto.getSettleMonth());
 					row.createCell(1).setCellValue(fileDto.getAppName());
-					row.createCell(2).setCellValue(price);				
-					row.createCell(3).setCellValue(notClear);				
+					row.createCell(2).setCellValue(price);
+					row.createCell(3).setCellValue(notClear);
 					row.createCell(4).setCellValue(shareBaseCost);
-					row.createCell(5).setCellValue(channelCost);				
-					row.createCell(6).setCellValue(ratioCost);				
-					row.createCell(7).setCellValue(fileDto.getShareRatio());				
+					row.createCell(5).setCellValue(channelCost);
+					row.createCell(6).setCellValue(ratioCost);
+					row.createCell(7).setCellValue(fileDto.getShareRatio());
 					row.createCell(8).setCellValue(realIncome);
 				}
 			}
-			
+
 		}else if(orderType == 2){//////////////////////////////////内嵌支付
 			// 创建单元格并设置单元格内容
 			row0.createCell(0).setCellValue("结算月份");
@@ -261,51 +227,51 @@ public class TestSettleOrder {
 			row0.createCell(6).setCellValue("合作比例");
 			row0.createCell(7).setCellValue("平台所得");
 			row0.createCell(8).setCellValue("开发者所得");
-			
+
 			//设置各列宽度
-	        sheet.setColumnWidth(0, (short) (35.7 * 10 * 7.666));  
-	        sheet.setColumnWidth(1, (short) (35.7 * 10 * 7.666));  
-	        sheet.setColumnWidth(2, (short) (35.7 * 14 * 7.666));  
-	        sheet.setColumnWidth(3, (short) (35.7 * 25 * 7.666));  
-	        sheet.setColumnWidth(4, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(5, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(6, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(7, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(8, (short) (35.7 * 15 * 7.666));  
-			
+	        sheet.setColumnWidth(0, (short) (35.7 * 10 * 7.666));
+	        sheet.setColumnWidth(1, (short) (35.7 * 10 * 7.666));
+	        sheet.setColumnWidth(2, (short) (35.7 * 14 * 7.666));
+	        sheet.setColumnWidth(3, (short) (35.7 * 25 * 7.666));
+	        sheet.setColumnWidth(4, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(5, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(6, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(7, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(8, (short) (35.7 * 15 * 7.666));
+
 			if (list.size() != 0) {
 				SettleFileDto fileDto;
-				
+
 				Double unitPrice = 0D;
 				Double saleMoney = 0D;
 				Double channelCost = 0D;
 				Double platformCost = 0D;
 				Double userCost = 0D;
-				
+
 				for (int i = 0; i < list.size(); i++) {
 					fileDto = list.get(i);
-					unitPrice = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf((int)fileDto.getUnitPrice())));
+					unitPrice = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf((int)fileDto.getUnitPrice())));
 					saleMoney = unitPrice * fileDto.getBuyCount();
-					channelCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getChannelCost())));
-					platformCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getPlatformCost())));
-					userCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getUserCost())));
-					
+					channelCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getChannelCost())));
+					platformCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getPlatformCost())));
+					userCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getUserCost())));
+
 					HSSFRow row = sheet.createRow(i + 1);
 					//设置高度
 					row.setHeight((short) (20 * 15));
-					
+
 					row.createCell(0).setCellValue(fileDto.getSettleMonth());
 					row.createCell(1).setCellValue(orderTypeName);
 					row.createCell(2).setCellValue(fileDto.getUserId());
 					row.createCell(3).setCellValue(fileDto.getPackageName());
 					row.createCell(4).setCellValue(saleMoney);
-					row.createCell(5).setCellValue(channelCost);				
-					row.createCell(6).setCellValue(fileDto.getShareRatio());				
+					row.createCell(5).setCellValue(channelCost);
+					row.createCell(6).setCellValue(fileDto.getShareRatio());
 					row.createCell(7).setCellValue(platformCost);
 					row.createCell(8).setCellValue(userCost);
 				}
 			}
-			
+
 		}else if(orderType == 4){/////////////////////////////////////直充
 			// 创建单元格并设置单元格内容
 			row0.createCell(0).setCellValue("结算期");
@@ -317,18 +283,18 @@ public class TestSettleOrder {
 			row0.createCell(6).setCellValue("税费");
 			row0.createCell(7).setCellValue("分成比例");
 			row0.createCell(8).setCellValue("合作方分成金额");
-			
+
 			//设置各列宽度
-	        sheet.setColumnWidth(0, (short) (35.7 * 10 * 7.666));  
-	        sheet.setColumnWidth(1, (short) (35.7 * 20 * 7.666));  
-	        sheet.setColumnWidth(2, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(3, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(4, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(5, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(6, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(7, (short) (35.7 * 15 * 7.666));  
-	        sheet.setColumnWidth(8, (short) (35.7 * 15 * 7.666));  
-			
+	        sheet.setColumnWidth(0, (short) (35.7 * 10 * 7.666));
+	        sheet.setColumnWidth(1, (short) (35.7 * 20 * 7.666));
+	        sheet.setColumnWidth(2, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(3, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(4, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(5, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(6, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(7, (short) (35.7 * 15 * 7.666));
+	        sheet.setColumnWidth(8, (short) (35.7 * 15 * 7.666));
+
 			if (list.size() != 0) {
 				SettleFileDto fileDto;
 				
@@ -341,12 +307,12 @@ public class TestSettleOrder {
 				
 				for (int i = 0; i < list.size(); i++) {
 					fileDto = list.get(i);
-					price = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getPrice())));
-					notClear = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getNotClear())));
-					shareBaseCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getShareBaseCost())));
-					ratioCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getRatioCost())));
-					realIncome = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getRealIncome())));
-					channelCost = Double.valueOf(NumberUtil.moneyFenToYuan(String.valueOf(fileDto.getChannelCost())));
+					price = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getPrice())));
+					notClear = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getNotClear())));
+					shareBaseCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getShareBaseCost())));
+					ratioCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getRatioCost())));
+					realIncome = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getRealIncome())));
+					channelCost = Double.valueOf(AmountUtil.moneyFenToYuan(String.valueOf(fileDto.getChannelCost())));
 					
 					HSSFRow row = sheet.createRow(i + 1);
 					//设置高度

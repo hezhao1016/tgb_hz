@@ -1,6 +1,9 @@
 package com.hz.tgb.common.number;
 
-import java.math.BigDecimal;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 数字工具类
@@ -21,10 +24,167 @@ public class NumberUtil {
 	private static final String[] unit_common = {"","万", "亿","兆","京","垓","秭","穰","沟","涧","正","载"};
 
 	//标记为小数点
-	private static final int DOT=-99;
+	private static final int DOT = -99;
 	//标记为无效数字
-	private static final int INVALID=-100;
+	private static final int INVALID = -100;
 
+
+	// 判断一个字符串是否都为数字
+	public static  boolean isDigit(String strNum) {
+		Pattern pattern = Pattern.compile("[0-9]{1,}");
+		Matcher matcher = pattern.matcher((CharSequence) strNum);
+		return matcher.matches();
+	}
+
+	/***
+	 * char转换为int数字,不做ascii码转换
+	 *
+	 * @param c 字符
+	 * @return
+	 */
+	public static int charToInt(char c) {
+		return Integer.valueOf(String.valueOf(c));
+	}
+
+	/***
+	 * 字符串转int类型
+	 *
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 */
+	public static int parseInt(String key, int defaultValue) {
+		int value = defaultValue;
+		if (key != null && !"".equals(key)){
+			try {
+				value = Integer.parseInt(key);
+			} catch (Exception localException) {
+			}
+		}
+
+		return value;
+	}
+
+	/***
+	 * 判断是否为连续数字或相同数字
+	 *
+	 * @param strings 待判定字符串
+	 * @return true为是false为不是
+	 */
+	public static boolean isSerialNumber(String strings) {
+		boolean result = true;
+
+		// 判断是否为数字,如果不是直接返回不是连续数字
+		if (!StringUtils.isNumeric(strings)) {
+			return false;
+		}
+
+		// 长度只有一位返回不为连续数字
+		if (strings.length() < 2) {
+			return false;
+		}
+
+		// 是否为相同数字
+		if (!isSameNumber(strings)) {
+			// 是否为升序连续
+			if (!isAscSerialNumer(strings)) {
+				// 是否为降序连续
+				if (!isDescSerialNumber(strings)) {
+					result = false;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/***
+	 * 检查是否为相同数字
+	 *
+	 * @param strings 待判定字符串
+	 * @return true为是false为不是
+	 */
+	public static boolean isSameNumber(String strings) {
+		boolean isSame = true;
+		int numer;
+		numer = charToInt(strings.charAt(0));
+		// 遍历密保答案检查是否为相同的数字
+		for (int i = 1; i < strings.length(); i++) {
+			int tmp = charToInt(strings.charAt(i));
+			if (numer != tmp) {
+				// 若数字相同的情况下继续遍历
+				isSame = false;
+				break;
+			}
+		}
+
+		return isSame;
+	}
+
+	/***
+	 * 是否为降序数字
+	 *
+	 * @param strings 待判定字符串
+	 * @return true为是false为不是
+	 */
+	public static boolean isDescSerialNumber(String strings) {
+		boolean isDesc = true;
+		int numer;
+		numer = charToInt(strings.charAt(0));
+		// 遍历密保答案检查是否为降序连续数字
+		for (int i = 1; i < strings.length(); i++) {
+			int tmp = charToInt(strings.charAt(i));
+			if (numer <= tmp) {
+				// 数字相同非降序退出循环
+				isDesc = false;
+				break;
+			} else {
+				numer--;
+				if (numer == tmp) {
+					// 可能为降序连续
+				} else {
+					isDesc = false;
+					break;
+				}
+			}
+		}
+
+		return isDesc;
+	}
+
+	/***
+	 * 判断是否为升序数字
+	 *
+	 * @param strings 待判定字符串
+	 * @return true为是false为不是
+	 */
+	public static boolean isAscSerialNumer(String strings) {
+		boolean isAsc = true;
+		;
+		int numer = charToInt(strings.charAt(0));
+		// 遍历密保答案检查是否为升序连续数字
+		for (int i = 1; i < strings.length(); i++) {
+			int tmp = charToInt(strings.charAt(i));
+			if (numer == tmp) {
+				// 若相同非升序,退出
+				isAsc = false;
+				break;
+			} else if (numer < tmp) {
+				numer++;
+				if (numer == tmp) {
+					// 可能为升序连续
+				} else {
+					isAsc = false;
+					break;
+				}
+			} else {
+				isAsc = false;
+				break;
+			}
+		}
+
+		return isAsc;
+	}
 
 	/**
 	 * 数字转化为小写的汉字
@@ -777,165 +937,6 @@ public class NumberUtil {
 	}
 
 	/**
-	 * 金额元转分
-	 *  注意:该方法可处理贰仟万以内的金额,且若有小数位,则不限小数位的长度
-	 *  注意:如果你的金额达到了贰仟万以上,则不推荐使用该方法,否则计算出来的结果会令人大吃一惊
-	 * @param amount  金额的元进制字符串
-	 * @return String 金额的分进制字符串
-	 */
-	public static String moneyYuanToFen(String amount){
-		if(isEmpty(amount)){
-			return amount;
-		}
-		//传入的金额字符串代表的是一个整数
-		if(-1 == amount.indexOf(".")){
-			return Integer.parseInt(amount) * 100 + "";
-		}
-		//传入的金额字符串里面含小数点-->取小数点前面的字符串,并将之转换成单位为分的整数表示
-		int money_fen = Integer.parseInt(amount.substring(0, amount.indexOf("."))) * 100;
-		//取到小数点后面的字符串
-		String pointBehind = (amount.substring(amount.indexOf(".") + 1));
-		//amount=12.3
-		if(pointBehind.length() == 1){
-			return money_fen + Integer.parseInt(pointBehind)*10 + "";
-		}
-		//小数点后面的第一位字符串的整数表示
-		int pointString_1 = Integer.parseInt(pointBehind.substring(0, 1));
-		//小数点后面的第二位字符串的整数表示
-		int pointString_2 = Integer.parseInt(pointBehind.substring(1, 2));
-		//amount==12.03,amount=12.00,amount=12.30
-		if(pointString_1 == 0){
-			return money_fen + pointString_2 + "";
-		}else{
-			return money_fen + pointString_1*10 + pointString_2 + "";
-		}
-	}
-
-
-	/**
-	 * 金额元转分
-	 *  该方法会将金额中小数点后面的数值,四舍五入后只保留两位....如12.345-->12.35
-	 *  注意:该方法可处理贰仟万以内的金额
-	 *  注意:如果你的金额达到了贰仟万以上,则非常不建议使用该方法,否则计算出来的结果会令人大吃一惊
-	 * @param amount  金额的元进制字符串
-	 * @return String 金额的分进制字符串
-	 */
-	public static String moneyYuanToFenByRound(String amount){
-		if(isEmpty(amount)){
-			return amount;
-		}
-		if(-1 == amount.indexOf(".")){
-			return Integer.parseInt(amount) * 100 + "";
-		}
-		int money_fen = Integer.parseInt(amount.substring(0, amount.indexOf("."))) * 100;
-		String pointBehind = (amount.substring(amount.indexOf(".") + 1));
-		if(pointBehind.length() == 1){
-			return money_fen + Integer.parseInt(pointBehind)*10 + "";
-		}
-		int pointString_1 = Integer.parseInt(pointBehind.substring(0, 1));
-		int pointString_2 = Integer.parseInt(pointBehind.substring(1, 2));
-		//下面这种方式用于处理pointBehind=245,286,295,298,995,998等需要四舍五入的情况
-		if(pointBehind.length() > 2){
-			int pointString_3 = Integer.parseInt(pointBehind.substring(2, 3));
-			if(pointString_3 >= 5){
-				if(pointString_2 == 9){
-					if(pointString_1 == 9){
-						money_fen = money_fen + 100;
-						pointString_1 = 0;
-						pointString_2 = 0;
-					}else{
-						pointString_1 = pointString_1 + 1;
-						pointString_2 = 0;
-					}
-				}else{
-					pointString_2 = pointString_2 + 1;
-				}
-			}
-		}
-		if(pointString_1 == 0){
-			return money_fen + pointString_2 + "";
-		}else{
-			return money_fen + pointString_1*10 + pointString_2 + "";
-		}
-	}
-
-
-	/**
-	 * 金额分转元
-	 *  注意:如果传入的参数中含小数点,则直接原样返回
-	 *  该方法返回的金额字符串格式为<code>00.00</code>,其整数位有且至少有一个,小数位有且长度固定为2
-	 * @param amount  金额的分进制字符串
-	 * @return String 金额的元进制字符串
-	 */
-	public static String moneyFenToYuan(String amount){
-		if(isEmpty(amount)){
-			return amount;
-		}
-		if(amount.indexOf(".") > -1){
-			return amount;
-		}
-		if(amount.length() == 1){
-			return "0.0" + amount;
-		}else if(amount.length() == 2){
-			return "0." + amount;
-		}else{
-			return amount.substring(0, amount.length()-2) + "." + amount.substring(amount.length()-2);
-		}
-	}
-
-
-	/**金额为分的格式 */
-	public static final String CURRENCY_FEN_REGEX = "\\-?[0-9]+\\.?[0-9]*";
-
-	/**
-	 * 将分为单位的转换为元 （除100）
-	 *
-	 * @param amount 可为小数
-	 * @return
-	 */
-	public static String changeF2Y(String amount){
-		BigDecimal bigDecimal = new BigDecimal(amount);
-		return String.valueOf(bigDecimal.movePointLeft(2));
-	}
-
-	/**
-	 * 将分为单位的转换为元 （除100） 四舍五入 保留两位小数
-	 *
-	 * @param amount 可为小数
-	 * @return
-	 */
-	public static String changeF2YRound(String amount){
-		BigDecimal bigDecimal = new BigDecimal(amount);
-		bigDecimal = bigDecimal.movePointLeft(2);
-		BigDecimal one = new BigDecimal("1");
-		return String.valueOf(bigDecimal.divide(one, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
-	}
-
-	/**
-	 * 将元为单位的转换为分 （乘100）
-	 *
-	 * @param amount
-	 * @return
-	 */
-	public static String changeY2F(String amount){
-		BigDecimal bigDecimal = new BigDecimal(amount);
-		return String.valueOf(bigDecimal.movePointRight(2));
-	}
-
-	/**
-	 * 将元为单位的转换为分 （乘100） 四舍五入 保留两位小数
-	 *
-	 * @param amount 可为小数
-	 * @return
-	 */
-	public static String changeY2FRound(String amount){
-		BigDecimal bigDecimal = new BigDecimal(amount);
-		bigDecimal = bigDecimal.movePointRight(2);
-		BigDecimal one = new BigDecimal("1");
-		return String.valueOf(bigDecimal.divide(one, 2, BigDecimal.ROUND_HALF_UP).doubleValue());
-	}
-
-	/**
 	 * 当浮点型数据位数超过10位之后，数据变成科学计数法显示。用此方法可以使其正常显示。
 	 * @param value
 	 * @return Sting
@@ -999,26 +1000,6 @@ public class NumberUtil {
 		return "";
 	}
 
-
-	/**
-	 * 判断输入的字符串参数是否为空
-	 * @return boolean 空则返回true,非空则flase
-	 */
-	public static boolean isEmpty(String input) {
-		return null==input || 0==input.length() || 0==input.replaceAll("\\s", "").length();
-	}
-
-
-	/**
-	 * 判断输入的字节数组是否为空
-	 * @return boolean 空则返回true,非空则flase
-	 */
-	public static boolean isEmpty(byte[] bytes){
-		return null==bytes || 0==bytes.length;
-	}
-
-
-
 	public static void main(String[] args) {
 //		short s = 10;
 //		byte b=10;
@@ -1050,9 +1031,5 @@ public class NumberUtil {
 		System.out.println(toChineseUpper("-5145"));
 		System.out.println(toChineseUpper("5145.8790"));
 		System.out.println(toChineseUpper("-0.5145"));
-
-		System.out.println(moneyFenToYuan("10000526460584"));
-		System.out.println(moneyYuanToFen("100005.84652"));
-		System.out.println(moneyYuanToFenByRound("100005.84652"));
 	}
 }

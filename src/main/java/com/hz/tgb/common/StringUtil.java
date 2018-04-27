@@ -1,9 +1,12 @@
 package com.hz.tgb.common;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
@@ -22,8 +25,11 @@ public class StringUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(StringUtil.class);
 
+	public static final String SPACE = " ";
+	public static final String EMPTY = "";
+
 	private StringUtil() {
-		// 私用构造主法.因为此类是工具类.
+		// 私有类构造方法
 	}
 
 	public static void main(String[] args) {
@@ -61,9 +67,9 @@ public class StringUtil {
 		System.out.println(getStringLen("我的滑板鞋是什么"));
 		
 		System.out.println(getLimitLengthString("我的滑板鞋是什么是什么是什么是什么是什么",10));
-		System.out.println(getLimitLengthString2("我的滑板鞋是什么是什么是什么是什么是什么",10));
+		System.out.println(getLimitLengthStringZh("我的滑板鞋是什么是什么是什么是什么是什么",10));
 		System.out.println(getLimitLengthString("sfhnasdfjlksdgf",10));
-		System.out.println(getLimitLengthString2("sfhnasdfjlksdgf",10));
+		System.out.println(getLimitLengthStringZh("sfhnasdfjlksdgf",10));
 		
 		String str = "12345abcde";  
 	    System.out.println("--------------------------------");  
@@ -79,26 +85,310 @@ public class StringUtil {
 	    System.out.println("从倒数第4个开始截取，结果：\n" + StringUtil.subStr(str, -4, 10));  
 	}
 
-	
 	/**
-	 * 判断字符串是否是合法的Java标识符
-	 * @param s	待判断的字符串
+	 * 如果字符串为null或长度为0，则返回true
+	 * @param cs
 	 * @return
 	 */
-	public static boolean isJavaIdentifier(String s){
-        //如果字符串为空或者长度为0，返回false
-		if ((s == null) || (s.length() == 0)) {
-            return false;
-        }
-        //字符串中每一个字符都必须是Java标识符的一部分
-        for (int i=0; i<s.length(); i++) {
-            if (!Character.isJavaIdentifierPart(s.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
+	public static boolean isEmpty(final CharSequence cs) {
+		return cs == null || cs.length() == 0;
 	}
-	
+
+	/**
+	 * 如果字符串不为null且长度大于0，则返回true
+	 * @param cs
+	 * @return
+	 */
+	public static boolean isNotEmpty(final CharSequence cs) {
+		return !isEmpty(cs);
+	}
+
+	/**
+	 * 接收一个字符串数组，任意一个参数为空的话，返回true，如果这些参数都不为空的话返回false
+	 * @param css
+	 * @return
+	 */
+	public static boolean isAnyEmpty(final CharSequence... css) {
+		if (ArrayUtils.isEmpty(css)) {
+			return false;
+		}
+		for (final CharSequence cs : css){
+			if (isEmpty(cs)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 接收一个字符串数组，任意一个参数是空，返回false，所有参数都不为空，返回true
+	 * @param css
+	 * @return
+	 */
+	public static boolean isNoneEmpty(final CharSequence... css) {
+		return !isAnyEmpty(css);
+	}
+
+	/**
+	 * 接收一个字符串数组，如果全部为空则返回true，否则返回false
+	 * @param css
+	 * @return
+	 */
+	public static boolean isAllEmpty(final CharSequence... css) {
+		if (ArrayUtils.isEmpty(css)) {
+			return true;
+		}
+		for (final CharSequence cs : css) {
+			if (isNotEmpty(cs)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 如果字符串为null或长度为0或由空白符(whitespace)构成，则返回true
+	 * @param cs
+	 * @return
+	 */
+	public static boolean isBlank(final CharSequence cs) {
+		int strLen;
+		if (cs == null || (strLen = cs.length()) == 0) {
+			return true;
+		}
+		for (int i = 0; i < strLen; i++) {
+			if (!Character.isWhitespace(cs.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 如果字符串不为null且长度大于0且不由空白符(whitespace)构成，则返回true
+	 * @param cs
+	 * @return
+	 */
+	public static boolean isNotBlank(final CharSequence cs) {
+		return !isBlank(cs);
+	}
+
+	/**
+	 * 接收一个字符串数组，任意一个参数为空(包括空白符)的话，返回true，如果这些参数都不为空的话返回false
+	 * @param css
+	 * @return
+	 */
+	public static boolean isAnyBlank(final CharSequence... css) {
+		if (ArrayUtils.isEmpty(css)) {
+			return false;
+		}
+		for (final CharSequence cs : css){
+			if (isBlank(cs)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 接收一个字符串数组，任意一个参数是空(包括空白符)，返回false，所有参数都不为空，返回true
+	 * @param css
+	 * @return
+	 */
+	public static boolean isNoneBlank(final CharSequence... css) {
+		return !isAnyBlank(css);
+	}
+
+	/**
+	 * 接收一个字符串数组，如果全部为空(包括空白符)则返回true，否则返回false
+	 * @param css
+	 * @return
+	 */
+	public static boolean isAllBlank(final CharSequence... css) {
+		if (ArrayUtils.isEmpty(css)) {
+			return true;
+		}
+		for (final CharSequence cs : css) {
+			if (isNotBlank(cs)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 去掉字符串两端的控制符，如果为null则返回null
+	 * @param str
+	 * @return
+	 */
+	public static String trim(final String str) {
+		return str == null ? null : str.trim();
+	}
+
+	/**
+	 * 去掉字符串两端的控制符，如果为null或""则返回null
+	 * @param str
+	 * @return
+	 */
+	public static String trimToNull(final String str) {
+		final String ts = trim(str);
+		return isEmpty(ts) ? null : ts;
+	}
+
+	/**
+	 * 去掉字符串两端的控制符，如果为null或""则返回""
+	 * @param str
+	 * @return
+	 */
+	public static String trimToEmpty(final String str) {
+		return str == null ? EMPTY : str.trim();
+	}
+
+	/**
+	 * 清除字符串结尾的空格.
+	 *
+	 * @param input
+	 *            String 输入的字符串
+	 * @return 转换结果
+	 */
+	public static String trimTailSpaces(String input) {
+		if (isBlank(input)) {
+			return EMPTY;
+		}
+
+		String trimedString = input.trim();
+
+		if (trimedString.length() == input.length()) {
+			return input;
+		}
+
+		return input.substring(0,
+				input.indexOf(trimedString) + trimedString.length());
+	}
+
+	/**
+	 * 去掉字符串两端的空白符(whitespace)，如果输入为null则返回null
+	 * @param str
+	 * @return
+	 */
+	public static String strip(final String str) {
+		return strip(str, null);
+	}
+
+	/**
+	 * 去掉字符串两端的空白符(whitespace)，如果变为null或""，则返回null
+	 * @param str
+	 * @return
+	 */
+	public static String stripToNull(String str) {
+		if (str == null) {
+			return null;
+		}
+		str = strip(str, null);
+		return str.isEmpty() ? null : str;
+	}
+
+	/**
+	 * 去掉字符串两端的空白符(whitespace)，如果变为null或""，则返回""
+	 * @param str
+	 * @return
+	 */
+	public static String stripToEmpty(final String str) {
+		return str == null ? EMPTY : strip(str, null);
+	}
+
+	public static String strip(String str, final String stripChars) {
+		if (isEmpty(str)) {
+			return str;
+		}
+		str = stripStart(str, stripChars);
+		return stripEnd(str, stripChars);
+	}
+
+	public static String stripStart(final String str, final String stripChars) {
+		int strLen;
+		if (str == null || (strLen = str.length()) == 0) {
+			return str;
+		}
+		int start = 0;
+		if (stripChars == null) {
+			while (start != strLen && Character.isWhitespace(str.charAt(start))) {
+				start++;
+			}
+		} else if (stripChars.isEmpty()) {
+			return str;
+		} else {
+			while (start != strLen && stripChars.indexOf(str.charAt(start)) != -1) {
+				start++;
+			}
+		}
+		return str.substring(start);
+	}
+
+	public static String stripEnd(final String str, final String stripChars) {
+		int end;
+		if (str == null || (end = str.length()) == 0) {
+			return str;
+		}
+
+		if (stripChars == null) {
+			while (end != 0 && Character.isWhitespace(str.charAt(end - 1))) {
+				end--;
+			}
+		} else if (stripChars.isEmpty()) {
+			return str;
+		} else {
+			while (end != 0 && stripChars.indexOf(str.charAt(end - 1)) != -1) {
+				end--;
+			}
+		}
+		return str.substring(0, end);
+	}
+
+	/**
+	 * 验证是否包含空格
+	 *
+	 * @param str
+	 * @return 是否包含空格
+	 */
+	public static boolean containBlank(String str) {
+		if (str.length() > str.replace(SPACE, EMPTY).length()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 格式化字符串 如果为空，返回“”
+	 *
+	 * @param str
+	 * @return
+	 */
+	public static String formatString(String str) {
+		if (isEmpty(str)) {
+			return EMPTY;
+		} else {
+			return str;
+		}
+	}
+
+	/**
+	 * 判断两个字符串是否相等 如果都为null则判断为相等,一个为null另一个not null则判断不相等 否则如果s1=s2则相等
+	 *
+	 * @param s1
+	 * @param s2
+	 * @return
+	 */
+	public static boolean equals(String s1, String s2) {
+		if (StringUtil.isEmpty(s1) && StringUtil.isEmpty(s2)) {
+			return true;
+		} else if (!StringUtil.isEmpty(s1) && !StringUtil.isEmpty(s2)) {
+			return s1.equals(s2);
+		}
+		return false;
+	}
+
 	/**
 	 * 把输入字符串的首字母改成大写
 	 * 
@@ -111,6 +401,25 @@ public class StringUtil {
 			ch[0] = (char) (ch[0] - 32);
 		}
 		return new String(ch);
+	}
+
+	/**
+	 * 判断字符串是否是合法的Java标识符
+	 * @param s	待判断的字符串
+	 * @return
+	 */
+	public static boolean isJavaIdentifier(String s){
+		//如果字符串为空或者长度为0，返回false
+		if ((s == null) || (s.length() == 0)) {
+			return false;
+		}
+		//字符串中每一个字符都必须是Java标识符的一部分
+		for (int i=0; i<s.length(); i++) {
+			if (!Character.isJavaIdentifierPart(s.charAt(i))) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -159,23 +468,17 @@ public class StringUtil {
 	}
 
 	/**
-	 * 此方法用于检查密码或用户名是否合法，用户名密码只能使用英文字母、数字以及-和_，并且首字符必须为字母或数字 密码首字符必须为字母或数字
-	 * 
-	 * @param inputStr
-	 *            输入
-	 * @return boolean
+	 * 是否是链接
+	 * @param value
+	 * @return
 	 */
-	public static boolean checkUserNamePassword(String inputStr) {
-		for (int nIndex = 0; nIndex < inputStr.length(); nIndex++) {
-			char cCheck = inputStr.charAt(nIndex);
-			if (nIndex == 0 && (cCheck == '-' || cCheck == '_')) {
-				return false;
-			}
-			if (!(isNumeric(cCheck) || isAlpha(cCheck) || cCheck == '-' || cCheck == '_')) {
-				return false;
-			}
+	public static boolean isURL(String value) {
+		try {
+			new URL(value);
+			return true;
+		} catch (MalformedURLException e) {
+			return false;
 		}
-		return true;
 	}
 
 	/**
@@ -243,7 +546,7 @@ public class StringUtil {
 
 	/**
 	 * 验证是否包含中文
-	 * 
+	 *
 	 * @param str
 	 * @return 是否包含中文:含有中文-true，没有中文-false
 	 */
@@ -259,17 +562,23 @@ public class StringUtil {
 	}
 
 	/**
-	 * 验证是否包含空格
-	 * 
-	 * @param str
-	 * @return 是否包含空格
+	 * 此方法用于检查密码或用户名是否合法，用户名密码只能使用英文字母、数字以及-和_，并且首字符必须为字母或数字 密码首字符必须为字母或数字
+	 *
+	 * @param inputStr
+	 *            输入
+	 * @return boolean
 	 */
-	public static boolean containBlank(String str) {
-		if (str.length() > str.replace(" ", "").length()) {
-			return true;
-		} else {
-			return false;
+	public static boolean checkUserNamePassword(String inputStr) {
+		for (int nIndex = 0; nIndex < inputStr.length(); nIndex++) {
+			char cCheck = inputStr.charAt(nIndex);
+			if (nIndex == 0 && (cCheck == '-' || cCheck == '_')) {
+				return false;
+			}
+			if (!(isNumeric(cCheck) || isAlpha(cCheck) || cCheck == '-' || cCheck == '_')) {
+				return false;
+			}
 		}
+		return true;
 	}
 
 	/**
@@ -288,6 +597,62 @@ public class StringUtil {
 	}
 
 	/**
+	 * 是否是人名
+	 *
+	 * @param x
+	 * @return
+	 */
+	public static boolean isPrime(int x) {
+		if (x <= 7) {
+			if (x == 2 || x == 3 || x == 5 || x == 7)
+				return true;
+		}
+		int c = 7;
+		if (x % 2 == 0)
+			return false;
+		if (x % 3 == 0)
+			return false;
+		if (x % 5 == 0)
+			return false;
+		int end = (int) Math.sqrt(x);
+		while (c <= end) {
+			if (x % c == 0) {
+				return false;
+			}
+			c += 4;
+			if (x % c == 0) {
+				return false;
+			}
+			c += 2;
+			if (x % c == 0) {
+				return false;
+			}
+			c += 4;
+			if (x % c == 0) {
+				return false;
+			}
+			c += 2;
+			if (x % c == 0) {
+				return false;
+			}
+			c += 4;
+			if (x % c == 0) {
+				return false;
+			}
+			c += 6;
+			if (x % c == 0) {
+				return false;
+			}
+			c += 2;
+			if (x % c == 0) {
+				return false;
+			}
+			c += 6;
+		}
+		return true;
+	}
+
+	/**
 	 * 功能：判断字符串是否为日期格式
 	 * 
 	 * @param strDate
@@ -303,7 +668,6 @@ public class StringUtil {
 		} else {
 			return false;
 		}
-
 	}
 
 	/**
@@ -373,145 +737,20 @@ public class StringUtil {
 	}
 
 	/**
-	 * 是否为空
-	 * 
-	 * @param str
-	 * @return
-	 */
-	public static boolean isBlank(String str) {
-		return str == null || str.trim().length() == 0;
-	}
-
-	/**
-	 * 检验字符串是否未空, 如果是, 则返回给定的出错信息.
-	 * 
-	 * @param input
-	 *            输入的字符串
-	 * @param errorMsg
-	 *            出错信息
-	 * @return 空串返回出错信息
-	 */
-	public static String isBlank(String input, String errorMsg) {
-		if (isBlank(input)) {
-			return errorMsg;
-		} else {
-			return "";
-		}
-	}
-
-	/**
-	 * 判断字符串是否为空
-	 * 
-	 * @param str
-	 *            null、“ ”、“null”都返回true
-	 * @return
-	 */
-	public static boolean isEmpty(String str) {
-		return (null == str || isBlank(str.trim()) || "null".equals(str.trim()
-				.toLowerCase())) ? true : false;
-	}
-
-	/**
-	 * 格式化字符串 如果为空，返回“”
-	 * 
-	 * @param str
-	 * @return
-	 */
-	public static String formatString(String str) {
-		if (isEmpty(str)) {
-			return "";
-		} else {
-			return str;
-		}
-	}
-	
-	  /**
-     * 判断两个字符串是否相等 如果都为null则判断为相等,一个为null另一个not null则判断不相等 否则如果s1=s2则相等
-     *
-     * @param s1
-     * @param s2
-     * @return
-     */
-    public static boolean equals(String s1, String s2) {
-        if (StringUtil.isEmpty(s1) && StringUtil.isEmpty(s2)) {
-            return true;
-        } else if (!StringUtil.isEmpty(s1) && !StringUtil.isEmpty(s2)) {
-            return s1.equals(s2);
-        }
-        return false;
-    }
-
-	/**
-	 * 是否是人名
-	 * 
-	 * @param x
-	 * @return
-	 */
-	public static boolean isPrime(int x) {
-		if (x <= 7) {
-			if (x == 2 || x == 3 || x == 5 || x == 7)
-				return true;
-		}
-		int c = 7;
-		if (x % 2 == 0)
-			return false;
-		if (x % 3 == 0)
-			return false;
-		if (x % 5 == 0)
-			return false;
-		int end = (int) Math.sqrt(x);
-		while (c <= end) {
-			if (x % c == 0) {
-				return false;
-			}
-			c += 4;
-			if (x % c == 0) {
-				return false;
-			}
-			c += 2;
-			if (x % c == 0) {
-				return false;
-			}
-			c += 4;
-			if (x % c == 0) {
-				return false;
-			}
-			c += 2;
-			if (x % c == 0) {
-				return false;
-			}
-			c += 4;
-			if (x % c == 0) {
-				return false;
-			}
-			c += 6;
-			if (x % c == 0) {
-				return false;
-			}
-			c += 2;
-			if (x % c == 0) {
-				return false;
-			}
-			c += 6;
-		}
-		return true;
-	}
-
-	/**
 	 * 数字金额大写转换，思想先写个完整的然后将如零拾替换成零 要用到正则表达式
 	 */
 	public static String moneyUppercase(double n) {
 		String fraction[] = { "角", "分" };
 		String digit[] = { "零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖" };
-		String unit[][] = { { "元", "万", "亿" }, { "", "拾", "佰", "仟" } };
+		String unit[][] = { { "元", "万", "亿" }, { EMPTY, "拾", "佰", "仟" } };
 
-		String head = n < 0 ? "负" : "";
+		String head = n < 0 ? "负" : EMPTY;
 		n = Math.abs(n);
 
-		String s = "";
+		String s = EMPTY;
 		for (int i = 0; i < fraction.length; i++) {
 			s += (digit[(int) (Math.floor(n * 10 * Math.pow(10, i)) % 10)] + fraction[i])
-					.replaceAll("(零.)+", "");
+					.replaceAll("(零.)+", EMPTY);
 		}
 		if (s.length() < 1) {
 			s = "整";
@@ -519,16 +758,16 @@ public class StringUtil {
 		int integerPart = (int) Math.floor(n);
 
 		for (int i = 0; i < unit[0].length && integerPart > 0; i++) {
-			String p = "";
+			String p = EMPTY;
 			for (int j = 0; j < unit[1].length && n > 0; j++) {
 				p = digit[integerPart % 10] + unit[1][j] + p;
 				integerPart = integerPart / 10;
 			}
-			s = p.replaceAll("(零.)*零$", "").replaceAll("^$", "零") + unit[0][i]
+			s = p.replaceAll("(零.)*零$", EMPTY).replaceAll("^$", "零") + unit[0][i]
 					+ s;
 		}
 		return head
-				+ s.replaceAll("(零.)*零元", "元").replaceFirst("(零.)+", "")
+				+ s.replaceAll("(零.)*零元", "元").replaceFirst("(零.)+", EMPTY)
 						.replaceAll("(零.)+", "零").replaceAll("^整$", "零元整");
 	}
 
@@ -541,13 +780,13 @@ public class StringUtil {
 	@SuppressWarnings("unused")
 	private static String removeSameString(String str) {
 		Set<String> mLinkedSet = new LinkedHashSet<String>();// set集合的特征：其子集不可以重复
-		String[] strArray = str.split(" ");// 根据空格(正则表达式)分割字符串
+		String[] strArray = str.split(SPACE);// 根据空格(正则表达式)分割字符串
 		StringBuffer sb = new StringBuffer();
 
 		for (int i = 0; i < strArray.length; i++) {
 			if (!mLinkedSet.contains(strArray[i])) {
 				mLinkedSet.add(strArray[i]);
-				sb.append(strArray[i] + " ");
+				sb.append(strArray[i] + SPACE);
 			}
 		}
 		System.out.println(mLinkedSet);
@@ -642,7 +881,7 @@ public class StringUtil {
 	 */  
 	public static String subStr(String str, int start, int end) throws RuntimeException{  
 	    if(str==null){  
-	        throw new NullPointerException("");  
+	        throw new NullPointerException(EMPTY);
 	    }  
 	    int len = str.length();  
 	    int s = 0;//记录起始索引  
@@ -672,20 +911,61 @@ public class StringUtil {
 	    return str.substring(s, e);  
 	}  
 	
-	/**
-	 * 截取指定长度的字符串,超出的字符用symbol代替 
-	 * 
-	 * @param str 字符串
-	 * @param length 截取长度 以英文字符为单位，一个汉字算两个
-	 * @param symbol 超出代替的字符
-	 * @return
-	 */
+	 /**
+     * 截取字符串　超出的字符用symbol代替 　　
+     *
+     * @param length 字符串长度　中文和英文都是一个单位长度
+     * @param str
+     * @param symbol
+     * @return
+     */
 	public static String getLimitLengthString(String str, int length, String symbol) {
 		if (str == null) {
 			return null;
 		}
 		if (length <= 0) {
-			return "";
+			return EMPTY;
+		}
+		StringBuffer buff = new StringBuffer();
+
+		int index = 0;
+		char c;
+		length -= symbol.length();
+		while (length > 0) {
+			c = str.charAt(index);
+			length--;
+			buff.append(c);
+			index++;
+		}
+		buff.append(symbol);
+		return buff.toString();
+    }
+ 
+	 /**
+     * 截取字符串　超出的字符用symbol代替 　　
+     *
+     * @param length 字符串长度　中文和英文都是一个单位长度
+     * @param str
+     * @return
+     */
+    public static String getLimitLengthString(String str, int length) {
+        return getLimitLengthString(str, length, "...");
+    }
+
+	/**
+	 * 截取指定长度的字符串,超出的字符用symbol代替
+	 *
+	 * @param str 字符串
+	 * @param length 截取长度 以英文字符为单位，一个汉字算两个
+	 * @param symbol 超出代替的字符
+	 * @return
+	 */
+	public static String getLimitLengthStringZh(String str, int length, String symbol) {
+		if (str == null) {
+			return null;
+		}
+		if (length <= 0) {
+			return EMPTY;
 		}
 		try {
 			if (str.getBytes("GBK").length <= length) {
@@ -712,61 +992,20 @@ public class StringUtil {
 		buff.append(symbol);
 		return buff.toString();
 	}
-	
+
 	/**
-	 * 截取指定长度的字符串,超出的字符用...代替 
-	 * 
+	 * 截取指定长度的字符串,超出的字符用...代替
+	 *
 	 * @param str 字符串
 	 * @param length 截取长度 以英文字符为单位，一个汉字算两个
 	 * @return
 	 */
-	public static String getLimitLengthString(String str, int length) {
-		return getLimitLengthString(str, length,"...");
+	public static String getLimitLengthStringZh(String str, int length) {
+		return getLimitLengthStringZh(str, length,"...");
 	}
 	
-	 /**
-     * 截取字符串　超出的字符用symbol代替 　　
-     *
-     * @param length 字符串长度　中文和英文都是一个单位长度
-     * @param str
-     * @param symbol
-     * @return
-     */
-	public static String getLimitLengthString2(String str, int length, String symbol) {
-		if (str == null) {
-			return null;
-		}
-		if (length <= 0) {
-			return "";
-		}
-		StringBuffer buff = new StringBuffer();
-
-		int index = 0;
-		char c;
-		length -= symbol.length();
-		while (length > 0) {
-			c = str.charAt(index);
-			length--;
-			buff.append(c);
-			index++;
-		}
-		buff.append(symbol);
-		return buff.toString();
-    }
- 
-	 /**
-     * 截取字符串　超出的字符用symbol代替 　　
-     *
-     * @param length 字符串长度　中文和英文都是一个单位长度
-     * @param str
-     * @return
-     */
-    public static String getLimitLengthString2(String str, int length) {
-        return getLimitLengthString2(str, length, "...");
-    }
-	
 	/**
-     * 取得字符串的实际长度（考虑了汉字的情况）
+     * 取得字符串的实际长度,一个汉字算两个长度
      *
      * @param SrcStr
      *            源字符串
@@ -836,7 +1075,7 @@ public class StringUtil {
             if (index > lastIndex) {
                 r.add(src.substring(lastIndex + 1, index));
             } else {
-                r.add("");
+                r.add(EMPTY);
             }
  
             lastIndex = index;
@@ -856,12 +1095,12 @@ public class StringUtil {
      */
     public static String linkedHashMapToString(LinkedHashMap<String, String> map) {
         if (map != null && map.size() > 0) {
-            String result = "";
+            String result = EMPTY;
             Iterator<String> it = map.keySet().iterator();
             while (it.hasNext()) {
                 String name = it.next();
                 String value = map.get(name);
-                result += (result.equals("")) ? "" : "&";
+                result += (result.equals(EMPTY)) ? EMPTY : "&";
                 result += String.format("%s=%s", name, value);
             }
             return result;
@@ -877,7 +1116,7 @@ public class StringUtil {
      * @return
      */
     public static LinkedHashMap<String, String> toLinkedHashMap(String str) {
-        if (str != null && !str.equals("") && str.indexOf("=") > 0) {
+        if (str != null && !str.equals(EMPTY) && str.indexOf("=") > 0) {
             LinkedHashMap<String,String> result = new LinkedHashMap<String,String>();
  
             String name = null;
@@ -887,10 +1126,10 @@ public class StringUtil {
                 char c = str.charAt(i);
                 switch (c) {
                 case 61: // =
-                    value = "";
+                    value = EMPTY;
                     break;
                 case 38: // &
-                    if (name != null && value != null && !name.equals("")) {
+                    if (name != null && value != null && !name.equals(EMPTY)) {
                         result.put(name, value);
                     }
                     name = null;
@@ -898,16 +1137,16 @@ public class StringUtil {
                     break;
                 default:
                     if (value != null) {
-                        value = (value != null) ? (value + c) : "" + c;
+                        value = (value != null) ? (value + c) : EMPTY + c;
                     } else {
-                        name = (name != null) ? (name + c) : "" + c;
+                        name = (name != null) ? (name + c) : EMPTY + c;
                     }
                 }
                 i++;
  
             }
  
-            if (name != null && value != null && !name.equals("")) {
+            if (name != null && value != null && !name.equals(EMPTY)) {
                 result.put(name, value);
             }
  
@@ -927,7 +1166,7 @@ public class StringUtil {
      * @return 一般
      */
     public static String getCaption(String captions, int index) {
-        if (index > 0 && captions != null && !captions.equals("")) {
+        if (index > 0 && captions != null && !captions.equals(EMPTY)) {
             String[] ss = captions.split(",");
             if (ss != null && ss.length > 0 && index < ss.length) {
                 return ss[index];
@@ -954,7 +1193,7 @@ public class StringUtil {
         } else if (num instanceof Double && (Double) num > 0) {
             return Double.toString((Double) num);
         } else {
-            return "";
+            return EMPTY;
         }
     }
  
@@ -976,7 +1215,7 @@ public class StringUtil {
                 // 缺省样式 0 不输出 ,如果没有输出小数位则不输出.0
                 if (num == 0) {
                     // 不输出0
-                    return "";
+                    return EMPTY;
                 } else if ((num * 10 % 10) == 0) {
                     // 没有小数
                     return Integer.toString((int) num.intValue());
@@ -1036,34 +1275,12 @@ public class StringUtil {
 				b = oldStr.length();
 				findStartPos = a + b;
 				StringBuffer bbuf = new StringBuffer(source);
-				source = bbuf.replace(a, a + b, newStr) + "";
+				source = bbuf.replace(a, a + b, newStr) + EMPTY;
 				// 新的查找开始点位于替换后的字符串的结尾
 				findStartPos = findStartPos + newStr.length() - b;
 			}
 		}
 		return source;
-	}
-
-	/**
-	 * 清除字符串结尾的空格.
-	 * 
-	 * @param input
-	 *            String 输入的字符串
-	 * @return 转换结果
-	 */
-	public static String trimTailSpaces(String input) {
-		if (isBlank(input)) {
-			return "";
-		}
-
-		String trimedString = input.trim();
-
-		if (trimedString.length() == input.length()) {
-			return input;
-		}
-
-		return input.substring(0,
-				input.indexOf(trimedString) + trimedString.length());
 	}
 
 	/**
@@ -1081,8 +1298,8 @@ public class StringUtil {
 		int beginPos;
 		int i;
 		String token = "@";
-		String preHalf = "";
-		String sufHalf = "";
+		String preHalf = EMPTY;
+		String sufHalf = EMPTY;
 
 		beginPos = content.indexOf(token);
 		if (beginPos > -1) {
@@ -1124,7 +1341,7 @@ public class StringUtil {
 	 */
 	public static String encoding(String src) {
 		if (src == null)
-			return "";
+			return EMPTY;
 		StringBuilder result = new StringBuilder();
 		if (src != null) {
 			src = src.trim();
@@ -1174,7 +1391,7 @@ public class StringUtil {
 	 */
 	public static String decoding(String src) {
 		if (src == null)
-			return "";
+			return EMPTY;
 		String result = src;
 		result = result.replace("'", "'").replace("'", "\'");
 		result = result.replace("<", "<").replace(">", ">");
@@ -1189,7 +1406,7 @@ public class StringUtil {
 	 */
 	public static String encode(String value) {
 		if (isBlank(value)) {
-			return "";
+			return EMPTY;
 		}
 
 		try {
@@ -1210,7 +1427,7 @@ public class StringUtil {
 	 */
 	public static String decode(String value) {
 		if (isBlank(value)) {
-			return "";
+			return EMPTY;
 		}
 
 		try {
@@ -1369,7 +1586,7 @@ public class StringUtil {
 	 */
 	public static String formatDateToDHMSString(Date date) {
 		if (date == null) {
-			return "";
+			return EMPTY;
 		}
 
 		java.text.SimpleDateFormat dateformat = new java.text.SimpleDateFormat(
@@ -1386,7 +1603,7 @@ public class StringUtil {
 	 */
 	public static String formatDateToHMSString(Date date) {
 		if (date == null) {
-			return "";
+			return EMPTY;
 		}
 
 		java.text.SimpleDateFormat dateformat = new java.text.SimpleDateFormat(
@@ -1422,7 +1639,7 @@ public class StringUtil {
 	 */
 	public static String formatDateToMysqlString(Date date) {
 		if (date == null) {
-			return "";
+			return EMPTY;
 		}
 
 		java.text.SimpleDateFormat dateformat = new java.text.SimpleDateFormat(
@@ -1458,7 +1675,7 @@ public class StringUtil {
 	 */
 	public static String formatDateToMMddHHmm(Date date) {
 		if (date == null) {
-			return "";
+			return EMPTY;
 		}
 
 		java.text.SimpleDateFormat dateformat = new java.text.SimpleDateFormat(
@@ -1474,7 +1691,7 @@ public class StringUtil {
 	 */
 	public static String formatDateToyyMMddHHmm(Date date) {
 		if (date == null) {
-			return "";
+			return EMPTY;
 		}
 
 		java.text.SimpleDateFormat dateformat = new java.text.SimpleDateFormat(
@@ -1505,7 +1722,7 @@ public class StringUtil {
 	 * @return the result
 	 */
 	public static String clearNull(String input) {
-		return isBlank(input) ? "" : input;
+		return isBlank(input) ? EMPTY : input;
 	}
 
 	/**
@@ -1520,7 +1737,7 @@ public class StringUtil {
 	 */
 	public static String limitStringLength(String input, int maxLength) {
 		if (isBlank(input))
-			return "";
+			return EMPTY;
 
 		if (input.length() <= maxLength) {
 			return input;
@@ -1565,14 +1782,14 @@ public class StringUtil {
 	 * @return
 	 */
 	public static String htmlshow(String str) {
-		final String _BR = "";
+		final String _BR = EMPTY;
 
 		if (str == null) {
 			return null;
 		}
 
 		str = replace(str, "<", "<", false);
-		str = replace(str, " ", " ", false);
+		str = replace(str, SPACE, SPACE, false);
 		str = replace(str, "\r\n", _BR, false);
 		str = replace(str, "\n", _BR, false);
 		str = replace(str, "\t", "    ", false);
@@ -1623,7 +1840,7 @@ public class StringUtil {
 	 */
 	public static String replaceHtmlCode(String content) {
 		if (isBlank(content)) {
-			return "";
+			return EMPTY;
 		}
 		// 需要滤除的脚本事件关键字
 		String[] eventKeywords = { "onmouseover", "onmouseout", "onmousedown",
@@ -1651,7 +1868,7 @@ public class StringUtil {
 	 */
 	public static String replaceHtmlToText(String input) {
 		if (isBlank(input)) {
-			return "";
+			return EMPTY;
 		}
 		return setBr(setTag(input));
 	}
@@ -1712,9 +1929,9 @@ public class StringUtil {
 		StringBuffer stringbuffer = new StringBuffer(j + 500);
 		for (int i = 0; i < j; i++) {
 			if (s.charAt(i) == ' ') {
-				stringbuffer.append(" ");
+				stringbuffer.append(SPACE);
 			} else {
-				stringbuffer.append(s.charAt(i) + "");
+				stringbuffer.append(s.charAt(i) + EMPTY);
 			}
 		}
 		return stringbuffer.toString();
@@ -1760,7 +1977,7 @@ public class StringUtil {
 	 */
 	public static String changeEncoding(String input, String sourceEncoding,
 			String targetEncoding) {
-		if (input == null || input.equals("")) {
+		if (input == null || input.equals(EMPTY)) {
 			return input;
 		}
 
@@ -1788,7 +2005,7 @@ public class StringUtil {
 	 * @return 字符串的字节长度(不是 Unicode 长度)
 	 */
 	public static int getBytesLength(String input) {
-		if (input == null || input == "") {
+		if (input == null || input == EMPTY) {
 			return 0;
 		}
 
@@ -1845,7 +2062,7 @@ public class StringUtil {
 	 */
 	public static String textToHtml(String input) {
 		if (isBlank(input)) {
-			return "";
+			return EMPTY;
 		}
 
 		input = replace(input, "<", "<", true);

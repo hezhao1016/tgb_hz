@@ -1,13 +1,13 @@
 package com.hz.tgb.web;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Map;
+import com.hz.tgb.encryption.ByteUtil;
+import com.hz.tgb.encryption.base64.Base64;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
-import com.hz.tgb.encryption.aes.Base64;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 public class CookieUtil {
 	/**
@@ -102,23 +102,10 @@ public class CookieUtil {
 			byte[] valueByte = value.getBytes();
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			md.update(valueByte);
-			result = toHex(md.digest());
+			result = ByteUtil.bytesToHexString(md.digest());
 		} catch (NoSuchAlgorithmException e2){
 			e2.printStackTrace();
 		}
 		return result;
-	}
-	
-	//将传递进来的字节数组转换成十六进制的字符串形式并返回
-	private static String toHex(byte buf[]) {
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < buf.length; i++) {
-			String hex = Integer.toHexString(buf[i] & 0xFF);
-			if (hex.length() == 1) {
-				hex = '0' + hex;
-			}
-			sb.append(hex.toUpperCase());
-		}
-		return sb.toString();
 	}
 }

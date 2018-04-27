@@ -36,7 +36,7 @@ public class IDCardUtil {
      * */
 
     private IDCardUtil(){
-        // 私用构造主法.因为此类是工具类.
+        // 私有类构造方法
     }
 
     private static final Logger logger = LoggerFactory.getLogger(IDCardUtil.class);
@@ -499,20 +499,34 @@ public class IDCardUtil {
     /**
      * 根据身份编号获取年龄
      *
-     * @param idCard
-     *            身份编号
+     * @param idNo 身份编号
+     *
      * @return 年龄
      */
-    public static int getAgeByIdCard(String idCard) {
-        int iAge = 0;
-        if (idCard.length() == CHINA_ID_MIN_LENGTH) {
-            idCard = conver15CardTo18(idCard);
+    public static int getAgeByIdCard(String idNo) {
+        try {
+            Calendar currentDate = Calendar.getInstance();
+
+            int bornYear = Integer.valueOf(idNo.substring(6, 10));
+            int bornMonth = Integer.valueOf(idNo.substring(10, 12));
+            int bornDay = Integer.valueOf(idNo.substring(12, 14));
+
+            int currentYear = currentDate.get(Calendar.YEAR);
+            int currentMonth = currentDate.get(Calendar.MONTH) + 1;
+            int currentDay = currentDate.get(Calendar.DATE);
+
+            int age = currentYear - bornYear;
+            if (bornMonth  > currentMonth ||
+                    (bornMonth == currentMonth && bornDay > currentDay)) {
+                age--;
+            }
+            return age;
+        } catch (Throwable e) {
+            String errMsg = String.format("年龄计算失败, idNo:%s", idNo);
+            logger.error(errMsg);
+            throw new RuntimeException(errMsg, e);
         }
-        String year = idCard.substring(6, 10);
-        Calendar cal = Calendar.getInstance();
-        int iCurrYear = cal.get(Calendar.YEAR);
-        iAge = iCurrYear - Integer.valueOf(year);
-        return iAge;
+
     }
 
     /**
@@ -539,7 +553,7 @@ public class IDCardUtil {
      *            身份编号
      * @return 生日(yyyy-MM-dd)
      */
-    public static String getBirthByIdCard2(String idCard) {
+    public static String getBirthFormatByIdCard(String idCard) {
         Integer len = idCard.length();
         if (len < CHINA_ID_MIN_LENGTH) {
             return null;
@@ -783,15 +797,17 @@ public class IDCardUtil {
 
 
     public static void main(String[] args) {
-        String idCard = "362330199610167916";
+        String idCard = "xxxxxxxxxxxxxxxxxx";
+        System.out.println(IDCardUtil.validateIdCard(idCard));
         System.out.println(IDCardUtil.getGenderByIdCard(idCard));
-        System.out.println(IDCardUtil.getBirthByIdCard2(idCard));
+        System.out.println(IDCardUtil.getAgeByIdCard(idCard));
+        System.out.println(IDCardUtil.getBirthByIdCard(idCard));
+        System.out.println(IDCardUtil.getBirthFormatByIdCard(idCard));
         System.out.println(IDCardUtil.getMonthByIdCard(idCard));
         System.out.println(IDCardUtil.getDateByIdCard(idCard));
         System.out.println(IDCardUtil.getConstellationById(idCard));
         System.out.println(IDCardUtil.getZodiacById(idCard));
         System.out.println(IDCardUtil.getChineseEraById(idCard));
         System.out.println(IDCardUtil.getProvinceByIdCard(idCard));
-        System.out.println(IDCardUtil.validateIdCard(idCard));
     }
 }

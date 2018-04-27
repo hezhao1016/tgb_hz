@@ -13,50 +13,54 @@ import java.util.UUID;
  */
 public class RandomUtil {
 
+	private final static String[] DIGITS = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
+	private final static String[] HEXSTR_DIGITS = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
+
+	private final static String[] ALLSTR_DIGITS = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
+			"t", "u", "v", "w", "x", "y", "z" };
+
 	private RandomUtil() {
-		// 私用构造主法.因为此类是工具类.
+		// 私有类构造方法
 	}
 
-	/**
-	 * 获取指定位数随机数
-	 * 
-	 * @author hezhao
-	 * @param length
+	/***
+	 * 获取指定长度数字字符串
 	 *
-	 * @return string
-	 */
-	public static String getRandomNumStr(int length) {
-		Random random = new Random();
-		String result = "";
-		for (int i = 0; i < length; i++) {
-			result += random.nextInt(10);
-		}
-		return result;
-	}
-
-	/**
-	 * 获取length长度的随机数字字符串。
-	 * 
-	 * @param length
+	 * @param len 指定长度
 	 * @return
 	 */
-	public static String getRandomCode(final int length) {
-		final char[] numbers = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
-				'9' };
-		final int numbersLength = numbers.length;
-		final StringBuffer authCode = new StringBuffer();
-		final Random random = new Random();
+	public static String getRandomNumStr(int len) {
+		StringBuffer sb = new StringBuffer();
+		Random random = new Random();
+		for (int i = 0; i < len; i++) {
+			String temp = DIGITS[random.nextInt(DIGITS.length)];
 
-		for (int i = 0; i < length; i++) {
-			authCode.append(numbers[random.nextInt(numbersLength)]);
+			sb.append(temp);
 		}
+		return sb.toString();
+	}
 
-		return authCode.toString();
+	/***
+	 * 获取指定长度随机字符串(数字+字母)
+	 *
+	 * @param len 指定长度
+	 * @return
+	 */
+	public static String getRandomNumWordStr(int len) {
+		StringBuffer sb = new StringBuffer();
+		Random random = new Random();
+		for (int i = 0; i < len; i++) {
+			String temp = ALLSTR_DIGITS[random.nextInt(ALLSTR_DIGITS.length)];
+
+			sb.append(temp);
+		}
+		return sb.toString();
 	}
 
 	/**
 	 * 返回指定长度的字母加数字随机数
-	 * 
+	 *
 	 * @param length
 	 * @return String
 	 */
@@ -80,33 +84,42 @@ public class RandomUtil {
 		return val;
 	}
 
-	private static final String[] chars = new String[] { "0", "1", "2", "3",
-			"4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g",
-			"h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
-			"u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G",
-			"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-			"U", "V", "W", "X", "Y", "Z", "~", "!", "@", "#", "$", "%", "^",
-			"&", "*", "(", ")", "-", "=", "_", "+", "[", "]", "{", "}", "\\",
-			"|", ";", ":", "\"", "<", ">", "/", "?" };
-
-	/**
-	 * 返回指定长度的字符，字符取决于本类中的chars数组元素
-	 * 
-	 * @param length
+	/***
+	 * 获取指定长度16进制字符串
+	 *
+	 * @param len 指定长度
 	 * @return
 	 */
-	public static String getRandomAnyChars(int length) {
+	public static String getRandomHexStr(int len) {
+		StringBuffer sb = new StringBuffer();
 		Random random = new Random();
-		String rand = "";
-		for (int i = 0; i < length; i++) {
-			rand += chars[random.nextInt(chars.length)];
+		for (int i = 0; i < len; i++) {
+			String temp = HEXSTR_DIGITS[random.nextInt(HEXSTR_DIGITS.length)];
+
+			sb.append(temp);
 		}
-		return rand;
+		return sb.toString();
+	}
+
+	/***
+	 * 根据UUID作为引子的随机数字符串
+	 *
+	 * @param len
+	 * @return
+	 */
+	public static String getRandomUuidStr(int len) {
+		StringBuffer sb = new StringBuffer();
+		Random random = new Random(UUID.randomUUID().hashCode());
+		for (int i = 0; i < len; i++) {
+			sb.append(random.nextInt(9));
+		}
+
+		return sb.toString();
 	}
 
 	/**
 	 * 生产UUID
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getUuid() {
@@ -116,7 +129,7 @@ public class RandomUtil {
 
 	/**
 	 * 生产不带横线的UUID
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getUuidNoLine() {
@@ -124,11 +137,13 @@ public class RandomUtil {
 		return uuid;
 	}
 
+
 	public static void main(String[] args) {
 		System.out.println(getRandomNumStr(6));
-		System.out.println(getRandomCode(6));
+		System.out.println(getRandomNumWordStr(6));
 		System.out.println(getRandomChars(6));
-		System.out.println(getRandomAnyChars(6));
+		System.out.println(getRandomHexStr(6));
+		System.out.println(getRandomUuidStr(6));
 		System.out.println(getUuid());
 		System.out.println(getUuidNoLine());
 	}

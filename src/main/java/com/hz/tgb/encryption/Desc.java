@@ -52,13 +52,11 @@ public class Desc {
         return bytea;  
     }  
 
-	
-	
 	/**
 	 * 解密函数
 	 * 
 	 * @param src
-	 *            密文的字节数组
+	 *            密文
 	 * @return
 	 * @throws Exception
 	 */
@@ -87,8 +85,8 @@ public class Desc {
 	/**
 	 * 加密方法
 	 * 
-	 * @param src
-	 *            源数据的字节数组
+	 * @param msg
+	 *            源数据
 	 * @return
 	 */
 	public static String encryptMode(String msg) throws Exception {

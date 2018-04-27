@@ -77,7 +77,7 @@ public class ObjectCopyUtils {
 	 * 将SQL查询出来的map对象转成实体对象
 	 * 
 	 * @param map
-	 * @param cs
+	 * @param clazz
 	 * @return
 	 * @throws Exception
 	 */
@@ -214,16 +214,20 @@ public class ObjectCopyUtils {
 	public static <T, K> T merge(K objSource,T objDes,Class<K> clazzSrc,Class<T> clazzDes,boolean overwrite) throws InstantiationException, IllegalAccessException{
 		return merge(objSource,  objDes, clazzSrc,clazzDes, overwrite,null);
 	}
-	
+
 	/**
-	 * @param ele
-	 * @param o
-	 * @param clsSrc
-	 * @param clsDesc
+	 *
+	 * @param objSource
+	 * @param objDes
+	 * @param clazzSrc
+	 * @param clazzDes
 	 * @param overwrite
 	 * @param ignoreSet
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
+	 * @param <T>
+	 * @param <K>
+	 * @return
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
 	 */
 	@SuppressWarnings("unchecked")
 	private static <T, K> T mergeInner(Object objSource, Object objDes, Class<K> clazzSrc, Class<T> clazzDes, boolean overwrite, Set<String> ignoreSet) throws InstantiationException, IllegalAccessException {
@@ -239,7 +243,7 @@ public class ObjectCopyUtils {
 	 * @param clazzSrc 源对象所属class
 	 * @param clazzDes 目标class
 	 * @param overwrite 是否覆盖已存在的属性值
-	 * @param IgnoreMap 忽略的属性值
+	 * @param ignoreSet 忽略的属性值
 	 * @return
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException

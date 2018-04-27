@@ -37,7 +37,7 @@ public class OrderGenerater {
     private static final int TIMEOUTSECODES = 3;
     
     private OrderGenerater() {
-		// 私用构造主法.因为此类是工具类.
+		// 私有类构造方法
 	}
 
     /**

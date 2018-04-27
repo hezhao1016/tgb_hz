@@ -56,4 +56,9 @@ public class BASE64EncoderUtil {
 			return false;
 	}
 
+	public static void main(String[] args) {
+		System.out.println(BASE64EncoderUtil.md5("admin"));
+		System.out.println(BASE64EncoderUtil.check("admin","ISMvKXpXpadDiUoOSoAfww=="));
+	}
+
 }

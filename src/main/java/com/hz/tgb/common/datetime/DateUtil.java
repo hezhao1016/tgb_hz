@@ -1,10 +1,12 @@
 package com.hz.tgb.common.datetime;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.hz.tgb.common.StringUtil;
 import org.slf4j.Logger;
@@ -112,7 +114,7 @@ public class DateUtil {
 			DAFAULT_TIME_FORMAT);
 
 	private DateUtil() {
-		// 私用构造主法.因为此类是工具类.
+		// 私有类构造方法
 	}
 
 	/**
@@ -151,7 +153,7 @@ public class DateUtil {
 	 * @param birthday
 	 * @return int
 	 */
-	public static int countAge(Date birthday) {
+	public static int getAgeByBirthDay(Date birthday) {
 		Calendar cal = Calendar.getInstance();
 
 		if (cal.before(birthday)) {
@@ -204,6 +206,52 @@ public class DateUtil {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * 日期/时间 计算
+	 *
+	 * @param time 待计算时间
+	 * @param addpart 可选 Y M D H F S
+	 * @param num 增加或者减少量(整数)
+	 * @return
+	 * @throws Exception
+	 */
+	public static String calculateTime(String time, String addpart, int num) throws ParseException {
+		DateFormat yyyyMMddHHmmssDateFormat = new SimpleDateFormat(DAFAULT_DATETIME_FORMAT);
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(yyyyMMddHHmmssDateFormat.parse(time));
+		if (addpart.equalsIgnoreCase("Y")) {
+			cal.add(Calendar.YEAR, num);
+		} else if (addpart.equalsIgnoreCase("M")) {
+			cal.add(Calendar.MONTH, num);
+		} else if (addpart.equalsIgnoreCase("D")) {
+			cal.add(Calendar.DATE, num);
+		} else if (addpart.equalsIgnoreCase("H")) {
+			cal.add(Calendar.HOUR, num);
+		} else if (addpart.equalsIgnoreCase("F")) {
+			cal.add(Calendar.MINUTE, num);
+		} else if (addpart.equalsIgnoreCase("S")) {
+			cal.add(Calendar.SECOND, num);
+		}
+		return yyyyMMddHHmmssDateFormat.format(cal.getTime());
+	}
+
+	/**
+	 * 返回两个时间之间的差(毫秒数)
+	 *
+	 * @param time1
+	 * @param time2
+	 * @param formatStr
+	 * @return
+	 * @throws ParseException
+	 */
+	public static long dateDiffer(String time1, String time2, String formatStr) throws ParseException {
+		SimpleDateFormat sp = new SimpleDateFormat(formatStr);
+		Date date1 = sp.parse(time1);
+		Date date2 = sp.parse(time2);
+		long differ = Math.abs(date1.getTime() - date2.getTime());
+		return differ;
 	}
 
 	/**
@@ -1086,6 +1134,48 @@ public class DateUtil {
 	}
 
 	/**
+	 * 获取上个月
+	 * @return
+	 */
+	public static String getLastMonth(){
+		Calendar c = Calendar.getInstance();
+		c.add(Calendar.MONTH, -1);
+		SimpleDateFormat format =  new SimpleDateFormat("yyyyMM");
+		String time = format.format(c.getTime());
+		return time;
+	}
+
+	/**
+	 * 返回一天的开始时间
+	 *
+	 * @param day
+	 * @return
+	 */
+	public static Date getDayFrom(Date day) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(day);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		return cal.getTime();
+	}
+
+	/**
+	 * 返回一天的结束时间
+	 *
+	 * @param day
+	 * @return
+	 */
+	public static Date getDayEnd(Date day) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(day);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		return cal.getTime();
+	}
+
+	/**
 	 * 根据Calendar获取整型年份
 	 * 
 	 * @param c
@@ -1717,15 +1807,4 @@ public class DateUtil {
 		return week;
 	}
 
-	/**
-	 * 获取上个月
-	 * @return
-	 */
-	public static String getLastMonth(){
-		Calendar c = Calendar.getInstance();
-		c.add(Calendar.MONTH, -1);
-		SimpleDateFormat format =  new SimpleDateFormat("yyyyMM");
-		String time = format.format(c.getTime());
-		return time;
-	}
 }

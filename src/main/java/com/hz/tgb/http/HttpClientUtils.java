@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/**
+/** HTTP请求工具类 . 中车
  * @author hezhao
  * 
  */

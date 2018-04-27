@@ -1,5 +1,7 @@
 package oppo;
 
+import com.hz.tgb.common.StringUtil;
+import com.hz.tgb.common.number.AmountUtil;
 import com.hz.tgb.common.number.NumberToCN;
 import com.hz.tgb.common.number.NumberUtil;
 
@@ -27,8 +29,8 @@ public class Test5 {
         System.out.println(num);
 
 
-        System.out.println(formatFloatNumber(new BigDecimal(NumberUtil.moneyFenToYuan(5194845613266.15+""))));
-        System.out.println(NumberUtil.moneyFenToYuan(5194845613266.15+""));
+        System.out.println(formatFloatNumber(new BigDecimal(AmountUtil.moneyFenToYuan(5194845613266.15+""))));
+        System.out.println(AmountUtil.moneyFenToYuan(5194845613266.15+""));
 
 
         String realIncomeYuan = "-0.1";
@@ -50,6 +52,8 @@ public class Test5 {
         amountL = total_realIncome;
 
         amount = Double.valueOf(changeF2YRoundFour(amountL.doubleValue()+""));
+
+        // 三种 金额 转大写
         amountChinese = NumberToCN.number2CNMontrayUnit(new BigDecimal(Double.valueOf(formatFloatNumber(amount))));
 
         if(amountChinese == null || "".equals(amountChinese)){
@@ -59,7 +63,11 @@ public class Test5 {
         System.out.println(formatFloatNumber(amount));
         System.out.println(amountChinese);
 
-        System.out.println(NumberUtil.changeY2F("0.45"));
+        System.out.println(StringUtil.moneyUppercase(new BigDecimal(Double.valueOf(formatFloatNumber(amount))).doubleValue()));
+
+        System.out.println(NumberUtil.toChineseUpper(new BigDecimal(Double.valueOf(formatFloatNumber(amount))).doubleValue() + ""));
+
+        System.out.println(AmountUtil.changeY2F("0.45"));
 
     }
 

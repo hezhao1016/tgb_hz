@@ -1,8 +1,8 @@
-package com.hz.tgb.doc.test;
+package tgb.doc;
 
-import com.hz.tgb.common.number.NumberUtil;
 import com.hz.tgb.common.StringUtil;
 import com.hz.tgb.common.datetime.DateUtil;
+import com.hz.tgb.common.number.AmountUtil;
 import com.hz.tgb.doc.ExportExcelByPoi;
 
 import java.io.FileOutputStream;
@@ -39,12 +39,12 @@ public class TestSettleSummary {
                 SettleSummaryExportDto value = new SettleSummaryExportDto();
 
                 String settleMonth = StringUtil.isBlank(agg.getSettleMonth()) ? "" : agg.getSettleMonth();
-                String price = agg.getPrice() == null ? "0" : NumberUtil.moneyFenToYuan(agg.getPrice().toString());
-                String refundTotal = agg.getRefundTotal() == null ? "0" : NumberUtil.moneyFenToYuan(agg.getRefundTotal().toString());
-                String clearAmount = agg.getClearAmount() == null ? "0" : NumberUtil.changeF2YRound(agg.getClearAmount().toString());
-                String notClear = agg.getNotClear() == null ? "0": NumberUtil.changeF2YRound(agg.getNotClear().toString());
-                String channelCost = agg.getChannelCost() == null ? "0": NumberUtil.changeF2YRound(agg.getChannelCost().toString());
-                String taxCost = agg.getTaxCost() == null ? "0" : NumberUtil.changeF2YRound(agg.getTaxCost().toString());
+                String price = agg.getPrice() == null ? "0" : AmountUtil.moneyFenToYuan(agg.getPrice().toString());
+                String refundTotal = agg.getRefundTotal() == null ? "0" : AmountUtil.moneyFenToYuan(agg.getRefundTotal().toString());
+                String clearAmount = agg.getClearAmount() == null ? "0" : AmountUtil.changeF2YRound(agg.getClearAmount().toString());
+                String notClear = agg.getNotClear() == null ? "0": AmountUtil.changeF2YRound(agg.getNotClear().toString());
+                String channelCost = agg.getChannelCost() == null ? "0": AmountUtil.changeF2YRound(agg.getChannelCost().toString());
+                String taxCost = agg.getTaxCost() == null ? "0" : AmountUtil.changeF2YRound(agg.getTaxCost().toString());
 
                 BigDecimal check_price = agg.getPrice() == null ? new BigDecimal(0) : new BigDecimal(agg.getPrice());
                 BigDecimal check_clearAmount = agg.getClearAmount() == null ? new BigDecimal(0) : agg.getClearAmount();
@@ -54,13 +54,13 @@ public class TestSettleSummary {
                 BigDecimal check_taxCost = agg.getTaxCost() == null ? new BigDecimal(0) : agg.getTaxCost();
                 BigDecimal check_realIncome = agg.getRealIncome() == null ? new BigDecimal(0) : agg.getRealIncome();
 
-                String salesVolume = NumberUtil.changeF2YRound((check_price .subtract( check_refundTotal ).subtract( check_clearAmount ).subtract( check_notClear).doubleValue())+"");
-                String dividedProportion = NumberUtil.changeF2YRound((check_price .subtract( check_refundTotal ).subtract( check_notClear).doubleValue()) + "");
-                String settleAmount = NumberUtil.changeF2YRound((check_price .subtract( check_refundTotal ).subtract( check_notClear ).subtract( check_channelCost ).subtract( check_taxCost).doubleValue()) + "");
-                String allIncome = NumberUtil.changeF2YRound((check_price .subtract( check_refundTotal ).subtract( check_clearAmount ).subtract( check_notClear ).subtract( check_realIncome).doubleValue()) + "");
-                String traleTotal = NumberUtil.changeF2YRound((check_price .subtract( check_refundTotal).doubleValue()) + "");
+                String salesVolume = AmountUtil.changeF2YRound((check_price .subtract( check_refundTotal ).subtract( check_clearAmount ).subtract( check_notClear).doubleValue())+"");
+                String dividedProportion = AmountUtil.changeF2YRound((check_price .subtract( check_refundTotal ).subtract( check_notClear).doubleValue()) + "");
+                String settleAmount = AmountUtil.changeF2YRound((check_price .subtract( check_refundTotal ).subtract( check_notClear ).subtract( check_channelCost ).subtract( check_taxCost).doubleValue()) + "");
+                String allIncome = AmountUtil.changeF2YRound((check_price .subtract( check_refundTotal ).subtract( check_clearAmount ).subtract( check_notClear ).subtract( check_realIncome).doubleValue()) + "");
+                String traleTotal = AmountUtil.changeF2YRound((check_price .subtract( check_refundTotal).doubleValue()) + "");
 
-                String allPlayMoney = agg.getRealIncome() == null ? "0" : NumberUtil.changeF2YRound((agg.getRealIncome().doubleValue()) + "");
+                String allPlayMoney = agg.getRealIncome() == null ? "0" : AmountUtil.changeF2YRound((agg.getRealIncome().doubleValue()) + "");
                 String statusName = changeStatus(agg.getStatus());
 
                 value.setSettleMonth(settleMonth);

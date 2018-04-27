@@ -1,4 +1,4 @@
-package com.hz.tgb.doc.test;
+package tgb.doc;
 
 import com.hz.tgb.doc.ExportExcelByPoi;
 
@@ -19,11 +19,11 @@ public class TestSettle {
 	public static void main(String[] args)  
     {  
         // 测试学生  
-        ExportExcelByPoi<SettleAggregateExportDto> ex = new ExportExcelByPoi<SettleAggregateExportDto>();  
-        
+        ExportExcelByPoi<SettleAggregateExportDto> ex = new ExportExcelByPoi<SettleAggregateExportDto>();
+
         String[] headers = { "时间", "开发者ID", "企业名称", "纳税人类型", "业务类型", "账号状态", "申请结算时间", "审核通过时间", "结算状态", "订单流水","不分成可币券流水", "合作方分成金额"};
-        List<SettleAggregateExportDto> dataset = new ArrayList<SettleAggregateExportDto>();  
-        
+        List<SettleAggregateExportDto> dataset = new ArrayList<SettleAggregateExportDto>();
+
         SettleAggregateExportDto dto = new SettleAggregateExportDto("201707", "124356", "哇哈哈", "一般纳税人", "直充", "正常", "2017-08-11 21:12:35",
         		"2018-1-1 21:12:35", "等待审计审核", new BigDecimal(3059532230.15),new BigDecimal(3059532230.15),  new BigDecimal(3059532230.15));
         SettleAggregateExportDto dto1 = new SettleAggregateExportDto("201707", "124356", "哇哈哈", "一般纳税人", "直充", "正常", "2017-08-11 21:12:35",

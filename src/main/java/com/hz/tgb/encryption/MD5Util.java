@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 public class MD5Util {
 	
 	private MD5Util(){
-		// 私用构造主法.因为此类是工具类.
+		// 私有类构造方法
 	}
 
 	/**
