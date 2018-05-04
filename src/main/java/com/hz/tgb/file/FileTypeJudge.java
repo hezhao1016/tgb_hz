@@ -1,6 +1,6 @@
 package com.hz.tgb.file;
 
-import com.hz.tgb.encryption.ByteUtil;
+import com.hz.tgb.common.ByteUtil;
 
 import java.io.IOException;
 import java.io.InputStream;

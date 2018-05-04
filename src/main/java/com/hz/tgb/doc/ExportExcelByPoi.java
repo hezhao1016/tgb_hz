@@ -27,8 +27,7 @@ import java.util.*;
  *            
  * http://blog.csdn.net/evangel_z/article/details/7332535
  */  
-public class ExportExcelByPoi<T>  
-{  
+public class ExportExcelByPoi<T> {
 	
 	//%%%%%%%%-------字段部分 开始----------%%%%%%%%%  
     /** 
@@ -157,8 +156,7 @@ public class ExportExcelByPoi<T>
      *            表格标题名 
      */
     @SuppressWarnings("unchecked")  
-    private void create(String sheetName,Map<String,Integer> widths)  
-    {  
+    private void create(String sheetName,Map<String,Integer> widths) {
         // 声明一个工作薄  
         HSSFWorkbook workbook = new HSSFWorkbook();  
         // 生成一个表格  
@@ -192,8 +190,7 @@ public class ExportExcelByPoi<T>
         // 产生表格标题行  
         HSSFRow row = sheet.createRow(0);  
 		row.setHeight((short) (titleHeight * 20));
-        for (short i = 0; i < headers.length; i++)  
-        {  
+        for (short i = 0; i < headers.length; i++) {
             HSSFCell cell = row.createCell(i);  
             cell.setCellStyle(style);  
             HSSFRichTextString text = new HSSFRichTextString(headers[i]);  
@@ -203,8 +200,7 @@ public class ExportExcelByPoi<T>
         // 遍历集合数据，产生数据行  
         Iterator<T> it = dataset.iterator();  
         int index = 0;  
-        while (it.hasNext())  
-        {  
+        while (it.hasNext()) {
             index++;  
             row = sheet.createRow(index);  
 			row.setHeight((short) (columnHeight * 20));
@@ -212,8 +208,7 @@ public class ExportExcelByPoi<T>
             T t = (T) it.next();  
             // 利用反射，根据javabean属性的先后顺序，动态调用getXxx()方法得到属性值  
             Field[] fields = t.getClass().getDeclaredFields();  
-            for (short i = 0; i < fields.length; i++)  
-            {  
+            for (short i = 0; i < fields.length; i++) {
                 HSSFCell cell = row.createCell(i);  
                 cell.setCellStyle(style2);  
                 Field field = fields[i];  
@@ -221,8 +216,7 @@ public class ExportExcelByPoi<T>
                 String getMethodName = "get"  
                         + fieldName.substring(0, 1).toUpperCase()  
                         + fieldName.substring(1);  
-                try  
-                {  
+                try {
                     Class tCls = t.getClass();  
                     Method getMethod = tCls.getMethod(getMethodName, new Class[]{});  
                     Object value = getMethod.invoke(t, new Object[]{});  
@@ -297,8 +291,7 @@ public class ExportExcelByPoi<T>
                         cell.setCellValue(richString);
                     }
                     // 如果不是图片数据
-                    if (textValue != null)  
-                    {  
+                    if (textValue != null) {
                     	//处理自定义宽度
                     	if(widths!=null && widths.containsKey(fieldName)){
                     		int width = widths.get(fieldName);
@@ -306,39 +299,24 @@ public class ExportExcelByPoi<T>
                     		sheet.setColumnWidth(i, (short) (35.7 * width * 7.666));  
                     	}
                     }
-                }  
-                catch (SecurityException e)  
-                {  
+                } catch (SecurityException e) {
                     e.printStackTrace();  
-                }  
-                catch (NoSuchMethodException e)  
-                {  
+                } catch (NoSuchMethodException e) {
                     e.printStackTrace();  
-                }  
-                catch (IllegalArgumentException e)  
-                {  
+                } catch (IllegalArgumentException e) {
                     e.printStackTrace();  
-                }  
-                catch (IllegalAccessException e)  
-                {  
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();  
-                }  
-                catch (InvocationTargetException e)  
-                {  
+                } catch (InvocationTargetException e) {
                     e.printStackTrace();  
-                }  
-                finally  
-                {  
+                } finally {
                     // 清理资源  
                 }  
             }  
         }  
-        try  
-        {  
+        try {
             workbook.write(out);  
-        }  
-        catch (IOException e)  
-        {  
+        } catch (IOException e) {
             e.printStackTrace();  
         }  
     }
@@ -424,8 +402,7 @@ public class ExportExcelByPoi<T>
 		return style;
 	}  
   
-    public static void main(String[] args)  
-    {  
+    public static void main(String[] args) {
         // 测试学生  
         ExportExcelByPoi<Student> ex = new ExportExcelByPoi<Student>();
         
@@ -440,13 +417,11 @@ public class ExportExcelByPoi<T>
         String[] headers2 = { "图书编号", "图书名称", "图书作者", "图书价格", "图书ISBN", "图书出版社", "封面图片" };  
         List<Book> dataset2 = new ArrayList<Book>();  
         
-        try  
-        {  
+        try {
             BufferedInputStream bis = new BufferedInputStream(  
                     new FileInputStream("D://barcode.png"));  
             byte[] buf = new byte[bis.available()];  
-            while ((bis.read(buf)) != -1)  
-            {  
+            while ((bis.read(buf)) != -1) {
                 //  
             }  
             dataset2.add(new Book(1, "jsp", "leno", 300.33f, "1234567",  

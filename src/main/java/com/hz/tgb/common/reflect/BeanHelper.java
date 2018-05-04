@@ -1,74 +1,117 @@
 package com.hz.tgb.common.reflect;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.BeanUtilsBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.BigDecimalConverter;
+import org.apache.commons.beanutils.converters.DateConverter;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 对象赋值工具类，Bean -> BeanDto.
+/** Bean操作助手
+ * @Author hezhao
+ * @Time 2018-05-04 1:27
+ * @Description 无
+ * @Version V 1.0
  */
 public class BeanHelper {
-    private static Logger logger = LoggerFactory.getLogger(BeanHelper.class);
+    private BeanHelper(){}
+
+    /**
+     * 给属性复制
+     * @param bean
+     * @param name
+     * @param value
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     */
+    public static void setProperty(Object bean, String name, Object value) throws IllegalAccessException, InvocationTargetException {
+        BeanUtils.setProperty(bean, name, value);
+    }
+
+    /**
+     * <用途描述>: 属性拷贝
+     * <创建人>:13632540770
+     * <创建时间>：2017年12月7日 上午10:32:30
+     * <return>:void
+     */
+    public static void copyProperties(Object toObj, Object fromObj) {
+        try {
+            BeanUtils.copyProperties(toObj, fromObj);
+        } catch (IllegalAccessException a) {
+            System.err.println("BeanUtilsExpand 拷贝对象属性出现异常(反射异常)==>> 一般是由于java在反射时调用private方法所致");
+            a.printStackTrace();
+        } catch (InvocationTargetException b) {
+            System.err.println("BeanUtilsExpand 拷贝对象属性出现异常(反射异常)==>> 接收被调用方法内部未被捕获");
+            b.printStackTrace();
+        }catch(Exception e) {
+            System.err.println("BeanUtilsExpand 拷贝对象属性出现异常(反射异常)==>> 其他异常");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 增强apache的beanUtils的拷贝属性，注册一些新的类型转换
+     * @see :http://blog.csdn.net/yemou_blog/article/details/50292237
+     */
     static {
-        BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);
+        org.apache.commons.beanutils.ConvertUtils.register(new DateConverter(), java.util.Date.class);
+        org.apache.commons.beanutils.ConvertUtils.register(new DateConverter(), java.sql.Date.class);
+        ConvertUtils.register(new BigDecimalConverter(), BigDecimal.class);
     }
 
-    public static Object convertDto2Bean(Object dto) {
-        if (dto == null) {
-            return null;
-        }
 
-        Object bean = new Object();
-        try {
-            BeanUtils.copyProperties(bean, dto);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            logger.error("ObjectHelper convertDto2Bean bean复制异常", e);
+    /**
+     * <用途描述>: 整理对象的，不能为空的字符串属性
+     * <创建人>:张进
+     * <创建时间>：2017年10月14日 下午5:05:35
+     * <return>:List<String>
+     */
+    public static List<String> fetchNotEmptyFiledList(String[] arrField) {
+        List<String>  list  = new ArrayList<>();
+        for (String string : arrField) {
+            if (string != null) {
+                string = string.replaceAll(" ", "");
+                list.add(string);
+            }
         }
-        return bean;
+        return list;
     }
 
-    public static Object convertBean2Dto(Object bean) {
-        if (bean == null) {
-            return null;
-        }
+    /**
+     * <用途描述>: 判断对象String属性是否 为Empty <创建人>:张进 <创建时间>：2017年10月14日 下午3:53:35
+     * <return>:String(empty属性名)
+     */
+    public static String checkObjFieldIsEmpty(Object obj, List<String> list) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
-        Object dto = new Object();
-        try {
-            BeanUtils.copyProperties(dto, bean);
+        String emptyFiled = null;
 
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            logger.error("ObjectHelper convertBean2Dto bean复制异常", e);
-        }
-        return dto;
-    }
+        // 获取实体类的所有属性，返回Field数组
+        Field[] field = obj.getClass().getDeclaredFields();
+        // 遍历所有属性
+        for (int j = 0; j < field.length; j++) {
+            // 获取属性的名字
+            String oraginalName = field[j].getName();
+            // 将属性的首字符大写，方便构造get，set方法
+            String name = oraginalName.substring(0, 1).toUpperCase() + oraginalName.substring(1);
+            // 获取属性的类型
+            String type = field[j].getGenericType().toString();
+            // 如果type是类类型，则前面包含"class "，后面跟类名
 
-    public static List<Object> convertDtoList2BeanList(List<Object> dtoList) {
-        if (dtoList == null) {
-            return Collections.emptyList();
+            if (type.equals("class java.lang.String")) {
+                Method m = obj.getClass().getMethod("get" + name);
+                // 调用getter方法获取属性值
+                String value = (String) m.invoke(obj);
+                if (list.contains(oraginalName) && value==null||list.contains(oraginalName) &&"".equals(value)) {
+                    emptyFiled = oraginalName; //得到空字符串对应的属性名字
+                    break;
+                }
+            }
         }
-
-        List<Object> beanList = new LinkedList<>();
-        for (Object dto : dtoList) {
-            beanList.add(convertDto2Bean(dto));
-        }
-        return beanList;
-    }
-
-    public static List<Object> convertBeanList2DtoList(List<Object> beanList) {
-        if (beanList == null) {
-            return Collections.emptyList();
-        }
-
-        List<Object> dtoList = new LinkedList<>();
-        for (Object bean : beanList) {
-            dtoList.add(convertBean2Dto(bean));
-        }
-        return dtoList;
+        return emptyFiled;
     }
 }

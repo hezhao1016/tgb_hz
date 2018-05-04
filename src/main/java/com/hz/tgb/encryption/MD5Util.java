@@ -13,6 +13,9 @@ import java.security.NoSuchAlgorithmException;
  * @time 下午5:15:50
  */
 public class MD5Util {
+
+	static final char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+			'A', 'B', 'C', 'D', 'E', 'F' };
 	
 	private MD5Util(){
 		// 私有类构造方法
@@ -25,7 +28,7 @@ public class MD5Util {
 	 * @param s
 	 * @return
 	 */
-	public final static String md5x2(String s) {
+	public static final String md5x2(String s) {
 		return md5(md5(s));
 	}
 
@@ -36,10 +39,7 @@ public class MD5Util {
 	 * @param s
 	 * @return
 	 */
-	public final static String md5(String s) {
-
-		char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-				'A', 'B', 'C', 'D', 'E', 'F' };
+	public static final String md5(String s) {
 
 		try {
 			byte[] strTemp = s.getBytes();
@@ -71,11 +71,12 @@ public class MD5Util {
 	 *            已加密的字符串
 	 * @return boolean
 	 */
-	public static boolean check(String strOne, String strTwo) {
-		if (md5(strOne).equals(strTwo))
+	public static final boolean check(String strOne, String strTwo) {
+		if (md5(strOne).equals(strTwo)) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
 	public static void main(String[] args) throws UnsupportedEncodingException,

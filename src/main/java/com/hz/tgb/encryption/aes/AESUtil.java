@@ -3,7 +3,7 @@
  */
 package com.hz.tgb.encryption.aes;
 
-import com.hz.tgb.encryption.ByteUtil;
+import com.hz.tgb.common.ByteUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

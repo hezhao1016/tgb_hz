@@ -718,6 +718,21 @@ public class FileUtil {
 	}
 
 	/**
+	 * 读取 URL 中的文件
+	 */
+	public static String readText(URL url) throws Exception {
+		logger.info("try to read file, {}", url.toString());
+		try {
+			File file = new File(url.toURI());
+			logger.info("read file succeed, {}", url.toString());
+			return readText(file);
+		} catch (Exception e) {
+			logger.info("read file error, {}", url.toString(), e);
+			throw e;
+		}
+	}
+
+	/**
 	 * 通过BufferedReader读取文件,自动识别文件编码
 	 *
 	 * @param sourceFile
