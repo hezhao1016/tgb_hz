@@ -40,17 +40,9 @@ public class MapUtil {
 	 *            第二点的纬度
 	 * @return 返回的距离，单位km
 	 * */
-	public static double distance(double lon1, double lat1, double lon2,
+	public static double distance_km(double lon1, double lat1, double lon2,
 			double lat2) {
-		double radLat1 = rad(lat1);
-		double radLat2 = rad(lat2);
-		double a = radLat1 - radLat2;
-		double b = rad(lon1) - rad(lon2);
-		double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2)
-				+ Math.cos(radLat1) * Math.cos(radLat2)
-				* Math.pow(Math.sin(b / 2), 2)));
-		s = s * EARTH_RADIUS;
-		return s / 1000;
+		return MapUtil.distance(lon1,lat1,lon2,lat2) / 1000;
 	}
 
 	/**
@@ -66,7 +58,7 @@ public class MapUtil {
 	 *            第二点的纬度
 	 * @return 返回的距离，单位m
 	 * */
-	public static double distance2(double lon1, double lat1, double lon2,
+	public static double distance(double lon1, double lat1, double lon2,
 			double lat2) {
 		double radLat1 = rad(lat1);
 		double radLat2 = rad(lat2);
@@ -170,7 +162,7 @@ public class MapUtil {
 		// 趵突泉：117.00999000000002 36.66123
 		System.out.println(distance(117.11811, 36.68484, 117.00999000000002,
 				36.66123));
-		System.out.println(distance2(117.11811, 36.68484, 117.00999000000002,
+		System.out.println(distance_km(117.11811, 36.68484, 117.00999000000002,
 				36.66123));
 		System.out.println(findLatLng("上海"));
 	}

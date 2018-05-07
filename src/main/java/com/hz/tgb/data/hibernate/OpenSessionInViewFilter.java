@@ -1,4 +1,4 @@
-package com.hz.tgb.jdbc.hibernate;
+package com.hz.tgb.data.hibernate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

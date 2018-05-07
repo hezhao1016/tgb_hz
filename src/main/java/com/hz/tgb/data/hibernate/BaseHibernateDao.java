@@ -1,4 +1,4 @@
-package com.hz.tgb.jdbc.hibernate;
+package com.hz.tgb.data.hibernate;
 
 import com.hz.tgb.tool.PageBean;
 import org.hibernate.HibernateException;

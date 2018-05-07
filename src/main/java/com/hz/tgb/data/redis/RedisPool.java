@@ -1,4 +1,4 @@
-package com.hz.tgb.jdbc.redis;
+package com.hz.tgb.data.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.hz.tgb.jdbc;
+package com.hz.tgb.data;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

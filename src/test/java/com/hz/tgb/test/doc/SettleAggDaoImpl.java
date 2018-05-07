@@ -1,6 +1,6 @@
 package com.hz.tgb.test.doc;
 
-import com.hz.tgb.jdbc.BaseDao;
+import com.hz.tgb.data.BaseDao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
