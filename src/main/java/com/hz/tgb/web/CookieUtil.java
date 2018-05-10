@@ -1,7 +1,7 @@
 package com.hz.tgb.web;
 
-import com.hz.tgb.encryption.MD5Util;
-import com.hz.tgb.encryption.base64.Base64;
+import com.hz.tgb.encrypt.MD5Util;
+import com.hz.tgb.encrypt.base64.Base64;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;

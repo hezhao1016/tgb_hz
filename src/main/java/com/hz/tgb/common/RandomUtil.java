@@ -5,7 +5,7 @@ import java.util.UUID;
 
 /**
  * 随机数工具类
- * 
+ *
  * @author hezhao
  * @version v01.00.00 $Revision$
  * @date 2015年4月7日
@@ -42,12 +42,12 @@ public class RandomUtil {
 	}
 
 	/***
-	 * 获取指定长度随机字符串(数字+字母)
+	 * 获取指定长度随机字符串
 	 *
 	 * @param len 指定长度
 	 * @return
 	 */
-	public static String getRandomNumWordStr(int len) {
+	public static String getRandomStr(int len) {
 		StringBuffer sb = new StringBuffer();
 		Random random = new Random();
 		for (int i = 0; i < len; i++) {
@@ -64,7 +64,7 @@ public class RandomUtil {
 	 * @param length
 	 * @return String
 	 */
-	public static String getRandomChars(int length) {
+	public static String getRandomNumWordStr(int length) {
 		String val = "";
 
 		Random random = new Random();
@@ -140,8 +140,8 @@ public class RandomUtil {
 
 	public static void main(String[] args) {
 		System.out.println(getRandomNumStr(6));
+		System.out.println(getRandomStr(6));
 		System.out.println(getRandomNumWordStr(6));
-		System.out.println(getRandomChars(6));
 		System.out.println(getRandomHexStr(6));
 		System.out.println(getRandomUuidStr(6));
 		System.out.println(getUuid());

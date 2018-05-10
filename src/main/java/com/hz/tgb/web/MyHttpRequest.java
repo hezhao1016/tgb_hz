@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import com.hz.tgb.encryption.aes.BackAES;
+import com.hz.tgb.encrypt.aes.BackAES;
 
 /**
  * 对参数进行解密，以及进行XXS保护。

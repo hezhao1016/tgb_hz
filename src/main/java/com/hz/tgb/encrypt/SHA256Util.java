@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.hz.tgb.encryption;
+package com.hz.tgb.encrypt;
 
 import com.hz.tgb.common.ByteUtil;
 import org.slf4j.Logger;

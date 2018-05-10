@@ -1,30 +1,25 @@
 /**
  * 
  */
-package com.hz.tgb.encryption.aes;
+package com.hz.tgb.encrypt.aes;
 
 import com.hz.tgb.common.ByteUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
+import java.security.SecureRandom;
 
 /**
- * @author 80114515
- * 新的AES加解密工具类,用于兼容与Andriod的加解密
+ * @author 80114515 AES加解密工具类
  */
-public class AesNewUtil {
-    private static final Logger logger = LoggerFactory.getLogger(AesNewUtil.class);
+public class AESUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(AESUtil.class);
 
     /***
      * 系统默认编码u8
@@ -33,8 +28,6 @@ public class AesNewUtil {
 
     // 算法定义
     private static final String AES_ALGORITHM = "AES";
-    // 指定填充方式
-    private static final String AES_PADDING = "AES/CBC/PKCS5Padding";
 
     /***
      * AES加密
@@ -58,14 +51,17 @@ public class AesNewUtil {
      */
     public static String encrypt(String content, String aesKey, String encoding) {
         try {
-//            content = align(content,false);
-            aesKey = align(aesKey,true);
-
-            IvParameterSpec zeroIv = new IvParameterSpec(aesKey.getBytes());  
-            SecretKeySpec key = new SecretKeySpec(aesKey.getBytes(encoding), AES_ALGORITHM);
-            Cipher cipher = Cipher.getInstance(AES_PADDING);// 创建密码器
+            KeyGenerator kgen = KeyGenerator.getInstance(AES_ALGORITHM);
+            // 指定随机数算法,解决windows与linux不兼容的问题
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            random.setSeed(aesKey.getBytes(encoding));
+            kgen.init(128, random);
+            SecretKey secretKey = kgen.generateKey();
+            byte[] enCodeFormat = secretKey.getEncoded();
+            SecretKeySpec key = new SecretKeySpec(enCodeFormat, AES_ALGORITHM);
+            Cipher cipher = Cipher.getInstance(AES_ALGORITHM);// 创建密码器
             byte[] byteContent = content.getBytes(encoding);
-            cipher.init(Cipher.ENCRYPT_MODE, key, zeroIv);// 初始化
+            cipher.init(Cipher.ENCRYPT_MODE, key);// 初始化
             // 加密
             byte[] result = cipher.doFinal(byteContent);
             // 转换16进制字符串后返回
@@ -82,8 +78,6 @@ public class AesNewUtil {
             logger.error("aes encrypt IllegalBlockSizeException error.", e);
         } catch (BadPaddingException e) {
             logger.error("aes encrypt BadPaddingException error.", e);
-        } catch (InvalidAlgorithmParameterException e) {
-            logger.error("aes encrypt InvalidAlgorithmParameterException error.", e);
         }
 
         return null;
@@ -97,9 +91,6 @@ public class AesNewUtil {
      * @return
      */
     public static String decrypt(String cipherText, String aesKey) {
-//        cipherText = align(cipherText,false);
-        aesKey = align(aesKey,true);
-
         // 将16进制的密文转换为byte类型
         byte[] cipherTextByte = ByteUtil.hexStringToBytes(cipherText);
         if (cipherTextByte == null) {
@@ -117,7 +108,6 @@ public class AesNewUtil {
      * @return
      */
     public static String decrypt(byte[] cipherTextByte, String aesKey) {
-        aesKey = align(aesKey,true);
         // 默认使用U8编码返回原字符串
         return decrypt(cipherTextByte, aesKey, DEFAULT_ENCODING);
     }
@@ -132,10 +122,16 @@ public class AesNewUtil {
      */
     public static String decrypt(byte[] cipherTextByte, String aesKey, String encoding) {
         try {
-            IvParameterSpec zeroIv = new IvParameterSpec(aesKey.getBytes()); 
-            SecretKeySpec key = new SecretKeySpec(aesKey.getBytes(encoding), AES_ALGORITHM);
-            Cipher cipher = Cipher.getInstance(AES_PADDING);// 创建密码器
-            cipher.init(Cipher.DECRYPT_MODE, key, zeroIv);// 初始化
+            KeyGenerator kgen = KeyGenerator.getInstance(AES_ALGORITHM);
+            // 指定随机数算法,解决windows与linux不兼容的问题
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            random.setSeed(aesKey.getBytes(encoding));
+            kgen.init(128, random);
+            SecretKey secretKey = kgen.generateKey();
+            byte[] enCodeFormat = secretKey.getEncoded();
+            SecretKeySpec key = new SecretKeySpec(enCodeFormat, AES_ALGORITHM);
+            Cipher cipher = Cipher.getInstance(AES_ALGORITHM);// 创建密码器
+            cipher.init(Cipher.DECRYPT_MODE, key);// 初始化
             byte[] result = cipher.doFinal(cipherTextByte);
             return new String(result, encoding);
         } catch (NoSuchAlgorithmException e) {
@@ -150,37 +146,14 @@ public class AesNewUtil {
             logger.error("aes decrypt BadPaddingException error.", e);
         } catch (UnsupportedEncodingException e) {
             logger.error("aes decrypt UnsupportedEncodingException error.", e);
-        } catch (InvalidAlgorithmParameterException e) {
-            logger.error("aes decrypt InvalidAlgorithmParameterException error.", e);
         }
 
         return null;
     }
-
-    //补全字符
-    public static String align(String str,boolean isKey){
-        if (str == null || str.equals("")) {
-            return "";
-        }
-
-        // 如果是密码，需要确保其长度为16
-        if(isKey){
-            if(str.length() > 16){
-                return str.substring(0,16);
-            }else{
-                return align(str,false);
-            }
-        }else{
-            // 如果是被加密字符串或长度不足的密码，则确保其长度为16的整数倍
-            int zerocount = 16 - str.length() % 16;
-            for (int i = 0; i < zerocount; i++) {
-                str = str + '0';
-            }
-            return str;
-        }
-    }
-
+    
     public static void main(String[] args) {
         System.out.println(encrypt("13530629093", "lWdZ8g70EezTqHqQOpDWwPxARZjMrzEXuPA8NO5J2uX"));
+        System.out.println(decrypt("506475599128d1eef32fbaed9ce14f38", "lWdZ8g70EezTqHqQOpDWwPxARZjMrzEXuPA8NO5J2uX"));
     }
+
 }

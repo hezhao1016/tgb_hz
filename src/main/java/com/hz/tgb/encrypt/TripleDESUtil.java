@@ -1,4 +1,4 @@
-package com.hz.tgb.encryption;
+package com.hz.tgb.encrypt;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;

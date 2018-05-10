@@ -18,22 +18,21 @@ import org.slf4j.LoggerFactory;
 public class IDCardUtil {
 
     /**
-     * 1、号码的结构 公民身份号码是特征组合码，由十七位数字本体码和一位校验码组成。排列顺序从左至右依次为：六位数字地址码，八位数字出生日期码，
-     * 三位数字顺序码和一位数字校验码。
+     * 1、号码的结构 公民身份号码是特征组合码，由十七位数字本体码和一位校验码组成。排列顺序从左至右依次为：六位数字地址码，八位数字出生日期码，三位数字顺序码和一位数字校验码。
      *
      * 2、地址码(前六位数） 表示编码对象常住户口所在县(市、旗、区)的行政区划代码，按GB/T2260的规定执行。
      *
      * 3、出生日期码（第七位至十四位） 表示编码对象出生的年、月、日，按GB/T7408的规定执行，年、月、日代码之间不用分隔符。
      *
-     * 4、顺序码（第十五位至十七位）
-     * 表示在同一地址码所标识的区域范围内，对同年、同月、同日出生的人编定的顺序号，顺序码的奇数分配给男性，偶数分配给女性。
+     * 4、顺序码（第十五位至十七位） 表示在同一地址码所标识的区域范围内，对同年、同月、同日出生的人编定的顺序号，顺序码的奇数分配给男性，偶数分配给女性。
      *
-     * 5、校验码（第十八位数） （1）十七位数字本体码加权求和公式 S = Sum(Ai * Wi), i = 0, , 16
-     * ，先对前17位数字的权求和 Ai:表示第i位置上的身份证号码数字值 Wi:表示第i位置上的加权因子 Wi: 7 9 10 5 8 4 2 1 6
-     * 3 7 9 10 5 8 4 2 （2）计算模 Y = mod(S, 11) （3）通过模得到对应的校验码 Y: 0 1 2 3 4 5 6 7
-     * 8 9 10 校验码: 1 0 X 9 8 7 6 5 4 3 2
+     * 5、校验码（第十八位数）
+     * （1）十七位数字本体码加权求和公式 S = Sum(Ai * Wi), i = 0, ... , 16 ，先对前17位数字的权求和
+     *      Ai:表示第i位置上的身份证号码数字值 Wi:表示第i位置上的加权因子 Wi: 7 9 10 5 8 4 2 1 6 3 7 9 10 5 8 4 2
+     * （2）计算模 Y = mod(S, 11)
+     * （3）通过模得到对应的校验码 Y: 0 1 2 3 4 5 6 7 8 9 10 校验码: 1 0 X 9 8 7 6 5 4 3 2
      *
-     * */
+     */
 
     private IDCardUtil(){
         // 私有类构造方法
@@ -62,11 +61,13 @@ public class IDCardUtil {
             "6", "5", "4", "3", "2" };
     /** 最低年限 */
     public static final int MIN = 1930;
+    /** 大陆身份首两位数字对应省份 */
     public static Map<String, String> cityCodes = new HashMap<String, String>();
     /** 台湾身份首字母对应数字 */
     public static Map<String, Integer> twFirstCode = new HashMap<String, Integer>();
     /** 香港身份首字母对应数字 */
     public static Map<String, Integer> hkFirstCode = new HashMap<String, Integer>();
+
     static {
         cityCodes.put("11", "北京");
         cityCodes.put("12", "天津");
@@ -193,7 +194,6 @@ public class IDCardUtil {
      * @return
      */
     public static boolean validateIDCardByRegex(String idCard) {
-
         String curYear = "" + Calendar.getInstance().get(Calendar.YEAR);
         int y3 = Integer.valueOf(curYear.substring(2, 3));
         int y4 = Integer.valueOf(curYear.substring(3, 4));
@@ -362,8 +362,7 @@ public class IDCardUtil {
             sum = sum + Integer.valueOf(c + "") * iflag;
             iflag--;
         }
-        return (sum % 10 == 0 ? 0 : (10 - sum % 10)) == Integer.valueOf(end) ? true
-                : false;
+        return (sum % 10 == 0 ? 0 : (10 - sum % 10)) == Integer.valueOf(end) ? true : false;
     }
 
     /**
@@ -417,7 +416,7 @@ public class IDCardUtil {
      *            字符数组
      * @return 数字数组
      */
-    public static int[] converCharToInt(char[] ca) {
+    private static int[] converCharToInt(char[] ca) {
         int len = ca.length;
         int[] iArr = new int[len];
         try {
@@ -431,12 +430,62 @@ public class IDCardUtil {
     }
 
     /**
+     * 数字验证
+     *
+     * @param val
+     * @return 提取的数字。
+     */
+    private static boolean isNum(String val) {
+        return val == null || "".equals(val) ? false : val
+                .matches("^[0-9]*{1}");
+    }
+
+    /**
+     * 验证小于当前日期 是否有效
+     *
+     * @param iYear
+     *            待验证日期(年)
+     * @param iMonth
+     *            待验证日期(月 1-12)
+     * @param iDate
+     *            待验证日期(日)
+     * @return 是否有效
+     */
+    private static boolean valiDate(int iYear, int iMonth, int iDate) {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int datePerMonth;
+        if (iYear < MIN || iYear >= year) {
+            return false;
+        }
+        if (iMonth < 1 || iMonth > 12) {
+            return false;
+        }
+        switch (iMonth) {
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                datePerMonth = 30;
+                break;
+            case 2:
+                boolean dm = ((iYear % 4 == 0 && iYear % 100 != 0) || (iYear % 400 == 0))
+                        && (iYear > MIN && iYear < year);
+                datePerMonth = dm ? 29 : 28;
+                break;
+            default:
+                datePerMonth = 31;
+        }
+        return (iDate >= 1) && (iDate <= datePerMonth);
+    }
+
+    /**
      * 将身份证的每位和对应位的加权因子相乘之后，再得到和值
      *
      * @param iArr
      * @return 身份证编码。
      */
-    public static int getPowerSum(int[] iArr) {
+    private static int getPowerSum(int[] iArr) {
         int iSum = 0;
         if (power.length == iArr.length) {
             for (int i = 0; i < iArr.length; i++) {
@@ -456,43 +505,9 @@ public class IDCardUtil {
      * @param iSum
      * @return 校验位
      */
-    public static String getCheckCode18(int iSum) {
-        String sCode = "";
-        switch (iSum % 11) {
-            case 10:
-                sCode = "2";
-                break;
-            case 9:
-                sCode = "3";
-                break;
-            case 8:
-                sCode = "4";
-                break;
-            case 7:
-                sCode = "5";
-                break;
-            case 6:
-                sCode = "6";
-                break;
-            case 5:
-                sCode = "7";
-                break;
-            case 4:
-                sCode = "8";
-                break;
-            case 3:
-                sCode = "9";
-                break;
-            case 2:
-                sCode = "x";
-                break;
-            case 1:
-                sCode = "0";
-                break;
-            case 0:
-                sCode = "1";
-                break;
-        }
+    private static String getCheckCode18(int iSum) {
+        int modValue = iSum % 11;
+        String sCode = verifyCode[modValue];
         return sCode;
     }
 
@@ -652,57 +667,6 @@ public class IDCardUtil {
         sProvince = cityCodes.get(sProvinNum);
         return sProvince;
     }
-
-    /**
-     * 数字验证
-     *
-     * @param val
-     * @return 提取的数字。
-     */
-    public static boolean isNum(String val) {
-        return val == null || "".equals(val) ? false : val
-                .matches("^[0-9]*{1}");
-    }
-
-    /**
-     * 验证小于当前日期 是否有效
-     *
-     * @param iYear
-     *            待验证日期(年)
-     * @param iMonth
-     *            待验证日期(月 1-12)
-     * @param iDate
-     *            待验证日期(日)
-     * @return 是否有效
-     */
-    public static boolean valiDate(int iYear, int iMonth, int iDate) {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int datePerMonth;
-        if (iYear < MIN || iYear >= year) {
-            return false;
-        }
-        if (iMonth < 1 || iMonth > 12) {
-            return false;
-        }
-        switch (iMonth) {
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                datePerMonth = 30;
-                break;
-            case 2:
-                boolean dm = ((iYear % 4 == 0 && iYear % 100 != 0) || (iYear % 400 == 0))
-                        && (iYear > MIN && iYear < year);
-                datePerMonth = dm ? 29 : 28;
-                break;
-            default:
-                datePerMonth = 31;
-        }
-        return (iDate >= 1) && (iDate <= datePerMonth);
-    }
-
 
     /**
      *根据身份证号，自动获取对应的星座

@@ -1,6 +1,6 @@
-package com.hz.tgb.encryption.aes;
+package com.hz.tgb.encrypt.aes;
 
-import com.hz.tgb.encryption.base64.Base64;
+import com.hz.tgb.encrypt.base64.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
