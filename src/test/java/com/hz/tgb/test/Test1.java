@@ -1,4 +1,4 @@
-package oppo;
+package com.hz.tgb.test;
 
 import com.hz.tgb.common.ArrayUtil;
 import com.hz.tgb.common.datetime.DateUtil;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by hezhao on 2017/12/19 17:30.
  */
-public class Test11 {
+public class Test1 {
 
 //    public static void main(String[] args) {
 //        while (true) {
@@ -158,15 +158,6 @@ public class Test11 {
 //        System.out.println(ArrayUtil.join(array1));
 //    }
 
-//    public static void main(String[] args) {
-//        String batchId = "170214084439979_oppo2@oppo2";
-//        if(batchId.contains("_")){
-//            String smsNo = batchId.substring(0,batchId.indexOf("_"));
-//            String channelAccount = batchId.substring(batchId.indexOf("_")+1);
-//            System.out.println(smsNo);
-//            System.out.println(channelAccount);
-//        }
-//    }
 
     public static void main(String[] args) {
 //        String timeType = "day";

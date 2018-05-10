@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 最好用的HTTP请求工具类，支持JSON . OPPO
+ * 最好用的HTTP请求工具类，支持JSON . Yaphis
  */
 public class HttpConnectUtilV4 {
 

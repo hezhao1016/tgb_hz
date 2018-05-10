@@ -1,4 +1,4 @@
-package com.hz.tgb.encrypt;
+package com.hz.tgb.encrypt.des;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class Desc {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Desc.class);
-	
+
 	private static final String deskey = "123456781234567812345678";
 	private static final String Algorithm = "DESede";
 	

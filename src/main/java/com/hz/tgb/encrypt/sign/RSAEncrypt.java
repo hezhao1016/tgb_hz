@@ -1,4 +1,4 @@
-package com.hz.tgb.encrypt;
+package com.hz.tgb.encrypt.sign;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;

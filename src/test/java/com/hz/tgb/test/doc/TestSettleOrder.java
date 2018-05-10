@@ -36,7 +36,7 @@ public class TestSettleOrder {
 		sfd.setShareBaseCost(300L);
 		sfd.setRatioCost(10L);
 		sfd.setRealIncome(60L);
-		sfd.setPackageName("com.oppo.pay.settlement");
+		sfd.setPackageName("com.settlement");
 
 
 		SettleFileDto sfd2 = new SettleFileDto();
@@ -57,7 +57,7 @@ public class TestSettleOrder {
 		sfd2.setShareBaseCost(300L);
 		sfd2.setRatioCost(10L);
 		sfd2.setRealIncome(60L);
-		sfd2.setPackageName("com.oppo.pay.settlement2");
+		sfd2.setPackageName("com.settlement2");
 
 		list.add(sfd);
 		list.add(sfd2);

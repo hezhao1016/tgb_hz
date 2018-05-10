@@ -1,4 +1,4 @@
-package oppo;
+package com.hz.tgb.test;
 
 import com.hz.tgb.common.datetime.DateUtil;
 import com.hz.tgb.common.number.AmountUtil;
@@ -11,7 +11,7 @@ import java.text.DecimalFormat;
 /**
  * Created by hezhao on 2017-09-18 17:43.
  */
-public class Test6 {
+public class Test4 {
 
     public static void main(String[] args) {
 

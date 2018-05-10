@@ -1,4 +1,4 @@
-package oppo;
+package com.hz.tgb.test.http;
 
 import net.sf.json.JSONObject;
 
@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * Created by hezhao on 2017-09-05 15:59.
  **/
-public class Test3 {
+public class TestWeiZhang {
     public static final String DEF_CHATSET = "UTF-8";
     public static final int DEF_CONN_TIMEOUT = 30000;
     public static final int DEF_READ_TIMEOUT = 30000;

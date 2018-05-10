@@ -1,4 +1,4 @@
-package oppo.entity;
+package com.hz.tgb.test.entity;
 
 /**
  * Created by hezhao on 2017/11/3 9:51.

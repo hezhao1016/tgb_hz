@@ -1,4 +1,4 @@
-package com.hz.tgb.encrypt;
+package com.hz.tgb.encrypt.base64;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

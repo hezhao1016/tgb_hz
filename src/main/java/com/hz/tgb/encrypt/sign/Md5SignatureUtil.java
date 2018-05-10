@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.hz.tgb.encrypt;
+package com.hz.tgb.encrypt.sign;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-/** 签名工具类
+/** MD5 签名工具类
  * @author hezhao
  */
 public class Md5SignatureUtil {

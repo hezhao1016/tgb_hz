@@ -1,4 +1,4 @@
-package com.hz.tgb.encrypt;
+package com.hz.tgb.encrypt.des;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -162,8 +162,8 @@ public class TripleDESUtil {
 
 	public static void main(String[] args) throws Exception {
 		TripleDESUtil pk7 = TripleDESUtil.getInstance();
-		String key = "FD0762380D980D52";
-		String string = "88888888";
+		String key = "123456781234567812345678";
+		String string = "6200100005258965";
 		String miwenString = pk7.encrypt(string, key);
 		System.out.println("加密之后密文:" + miwenString);
 

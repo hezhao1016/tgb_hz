@@ -1,4 +1,4 @@
-package oppo;
+package com.hz.tgb.test;
 
 import com.hz.tgb.common.StringUtil;
 import com.hz.tgb.common.number.AmountUtil;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 /**
  * Created by hezhao on 2017-09-15 18:26.
  */
-public class Test5 {
+public class Test3 {
 
 
     public static void main(String[] args) {

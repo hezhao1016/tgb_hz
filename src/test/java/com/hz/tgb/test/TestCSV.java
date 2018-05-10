@@ -1,4 +1,4 @@
-package oppo;
+package com.hz.tgb.test;
 
 import com.hz.tgb.common.ListUtil;
 
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by hezhao on 2017/11/29 16:54.
  */
-public class Test10 {
+public class TestCSV {
     public static void main(String[] args) {
 //        List<String[]> applyList = CSVUtil.readCSV(new File("D:\\上传 example\\退款原因为空 - 副本.csv").getAbsolutePath(), true);
 //

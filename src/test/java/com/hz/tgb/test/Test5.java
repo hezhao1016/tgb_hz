@@ -1,4 +1,4 @@
-package oppo;
+package com.hz.tgb.test;
 
 import com.hz.tgb.common.StringUtil;
 import com.hz.tgb.common.datetime.DateUtil;
@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Created by hezhao on 2017/10/23 16:21.
  */
-public class Test8 {
+public class Test5 {
     public static void main(String[] args) {
 //        System.out.println("====================");
 //
