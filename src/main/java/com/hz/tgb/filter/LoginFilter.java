@@ -15,6 +15,9 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 登录过滤器
+ */
 public class LoginFilter implements Filter {
 	private static Logger logger = LoggerFactory.getLogger(LoginFilter.class);
 

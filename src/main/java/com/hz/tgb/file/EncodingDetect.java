@@ -4761,9 +4761,9 @@ class Encoding {
 
     public static int TOTALTYPES = 24;
 
-    public final static int SIMP = 0;
+    public static final int SIMP = 0;
 
-    public final static int TRAD = 1;
+    public static final int TRAD = 1;
 
     // Names of the encodings as understood by Java
     public static String[] javaname;

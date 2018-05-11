@@ -28,7 +28,7 @@ public class RedisOperate {
     /***
      * 缓存key的前缀
      */
-    private final static String PREFIX = "loan_";
+    private static final String PREFIX = "loan_";
 
     @Autowired
     @Qualifier("JedisConnectionFactory")

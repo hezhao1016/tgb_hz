@@ -20,7 +20,7 @@ import java.io.InputStream;
  * 
  */
 public class ImageTools {
-	public final static String graphicsMagickPath = "C:/Program Files/GraphicsMagick-1.3.21-Q8";
+	public static final String graphicsMagickPath = "C:/Program Files/GraphicsMagick-1.3.21-Q8";
 
 	/**
 	 * 根据前台传递的参数进行裁剪图片<br>

@@ -41,32 +41,32 @@ public class IDCardUtil {
     private static final Logger logger = LoggerFactory.getLogger(IDCardUtil.class);
 
     /** 中国公民身份证号码最小长度。 */
-    public static final int CHINA_ID_MIN_LENGTH = 15;
+    private static final int CHINA_ID_MIN_LENGTH = 15;
 
     /** 中国公民身份证号码最大长度。 */
-    public static final int CHINA_ID_MAX_LENGTH = 18;
+    private static final int CHINA_ID_MAX_LENGTH = 18;
 
     /** 省、直辖市代码表 */
-    public static final String cityCode[] = { "11", "12", "13", "14", "15",
+    private static final String cityCode[] = { "11", "12", "13", "14", "15",
             "21", "22", "23", "31", "32", "33", "34", "35", "36", "37", "41",
             "42", "43", "44", "45", "46", "50", "51", "52", "53", "54", "61",
             "62", "63", "64", "65", "71", "81", "82", "91" };
 
     /** 每位加权因子 */
-    public static final int power[] = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9,
+    private static final int power[] = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9,
             10, 5, 8, 4, 2 };
 
     /** 第18位校检码 */
-    public static final String verifyCode[] = { "1", "0", "X", "9", "8", "7",
+    private static final String verifyCode[] = { "1", "0", "X", "9", "8", "7",
             "6", "5", "4", "3", "2" };
     /** 最低年限 */
-    public static final int MIN = 1930;
+    private static final int MIN = 1930;
     /** 大陆身份首两位数字对应省份 */
-    public static Map<String, String> cityCodes = new HashMap<String, String>();
+    private static Map<String, String> cityCodes = new HashMap<String, String>();
     /** 台湾身份首字母对应数字 */
-    public static Map<String, Integer> twFirstCode = new HashMap<String, Integer>();
+    private static Map<String, Integer> twFirstCode = new HashMap<String, Integer>();
     /** 香港身份首字母对应数字 */
-    public static Map<String, Integer> hkFirstCode = new HashMap<String, Integer>();
+    private static Map<String, Integer> hkFirstCode = new HashMap<String, Integer>();
 
     static {
         cityCodes.put("11", "北京");

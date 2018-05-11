@@ -16,22 +16,22 @@ public class Time {
 	/**
 	 * 时间字段常量，表示“秒”
 	 */
-	public final static int SECOND = 0;
+	public static final int SECOND = 0;
 
 	/**
 	 * 时间字段常量，表示“分”
 	 */
-	public final static int MINUTE = 1;
+	public static final int MINUTE = 1;
 
 	/**
 	 * 时间字段常量，表示“时”
 	 */
-	public final static int HOUR = 2;
+	public static final int HOUR = 2;
 
 	/**
 	 * 时间字段常量，表示“天”
 	 */
-	public final static int DAY = 3;
+	public static final int DAY = 3;
 
 	/**
 	 * 各常量允许的最大值

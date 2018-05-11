@@ -29,28 +29,28 @@ public class HttpConnectManagerV4 {
     private static final PoolingHttpClientConnectionManager CONNECT_MANAGER;
     private static final CloseableHttpClient DEFAULT_HTTP_CLIENT;
     private static SSLConnectionSocketFactory sslSocketFactory = null;
-    public final static String HTTP_MAX_TOTAL_CONNECTIONS = "http.max_total_connections";
-    public final static String HTTP_MAX_ROUTE_CONNECTIONS = "http.max_route_connections";
-    public final static String HTTP_CONNECT_TIMEOUT = "http.connect_timeout";
-    public final static String HTTP_READ_TIMEOUT = "http.read_timeout";
+    public static final String HTTP_MAX_TOTAL_CONNECTIONS = "http.max_total_connections";
+    public static final String HTTP_MAX_ROUTE_CONNECTIONS = "http.max_route_connections";
+    public static final String HTTP_CONNECT_TIMEOUT = "http.connect_timeout";
+    public static final String HTTP_READ_TIMEOUT = "http.read_timeout";
 
     /**
      * 最大连接数
      */
-    public final static int MAX_TOTAL_CONNECTIONS = 1024;
+    public static final int MAX_TOTAL_CONNECTIONS = 1024;
 
     /**
      * 每个路由最大连接数
      */
-    public final static int MAX_ROUTE_CONNECTIONS = 512;
+    public static final int MAX_ROUTE_CONNECTIONS = 512;
     /**
      * 连接超时时间
      */
-    public final static int CONNECT_TIMEOUT = 2500;
+    public static final int CONNECT_TIMEOUT = 2500;
     /**
      * 读取超时时间
      */
-    public final static int READ_TIMEOUT = 2500;
+    public static final int READ_TIMEOUT = 2500;
 
     static {
 

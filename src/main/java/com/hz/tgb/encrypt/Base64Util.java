@@ -1,12 +1,11 @@
-package com.hz.tgb.encrypt.base64;
+package com.hz.tgb.encrypt;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.hz.tgb.encrypt.decoder.BASE64Encoder;
 import org.apache.commons.codec.binary.Base64;
-
-import Decoder.BASE64Encoder;
 
 /**
  * 统一项目中base64算法的使用。可避免项目中引用不同三方库去实现相同代码<br>
@@ -74,7 +73,7 @@ public class Base64Util {
 	 * @param str
 	 * @return
 	 */
-	public final static String md5(String str) {
+	public static final String md5(String str) {
 		try {
 			MessageDigest md5;
 			md5 = MessageDigest.getInstance("MD5");

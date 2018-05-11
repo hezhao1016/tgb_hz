@@ -24,13 +24,13 @@ public class EmailUtil
 	private static Logger logger = LoggerFactory.getLogger(EmailUtil.class);
 	
 	// 邮件发送协议 
-    private final static String PROTOCOL = "smtp"; 
+    private static final String PROTOCOL = "smtp"; 
     
     // SMTP邮件服务器默认端口 
-    private final static String PORT = "25"; 
+    private static final String PORT = "25"; 
 
     // 是否要求身份认证 
-    private final static String IS_AUTH = "true"; 
+    private static final String IS_AUTH = "true"; 
 
     // 是否启用调试模式（启用调试模式可打印客户端与服务器交互过程时一问一答的响应消息） 
     private static String IS_ENABLED_DEBUG_MOD; 

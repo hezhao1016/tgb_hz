@@ -1,5 +1,6 @@
-package com.hz.tgb.data.hibernate;
+package com.hz.tgb.filter;
 
+import com.hz.tgb.data.hibernate.HibernateSessionFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

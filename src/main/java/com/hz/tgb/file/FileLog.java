@@ -22,12 +22,12 @@ public class FileLog {
 	/**
 	 * 项目根路径
 	 */
-	private final static String relativelyPath = System.getProperty("user.dir");
+	private static final String relativelyPath = System.getProperty("user.dir");
 
 	/**
 	 * 存放日志文件的文件夹名称
 	 */
-	private final static String dirname = "logs";
+	private static final String dirname = "logs";
 
 	/**
 	 * 判断文件是否存在

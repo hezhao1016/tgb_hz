@@ -25,9 +25,9 @@ public class IpUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(IpUtil.class);
 
-	public final static String ERROR_IP = "127.0.0.1";
+	private static final String ERROR_IP = "127.0.0.1";
 
-	public final static Pattern pattern = Pattern.
+	private static final Pattern pattern = Pattern.
 			compile("(2[5][0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})\\.(25[0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})\\.(25[0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})\\.(25[0-5]|2[0-4]\\d|1\\d{2}|\\d{1,2})");
 
 	// 可允许访问的IP数组
@@ -242,12 +242,9 @@ public class IpUtil {
 					break;
 				}
 			}
-			if(!ValidateUtil.isEmptyString(region)&&!ValidateUtil.isEmptyString(city))
-			{
+			if(!ValidateUtil.isEmptyString(region)&&!ValidateUtil.isEmptyString(city)) {
 				return region + "," + city + "," + isp;
-			}
-			else
-			{
+			} else {
 				return null;
 			}
 		}

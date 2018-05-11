@@ -1,34 +1,86 @@
-package com.hz.tgb.web;
+package com.hz.tgb.filter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.regex.Pattern;
 
 /**
- * XSS过滤。
- * @author weiguobin
- * @date 2015年11月18日
+ * 防Xss攻击,对请求数据进行转义
+ * 
+ * @author moshaohua
  */
-public class XXSUtil 
-{
-	/**
-	 * 将容易引起xss漏洞的半角字符直接替换成全角字符。
-	 * 
-	 * @param s
-	 * @return
-	 */
-	public static String xssEncode(String s) {
-		if (s == null || s.isEmpty()) {
-			return s;
-		}
+public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-		String result = stripXSS(s);
-		if (null != result) {
-			result = escape(result);
-		}
+	private HttpServletRequest orgRequest;
 
-		return result;
+	public XssHttpServletRequestWrapper(HttpServletRequest request) {
+		super(request);
+		orgRequest = request;
 	}
 
-	private static String escape(String s) {
+	/**
+	 * 覆盖getParameter方法，将参数名和参数值都做xss过滤。<br/>
+	 * 如果需要获得原始的值，则通过super.getParameterValues(name)来获取<br/>
+	 * getParameterNames,getParameterValues和getParameterMap也可能需要覆盖
+	 */
+	@Override
+	public String getParameter(String name) {
+		String value = super.getParameter(xssEncode(name));
+		if (value != null) {
+			value = xssEncode(value);
+		}
+		return value;
+	}
+
+	public String[] getParameterValues(String parameter) {
+		String[] values = super.getParameterValues(parameter);
+		if (values == null) {
+			return null;
+		}
+		int count = values.length;
+		String[] encodedValues = new String[count];
+		for (int i = 0; i < count; i++) {
+			encodedValues[i] = xssEncode(values[i]);
+		}
+		return encodedValues;
+	}
+
+	/**
+	 * 覆盖getHeader方法，将参数名和参数值都做xss过滤。<br/>
+	 * 如果需要获得原始的值，则通过super.getHeaders(name)来获取<br/>
+	 * getHeaderNames 也可能需要覆盖
+	 */
+	@Override
+	public String getHeader(String name) {
+		String value = super.getHeader(xssEncode(name));
+		if (value != null) {
+			value = xssEncode(value);
+		}
+		return value;
+	}
+
+	/**
+	 * 获取最原始的request
+	 * 
+	 * @return
+	 */
+	public HttpServletRequest getOrgRequest() {
+		return orgRequest;
+	}
+
+	/**
+	 * 获取最原始的request的静态方法
+	 * 
+	 * @return
+	 */
+	public static HttpServletRequest getOrgRequest(HttpServletRequest req) {
+		if (req instanceof XssHttpServletRequestWrapper) {
+			return ((XssHttpServletRequestWrapper) req).getOrgRequest();
+		}
+		return req;
+	}
+
+	public String escape(String s) {
 		StringBuilder sb = new StringBuilder(s.length() + 16);
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
@@ -42,10 +94,10 @@ public class XXSUtil
 			case '\'':
 				sb.append('‘');// 全角单引号
 				break;
-			//注释掉下面的情况，因为影响到json格式字符串中的双引号。
-//			case '\"':
-//				sb.append('“');// 全角双引号
-//				break;
+			case '\"':
+				// 有可能影响到json格式字符串中的双引号。
+				sb.append('“');// 全角双引号
+				break;
 			case '\\':
 				sb.append('＼');// 全角斜线
 				break;
@@ -61,7 +113,50 @@ public class XXSUtil
 		return sb.toString();
 	}
 
-	private static String stripXSS(String value) {
+	/**
+	 * 将容易引起xss漏洞的半角字符直接替换成全角字符
+	 * 
+	 * @param s
+	 * @return
+	 */
+	public String xssEncode(String s) {
+		if (s == null || s.isEmpty()) {
+			return s;
+		}
+
+		String result = stripXSS(s);
+		if (null != result) {
+			result = escape(result);
+		}
+
+		return result;
+	}
+
+//	/**
+//	 * 将容易引起xss漏洞的半角字符直接替换成全角字符
+//	 *
+//	 * @param s
+//	 * @return
+//	 */
+//	private static String xssEncode(String s) {
+//		if (s == null || s.isEmpty()) {
+//			return s;
+//		}
+//
+//		StringReader reader = new StringReader(s);
+//		StringWriter writer = new StringWriter();
+//		try {
+//			HTMLParser.process(reader, writer, new XSSFilter(), true);
+//			return writer.toString();
+//		} catch (NullPointerException e) {
+//			return s;
+//		} catch (Exception ex) {
+//			ex.printStackTrace(System.out);
+//		}
+//		return null;
+//	}
+
+	private String stripXSS(String value) {
 		if (value != null) {
 			// NOTE: It's highly recommended to use the ESAPI library and
 			// uncomment the following line to

@@ -17,11 +17,11 @@ public class CookieUtil {
 	/**
 	 * 加密cookie时的网站自定码
 	 */
-	private final static String webKey = "ycxc";
+	private static final String webKey = "ycxc";
 	/**
 	 * 设置cookie有效期是一个星期，根据需要自定义
 	 */
-	private final static long cookieMaxAge = 60 * 60 * 24 * 7 * 1; 
+	private static final long cookieMaxAge = 60 * 60 * 24 * 7 * 1; 
 	
 	
 	public CookieUtil(String cookieDomainName)

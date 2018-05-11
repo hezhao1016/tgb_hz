@@ -10,11 +10,11 @@ package com.hz.tgb.common;
 public class StringAlign {
 
 	/** 左对齐格式 */
-	public static final int JUST_LEFT = 0;
+	private static final int JUST_LEFT = 0;
 	/** 居中格式*/
-	public static final int JUST_CENTER = 1;
+	private static final int JUST_CENTER = 1;
 	/** 右对齐格式 */
-	public static final int JUST_RIGHT = 2;
+	private static final int JUST_RIGHT = 2;
 	
 	/** 当前对齐格式 */
 	private int just;

@@ -1,4 +1,4 @@
-package com.hz.tgb.web;
+package com.hz.tgb.filter;
 
 import java.util.regex.Pattern;
 
@@ -12,27 +12,41 @@ import com.hz.tgb.encrypt.aes.BackAES;
  * @author weiguobin
  * @date 2015年6月9日
  */
-public class MyHttpRequest extends HttpServletRequestWrapper
-{
+public class MyHttpRequest extends HttpServletRequestWrapper {
 	private HttpServletRequest orgRequest;
 	private String AES_KEY = "dAA%D#V*2a9r4I!V";
 	
-	public MyHttpRequest(HttpServletRequest request) 
-	{
+	public MyHttpRequest(HttpServletRequest request) {
 		super(request);
 		orgRequest = request;
 	}
 
+	/**
+	 * 覆盖getParameter方法，将参数名和参数值都做xss过滤。<br/>
+	 * 如果需要获得原始的值，则通过super.getParameterValues(name)来获取<br/>
+	 * getParameterNames,getParameterValues和getParameterMap也可能需要覆盖
+	 */
 	@Override
-	public String getParameter(String name) 
-	{
+	public String getParameter(String name) {
 		String value = super.getParameter(xssEncode(name));
-		if(value != null)
-		{
+		if(value != null) {
 			value = BackAES.decrypt(value,AES_KEY,0);
 			value = xssEncode(value);
 		}
 		return value;
+	}
+
+	public String[] getParameterValues(String parameter) {
+		String[] values = super.getParameterValues(parameter);
+		if (values == null) {
+			return null;
+		}
+		int count = values.length;
+		String[] encodedValues = new String[count];
+		for (int i = 0; i < count; i++) {
+			encodedValues[i] = xssEncode(values[i]);
+		}
+		return encodedValues;
 	}
 	
 	/**
@@ -48,30 +62,30 @@ public class MyHttpRequest extends HttpServletRequestWrapper
 		}
 		return value;
 	}
-	
-	/**
-	 * 将容易引起xss漏洞的半角字符直接替换成全角字符
-	 * 
-	 * @param s
-	 * @return
-	 
-	private static String xssEncode(String s) {
-		if (s == null || s.isEmpty()) {
-			return s;
-		}
 
-		StringReader reader = new StringReader(s);
-		StringWriter writer = new StringWriter();
-		try {
-			HTMLParser.process(reader, writer, new XSSFilter(), true);
-			return writer.toString();
-		} catch (NullPointerException e) {
-			return s;
-		} catch (Exception ex) {
-			ex.printStackTrace(System.out);
-		}
-		return null;
-	}*/
+//	/**
+//	 * 将容易引起xss漏洞的半角字符直接替换成全角字符
+//	 *
+//	 * @param s
+//	 * @return
+//	 */
+//	private static String xssEncode(String s) {
+//		if (s == null || s.isEmpty()) {
+//			return s;
+//		}
+//
+//		StringReader reader = new StringReader(s);
+//		StringWriter writer = new StringWriter();
+//		try {
+//			HTMLParser.process(reader, writer, new XSSFilter(), true);
+//			return writer.toString();
+//		} catch (NullPointerException e) {
+//			return s;
+//		} catch (Exception ex) {
+//			ex.printStackTrace(System.out);
+//		}
+//		return null;
+//	}
 
 	/**
 	 * 获取最原始的request
@@ -88,8 +102,8 @@ public class MyHttpRequest extends HttpServletRequestWrapper
 	 * @return
 	 */
 	public static HttpServletRequest getOrgRequest(HttpServletRequest req) {
-		if (req instanceof XssHttpWrapper) {
-			return ((XssHttpWrapper) req).getOrgRequest();
+		if (req instanceof XssHttpServletRequestWrapper) {
+			return ((XssHttpServletRequestWrapper) req).getOrgRequest();
 		}
 		return req;
 	}
@@ -99,27 +113,28 @@ public class MyHttpRequest extends HttpServletRequestWrapper
 		for (int i = 0; i < s.length(); i++) {
 			char c = s.charAt(i);
 			switch (c) {
-			case '>':
-				sb.append('＞');// 全角大于号
-				break;
-			case '<':
-				sb.append('＜');// 全角小于号
-				break;
-			case '\'':
-				sb.append('‘');// 全角单引号
-				break;
-//			case '\"':
-//				sb.append('“');// 全角双引号
-//				break;
-			case '\\':
-				sb.append('＼');// 全角斜线
-				break;
-			case '%':
-				sb.append('％'); // 全角冒号
-				break;
-			default:
-				sb.append(c);
-				break;
+				case '>':
+					sb.append('＞');// 全角大于号
+					break;
+				case '<':
+					sb.append('＜');// 全角小于号
+					break;
+				case '\'':
+					sb.append('‘');// 全角单引号
+					break;
+//				case '\"':
+//					// 有可能影响到json格式字符串中的双引号。
+//					sb.append('“');// 全角双引号
+//					break;
+				case '\\':
+					sb.append('＼');// 全角斜线
+					break;
+				case '%':
+					sb.append('％'); // 全角冒号
+					break;
+				default:
+					sb.append(c);
+					break;
 			}
 
 		}

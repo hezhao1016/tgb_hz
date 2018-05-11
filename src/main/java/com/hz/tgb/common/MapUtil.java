@@ -17,8 +17,8 @@ import java.net.URLEncoder;
  */
 public class MapUtil {
 
-	private static double EARTH_RADIUS = 6378137;// 赤道半径(单位m)
-	private final static double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+	private static final double EARTH_RADIUS = 6378137;// 赤道半径(单位m)
+	private static final double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
 
 	/**
 	 * 转化为弧度(rad)

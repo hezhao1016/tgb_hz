@@ -82,8 +82,7 @@ public class SessionUtil {
 	 * 
 	 * @param request
 	 */
-	public static void removeSession(final HttpServletRequest request)
-	{
+	public static void removeSession(final HttpServletRequest request) {
 		final HttpSession session = request.getSession();
 		if (session != null) {
 			session.removeAttribute(USER_LOGINFO);

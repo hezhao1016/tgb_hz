@@ -19,9 +19,9 @@ import java.util.*;
 public class SortListUtil {  
 	
 	private static final Logger logger = LoggerFactory.getLogger(SortListUtil.class);
-	
-    public static final String DESC = "desc";  
-    public static final String ASC = "asc";  
+
+    private static final String DESC = "desc";
+    private static final String ASC = "asc";
     
     private SortListUtil(){
     	// 私有类构造方法
