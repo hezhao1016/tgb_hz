@@ -1,4 +1,4 @@
-package com.hz.tgb.common.xml;
+package com.hz.tgb.xml;
 
 import org.dom4j.*;
 import org.dom4j.io.OutputFormat;

@@ -1,8 +1,8 @@
 package com.hz.tgb.test.doc;
 
 import com.hz.tgb.common.StringUtil;
-import com.hz.tgb.common.datetime.DateUtil;
-import com.hz.tgb.common.number.AmountUtil;
+import com.hz.tgb.datetime.DateUtil;
+import com.hz.tgb.number.AmountUtil;
 import com.hz.tgb.doc.ExportExcelByPoi;
 
 import java.io.FileOutputStream;

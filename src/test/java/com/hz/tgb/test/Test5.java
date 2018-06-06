@@ -1,7 +1,7 @@
 package com.hz.tgb.test;
 
 import com.hz.tgb.common.StringUtil;
-import com.hz.tgb.common.datetime.DateUtil;
+import com.hz.tgb.datetime.DateUtil;
 import com.hz.tgb.file.FileUtil;
 
 import java.io.File;

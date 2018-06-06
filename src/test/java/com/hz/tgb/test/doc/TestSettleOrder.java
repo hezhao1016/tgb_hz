@@ -1,7 +1,7 @@
 package com.hz.tgb.test.doc;
 
 import com.hz.tgb.common.StringUtil;
-import com.hz.tgb.common.number.AmountUtil;
+import com.hz.tgb.number.AmountUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -427,7 +427,7 @@ public class TestSettleOrder {
 		 
 		// 输出Excel文件
 		try {
-			OutputStream out = new FileOutputStream("E://order("+orderType+").xls");  
+			OutputStream out = new FileOutputStream("E://id("+orderType+").xls");
 			wkb.write(out);
 			wkb.close();
 			System.out.println("ecport excel success !");

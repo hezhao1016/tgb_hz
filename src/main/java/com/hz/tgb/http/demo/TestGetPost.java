@@ -1,4 +1,4 @@
-package com.hz.tgb.http;
+package com.hz.tgb.http.demo;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;

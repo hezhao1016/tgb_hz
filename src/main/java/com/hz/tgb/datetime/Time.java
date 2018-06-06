@@ -1,18 +1,17 @@
-package com.hz.tgb.common.datetime;
+package com.hz.tgb.datetime;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
 /**
- * 
- * 功能描述：
+ * 功能描述：时间计算工具类
  * 
  * @author hezhao
  * @Date Jul 19, 2008
- * @Time 9:48:39 AM
+ * @Time 9:14:03 AM
  * @version 1.0
  */
-public class TimeUtil {
+public class Time {
 
 	/**
 	 * 时间字段常量，表示“秒”
@@ -57,7 +56,7 @@ public class TimeUtil {
 	/**
 	 * 无参构造，将各字段置为 0
 	 */
-	public TimeUtil() {
+	public Time() {
 		this(0, 0, 0, 0);
 	}
 
@@ -69,7 +68,7 @@ public class TimeUtil {
 	 * @param minute
 	 *            分钟
 	 */
-	public TimeUtil(int hour, int minute) {
+	public Time(int hour, int minute) {
 		this(0, hour, minute, 0);
 	}
 
@@ -83,17 +82,17 @@ public class TimeUtil {
 	 * @param second
 	 *            秒
 	 */
-	public TimeUtil(int hour, int minute, int second) {
+	public Time(int hour, int minute, int second) {
 		this(0, hour, minute, second);
 	}
 
 	/**
-	 * 功能描述：使用一个字符串构造时间<br/> TimeTools time = new TimeTools("14:22:23");
+	 * 使用一个字符串构造时间<br/> Time time = new Time("14:22:23");
 	 * 
 	 * @param time
 	 *            字符串格式的时间，默认采用“:”作为分隔符
 	 */
-	public TimeUtil(String time) {
+	public Time(String time) {
 		this(time, null);
 	}
 
@@ -109,7 +108,7 @@ public class TimeUtil {
 	 * @param second
 	 *            秒
 	 */
-	public TimeUtil(int day, int hour, int minute, int second) {
+	public Time(int day, int hour, int minute, int second) {
 		set(DAY, day);
 		set(HOUR, hour);
 		set(MINUTE, minute);
@@ -117,14 +116,12 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 功能描述：使用一个字符串构造时间，指定分隔符, TimeTools time = new TimeTools("14-22-23", "-");
+	 * 使用一个字符串构造时间，指定分隔符<br/> Time time = new Time("14-22-23", "-");
 	 * 
 	 * @param time
 	 *            字符串格式的时间
-	 * @param timeSeparator
-	 *            时间段分隔符
 	 */
-	public TimeUtil(String time, String timeSeparator) {
+	public Time(String time, String timeSeparator) {
 		if (timeSeparator != null) {
 			setTimeSeparator(timeSeparator);
 		}
@@ -143,7 +140,7 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 功能描述：设置时间字段的值
+	 * 设置时间字段的值
 	 * 
 	 * @param field
 	 *            时间字段常量
@@ -165,7 +162,7 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 功能描述：获得时间字段的值
+	 * 获得时间字段的值
 	 * 
 	 * @param field
 	 *            时间字段常量
@@ -180,14 +177,14 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 功能描述：将时间进行“加”运算，即加上一个时间
+	 * 将时间进行“加”运算，即加上一个时间
 	 * 
 	 * @param time
 	 *            需要加的时间
 	 * @return 运算后的时间
 	 */
-	public TimeUtil addTime(TimeUtil time) {
-		TimeUtil result = new TimeUtil();
+	public Time addTime(Time time) {
+		Time result = new Time();
 		int up = 0; // 进位标志
 		for (int i = 0; i < fields.length; i++) {
 			int sum = fields[i] + time.fields[i] + up;
@@ -198,14 +195,14 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 功能描述：将时间进行“减”运算，即减去一个时间
+	 * 将时间进行“减”运算，即减去一个时间
 	 * 
 	 * @param time
 	 *            需要减的时间
 	 * @return 运算后的时间
 	 */
-	public TimeUtil subtractTime(TimeUtil time) {
-		TimeUtil result = new TimeUtil();
+	public Time subtractTime(Time time) {
+		Time result = new Time();
 		int down = 0; // 退位标志
 		for (int i = 0, k = fields.length - 1; i < k; i++) {
 			int difference = fields[i] + down;
@@ -223,7 +220,7 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 功能描述：获得时间字段的分隔符
+	 * 获得时间字段的分隔符
 	 * 
 	 * @return
 	 */
@@ -232,7 +229,7 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 功能描述：设置时间字段的分隔符（用于字符串格式的时间）
+	 * 设置时间字段的分隔符（用于字符串格式的时间）
 	 * 
 	 * @param timeSeparator
 	 *            分隔符字符串
@@ -242,11 +239,9 @@ public class TimeUtil {
 	}
 
 	/**
-	 * 功能描述：正则表达式引用处理方法，源自 JDK
+	 * 正则表达式引用处理方法，源自 JDK
 	 * 
 	 * @link java.util.regex.Pattern#quote(String)
-	 * @param s
-	 * @return
 	 */
 	private String patternQuote(String s) {
 		int slashEIndex = s.indexOf("\\E");
@@ -283,25 +278,16 @@ public class TimeUtil {
 	}
 
 	public boolean equals(Object obj) {
-		if (obj == null)
-			return false;
 		if (this == obj)
 			return true;
+		if (obj == null)
+			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final TimeUtil other = (TimeUtil) obj;
+		final Time other = (Time) obj;
 		if (!Arrays.equals(fields, other.fields)) {
 			return false;
 		}
 		return true;
 	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

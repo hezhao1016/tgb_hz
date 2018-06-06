@@ -1,9 +1,9 @@
-package com.hz.tgb.test.order;
+package com.hz.tgb.test.id;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hz.tgb.common.order.OrderGenerater;
+import com.hz.tgb.id.OrderGenerater;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -29,7 +29,8 @@ public class OrderGeneraterTest {
         List<String> orderList = new ArrayList<String>();
         long startTime = System.currentTimeMillis();
         for (int i = 0; i < 10000; i++) {
-            String orderId = OrderGenerater.generateOrder();
+//            String orderId = OrderGenerater.generateOrder();
+            String orderId = OrderGenerater.generateOrder("id-", 18);
             logger.debug(orderId);
             
             if (orderList.contains(orderId)) {

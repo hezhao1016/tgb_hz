@@ -1,4 +1,4 @@
-package com.hz.tgb.common.xml;
+package com.hz.tgb.xml;
   
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

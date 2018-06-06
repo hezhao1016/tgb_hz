@@ -1,6 +1,6 @@
 package com.hz.tgb.http;
 
-import com.hz.tgb.common.number.NumberUtil;
+import com.hz.tgb.number.NumberUtil;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;

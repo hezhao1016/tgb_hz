@@ -1,4 +1,4 @@
-package com.hz.tgb.common.xml;
+package com.hz.tgb.xml;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

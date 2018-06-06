@@ -1,5 +1,7 @@
-package com.hz.tgb.common.order;
+package com.hz.tgb.id;
 
+import com.hz.tgb.common.RandomUtil;
+import com.hz.tgb.common.ValidateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,15 +43,30 @@ public class OrderGenerater {
 	}
 
     /**
-     * 生成订单号，生成规则 时间戳+机器IP最后两位+2位随机数+两位自增序列 <br>
+     * 生成订单号，生成规则：时间戳 + 机器IP最后两位 + 2位随机数 + 两位自增序列 <br>
      * 采用可重入锁减小锁持有的粒度，提高系统在高并发情况下的性能
      * 
      * @return
      */
     public static String generateOrder() {
         StringBuilder builder = new StringBuilder();
-        builder.append(getDateTime(FORMATSTRING)).append(getLastNumOfIP());
-        builder.append(getRandomNum()).append(getIncrement());
+        builder.append(getDateTime(FORMATSTRING))
+               .append(getNumberFromMechine())
+               .append(getRandomNum())
+               .append(getIncrement());
+        return builder.toString();
+    }
+
+    /**
+     * 生成订单号，生成规则：前缀 + 剩余长度(UUID)
+     *
+     * @param prefix 前缀
+     * @param len 订单号总长度
+     * @return
+     */
+    public static String generateOrder(String prefix, int len) {
+        StringBuilder builder = new StringBuilder(prefix);
+        builder.append(RandomUtil.getRandomUuidStr(len - prefix.length()));
         return builder.toString();
     }
 
@@ -113,31 +130,43 @@ public class OrderGenerater {
 
     /**
      * 获取IP的最后两位数字
-     * 
+     *
      * @return
      */
-    private static String getLastNumOfIP() {
-        String ip = getCurrentIP();
-        return ip.substring(ip.length() - 2);
+    private static String getNumberFromMechine() {
+        String hostName = "";
+        try {
+            hostName = getHostName();
+        } catch (Exception e) {
+            LOG.error("getHostName throws Exception:", e);
+        }
+        if (StringUtils.isBlank(hostName) || hostName.length() < 2) {
+            // 机器名为空
+            LOG.warn("hostName:{} is illegal!return randomNum!", hostName);
+            return getRandomNum();
+        } else {
+            // 得到了机器名
+            String number = hostName.substring(hostName.length() - 2, hostName.length());
+            if (ValidateUtil.isPoInteger(number)) {
+                return number;
+            } else {
+                LOG.warn("number:{} is not number!return randomNum!", number);
+                return getRandomNum();
+            }
+        }
     }
 
     /**
      * 获取本机IP
-     * 
+     *
      * @return
      */
-    private static String getCurrentIP() {
-        String ip = "";
+    private static String getHostName() {
         try {
-            ip = InetAddress.getLocalHost().getHostAddress();
+            return InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException e) {
             LOG.error("getLocalHost throws UnknownHostException:", e);
-            throw new RuntimeException("can not get ip!");
         }
-        if (StringUtils.isBlank(ip)) {
-            LOG.error("ip is blank!");
-            throw new RuntimeException("ip is blank!");
-        }
-        return ip;
+        return "";
     }
 }

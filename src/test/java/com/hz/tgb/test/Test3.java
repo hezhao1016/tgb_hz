@@ -1,9 +1,9 @@
 package com.hz.tgb.test;
 
 import com.hz.tgb.common.StringUtil;
-import com.hz.tgb.common.number.AmountUtil;
-import com.hz.tgb.common.number.NumberToCN;
-import com.hz.tgb.common.number.NumberUtil;
+import com.hz.tgb.number.AmountUtil;
+import com.hz.tgb.number.NumberToCN;
+import com.hz.tgb.number.NumberUtil;
 
 import java.math.BigDecimal;
 

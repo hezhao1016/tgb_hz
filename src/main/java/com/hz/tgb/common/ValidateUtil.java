@@ -1,5 +1,7 @@
 package com.hz.tgb.common;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +18,7 @@ public class ValidateUtil {
 	private static final Pattern pip4 = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");// ip地址匹配192.168.1.3
 	private static final Pattern pdomain = Pattern.compile("[a-zA-Z0-9-\\u4e00-\\u9fa5]+(.[a-zA-Z0-9-]+)+");
 	private static final Pattern pinteger = Pattern.compile("[+-]?\\d+");
-	private static final Pattern purl = Pattern.compile("(http:\\/\\/)?+[a-z0-9-]+(\\.[a-z0-9-]+)+(\\/[\\w-\\.\\\\/?%&=]*)?");
+	private static final Pattern purl = Pattern.compile("(http|https):\\/\\/[\\w\\-_]+(\\.[\\w\\-_]+)+([\\w\\-\\.,@?^=%&amp;:/~\\+#]*[\\w\\-\\@?^=%&amp;/~\\+#])?");
 	private static final Pattern pserialno = Pattern.compile("[a-z0-9-_]+");
 	private static final Pattern pdateymd = Pattern.compile("\\d{8}");
 	private static final String DOMAINS = ".com.cn|.net.cn|.org.cn|.gov.cn|.com|.net|.tv|.gd|.org|.cc|.vc|.mobi|.cd|.info|.name|.asia|.hk|.me|.la|.sh|.biz|.li|.kr|.in|.us|.io|.ac.cn|.bj.cn|.sh.cn|.tj.cn|.cq.cn|.he.cn|.sx.cn|.nm.cn|.ln.cn|.jl.cn|.hl.cn|.js.cn|.zj.cn|.ah.cn|.fj.cn|.jx.cn|.sd.cn|.ha.cn|.hb.cn|.hn.cn|.gd.cn|.gx.cn|.hi.cn|.sc.cn|.gz.cn|.yn.cn|.xz.cn|.sn.cn|.gs.cn|.qh.cn|.nx.cn|.xj.cn|.tw.cn|.hk.cn|.mo.cn|.cn";
@@ -61,7 +63,7 @@ public class ValidateUtil {
 	 * @param value 目标字符串
 	 * @return 是否整数
 	 */
-	public static boolean isNumeric(String value) {
+	public static boolean isInteger(String value) {
 		if (isEmptyString(value)) {
 			return false;
 		}
@@ -70,12 +72,12 @@ public class ValidateUtil {
 	}
 
 	/**
-	 * 校验整数,0-9
+	 * 校验正整数,0-9
 	 * 
 	 * @param value
 	 * @return
 	 */
-	public static boolean isInteger(String value) {
+	public static boolean isPoInteger(String value) {
 		if (isEmptyString(value)) {
 			return false;
 		}
@@ -371,6 +373,21 @@ public class ValidateUtil {
 	}
 
 	/**
+	 * 移除空行、空格
+	 *
+	 * @param str
+	 * @return
+	 */
+	public static String replaceBlank(String str) {
+		if (StringUtils.isBlank(str)) {
+			return str;
+		}
+		Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+		Matcher m = p.matcher(str);
+		return m.replaceAll("");
+	}
+
+	/**
 	 * 通用长度为1-50验证
 	 * 
 	 * @param value
@@ -513,8 +530,8 @@ public class ValidateUtil {
 
 	public static void main(String[] args) {
 		System.out.println(isNumber("-122.22"));
-		System.out.println(isInteger("122"));
-		System.out.println(isNumeric("-122"));
+		System.out.println(isPoInteger("122"));
+		System.out.println(isInteger("-122"));
 
 		String phone = "13123456789";
 		System.out.println("---结果:"+checkMobileNo(phone));

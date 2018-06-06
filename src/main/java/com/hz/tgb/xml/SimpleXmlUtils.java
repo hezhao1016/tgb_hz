@@ -1,4 +1,4 @@
-package com.hz.tgb.common.xml;
+package com.hz.tgb.xml;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;

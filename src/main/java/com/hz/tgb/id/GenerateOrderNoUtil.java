@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.hz.tgb.common.order;
+package com.hz.tgb.id;
 
 import com.hz.tgb.common.RandomUtil;
 import com.hz.tgb.common.StringUtil;
-import com.hz.tgb.common.datetime.DateUtil;
+import com.hz.tgb.datetime.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

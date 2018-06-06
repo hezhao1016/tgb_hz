@@ -22,7 +22,7 @@ public class SettleAggDaoImpl extends BaseDao {
         sql += " from settle_aggregate sa ";
         sql += " where 1=1 and order_type = 1 ";
         sql += " group by settle_month ";
-        sql += " order by settle_month desc ";
+        sql += " id by settle_month desc ";
 
         super.executeQuery(sql);
 

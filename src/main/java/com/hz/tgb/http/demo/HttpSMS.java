@@ -1,4 +1,4 @@
-package com.hz.tgb.http;
+package com.hz.tgb.http.demo;
 
 import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
@@ -22,8 +22,7 @@ public class HttpSMS {
 	
 	private static final String SMS_URL = "";
 	
-	public static boolean sendSMS(String phone, String code)  
-    {  
+	public static boolean sendSMS(String phone, String code) {
         // 创建HttpClient实例     
         HttpClient httpclient = new DefaultHttpClient();
         // 创建Get方法实例     
@@ -106,8 +105,7 @@ public class HttpSMS {
 	 * @param code
 	 * @return
 	 */
-	public static boolean sendRefundSMS(String phone, String orderId, String money, String finishTime)  
-	{  
+	public static boolean sendRefundSMS(String phone, String orderId, String money, String finishTime) {
 		// 创建HttpClient实例     
 		HttpClient httpclient = new DefaultHttpClient();  
 		String content = "尊敬的顾客您好，您申请的退款已处理成功，订单号【"+orderId+"】，退款金额【" +money+ "】，退款时间【"+finishTime+"】。请注意查看退款是否到账。";

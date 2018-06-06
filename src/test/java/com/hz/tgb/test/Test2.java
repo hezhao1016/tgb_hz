@@ -1,7 +1,7 @@
 package com.hz.tgb.test;
 
 
-import com.hz.tgb.common.number.AmountUtil;
+import com.hz.tgb.number.AmountUtil;
 
 import java.math.BigDecimal;
 

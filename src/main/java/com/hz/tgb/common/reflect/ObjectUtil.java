@@ -1,6 +1,6 @@
 package com.hz.tgb.common.reflect;
 
-import com.hz.tgb.common.datetime.DateUtil;
+import com.hz.tgb.datetime.DateUtil;
 
 import java.beans.PropertyDescriptor;
 import java.io.ByteArrayInputStream;

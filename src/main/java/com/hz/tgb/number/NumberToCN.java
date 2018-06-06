@@ -1,4 +1,4 @@
-package com.hz.tgb.common.number;
+package com.hz.tgb.number;
 
 import java.math.BigDecimal;
 

@@ -1,8 +1,9 @@
-package com.hz.tgb.http;
+package com.hz.tgb.http.demo;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.hz.tgb.http.HttpClientUtils;
 import com.hz.tgb.json.FastJsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +73,7 @@ public class InvokeUtil {
 			String url = SERVER_URL + interfaceName;
 			
 			//调用真有货接口，返回信息
-			String responseMsg = HttpClientUtils.request(reqParams, url); 
+			String responseMsg = HttpClientUtils.request(reqParams, url);
 			
 			//解密返回结果
 			result = BackAES.decrypt(responseMsg, AES_KEY, 0);

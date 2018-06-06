@@ -1,4 +1,4 @@
-package com.hz.tgb.common.datetime;
+package com.hz.tgb.datetime;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;

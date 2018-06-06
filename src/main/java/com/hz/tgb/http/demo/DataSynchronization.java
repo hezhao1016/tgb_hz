@@ -1,4 +1,4 @@
-package com.hz.tgb.http;
+package com.hz.tgb.http.demo;
 
 import com.hz.tgb.json.FastJsonUtil;
 import org.apache.commons.httpclient.HttpClient;

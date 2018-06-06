@@ -1,7 +1,7 @@
 package com.hz.tgb.test;
 
 import com.hz.tgb.common.ArrayUtil;
-import com.hz.tgb.common.datetime.DateUtil;
+import com.hz.tgb.datetime.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
