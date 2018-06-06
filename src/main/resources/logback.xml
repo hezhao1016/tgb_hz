@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="LOG_PATH" value="/var/logs/financeadmin-web/" />
+	<property name="LOG_PATTEN" value="[%-5level] %d{HH:mm:ss.SSS} [%X{ThreadName}] [%X{userName}] [%logger{64}:%line] >>> %msg%n" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>${LOG_PATTEN}</Pattern>
+		</encoder>
+	</appender>
+
+	<!-- 不同級別的文件記錄在不同的日誌文件中 -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_PATH}/server.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_PATH}/server_%d{yyyy-MM-dd}.log</FileNamePattern>
+		</rollingPolicy>
+		<encoder charset="UTF-8">
+			<pattern>${LOG_PATTEN}</pattern>
+		</encoder>
+	</appender>
+
+	<!-- 错误日志记录文件 -->
+	<appender name="ERRORFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_PATH}/error.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_PATH}/error_%d{yyyy-MM-dd}.log</FileNamePattern>
+		</rollingPolicy>
+		<encoder charset="UTF-8">
+			<pattern>${LOG_PATTEN}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<OnMismatch>DENY</OnMismatch>
+			<OnMatch>ACCEPT</OnMatch>
+		</filter>
+	</appender>
+
+<!-- 错误日志记录文件 -->
+	<appender name="DISCONF" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_PATH}/disconf.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${LOG_PATH}/disconf_%d{yyyy-MM-dd}.log</FileNamePattern>
+		</rollingPolicy>
+		<encoder charset="UTF-8">
+			<pattern>${LOG_PATTEN}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<OnMismatch>DENY</OnMismatch>
+			<OnMatch>ACCEPT</OnMatch>
+		</filter>
+	</appender>
+
+	<!-- 定义日志 -->
+        <logger name="com.baidu" level="DEBUG" >
+      <appender-ref ref="DISCONF"/>
+</logger>
+
+ 	<logger name="jdbc.audit" level="ERROR" />
+	<logger name="jdbc.connection" level="ERROR" />
+	<logger name="jdbc.resultset" level="ERROR" />
+	<logger name="org.mybatis" level="ERROR" />
+	<logger name="org.apache" level="ERROR" />
+	<logger name="jdbc.sqltiming" level="ERROR" />
+	<logger name="log4jdbc.debug" level="ERROR" />
+	<logger name="com.alibaba.druid" level="ERROR" />
+	<logger name="com.github.miemiedev" level="ERROR" />
+	<logger name="java.sql" level="ERROR" />
+	<logger name="org.ajax4jsf" level="INFO" />
+	<logger name="org.springframework.data.redis.core" level="INFO"/>
+
+	<logger name="org.springframework" level="INFO" />
+	<logger name="org.springframework.amqp" level="INFO" />
+	<logger name="com.oppo.opaycenter.report.listener" level="INFO" />
+
+
+	<!-- 根日志 -->
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+		<appender-ref ref="ERRORFILE" />
+	</root>
+</configuration>

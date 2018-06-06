@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="30" status="warn">
+	<Properties>
+		<Property name="LOG_HOME">/var/logs</Property>
+		<Property name="APPLICATION_NAME">${project.artifactId}</Property>
+		<Property name="LOG_PATTERN">
+			<![CDATA[%date [%X{ThreadName}] [%X{userId}] %level{length=5} [%logger:%line] %msg%n]]>
+		</Property>
+		<Property name="ROOT_LOG_LEVEL">${root.log.level}</Property>
+	</Properties>
+
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="${LOG_PATTERN}" />
+		</Console>
+		<RollingFile name="RollingFile" fileName="${LOG_HOME}/${APPLICATION_NAME}/${APPLICATION_NAME}.log" filePattern="${LOG_HOME}/${APPLICATION_NAME}/${APPLICATION_NAME}-%d{yyyy-MM-dd}-%i.log">
+			<PatternLayout>
+				<Pattern>${LOG_PATTERN}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy modulate="true" interval="1" />
+				<SizeBasedTriggeringPolicy size="250 MB" />
+			</Policies>
+			<DefaultRolloverStrategy min="1" max="1000" />
+		</RollingFile>
+		<RollingFile name="ERROR" fileName="${LOG_HOME}/${APPLICATION_NAME}/error.log" filePattern="${LOG_HOME}/${APPLICATION_NAME}/error-%d{yyyy-MM-dd}.log">
+			<ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY" />
+			<PatternLayout>
+				<Pattern>${LOG_PATTERN}</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+		<Http name="http" url="${log.http.url}" collector="${log.http.collector}" appId="${project.artifactId}" />
+	</Appenders>
+
+	<Loggers>
+		<logger name="org.apache.zookeeper" level="ERROR" />
+		<logger name="com.alibaba.dubbo" level="ERROR" />
+		<logger name="com.baidu.disconf" level="WARN" />
+		<logger name="org.apache.http" level="WARN" />
+		<logger name="org.springframework.data.redis" level="WARN" />
+		<logger name="org.springframework.beans" level="WARN" />
+		<logger name="org.apache.commons.beanutils" level="WARN" />
+
+		<AsyncRoot level="${ROOT_LOG_LEVEL}" includeLocation="true">
+			<AppenderRef ref="RollingFile" />
+			<AppenderRef ref="http" />
+			<AppenderRef ref="ERROR" />
+		</AsyncRoot>
+	</Loggers>
+</Configuration>
