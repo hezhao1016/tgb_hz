@@ -8,7 +8,7 @@ import com.hz.tgb.json.FastJsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.hz.tgb.encrypt.aes.BackAES;
+import com.hz.tgb.crypto.aes.BackAES;
 
 /**
  * 接口调用工具类

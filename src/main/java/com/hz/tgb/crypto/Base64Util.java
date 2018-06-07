@@ -1,10 +1,10 @@
-package com.hz.tgb.encrypt;
+package com.hz.tgb.crypto;
 
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.hz.tgb.encrypt.decoder.BASE64Encoder;
+import com.hz.tgb.crypto.decoder.BASE64Encoder;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

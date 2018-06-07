@@ -1,4 +1,4 @@
-package com.hz.tgb.encrypt.decoder;
+package com.hz.tgb.crypto.decoder;
 
 import java.io.IOException;
 

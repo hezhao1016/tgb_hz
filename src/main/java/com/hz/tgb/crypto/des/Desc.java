@@ -1,4 +1,4 @@
-package com.hz.tgb.encrypt.des;
+package com.hz.tgb.crypto.des;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

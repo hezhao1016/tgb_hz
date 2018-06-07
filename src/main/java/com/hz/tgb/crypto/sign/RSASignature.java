@@ -1,4 +1,4 @@
-package com.hz.tgb.encrypt.sign;
+package com.hz.tgb.crypto.sign;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;

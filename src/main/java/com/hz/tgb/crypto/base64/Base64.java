@@ -17,7 +17,7 @@
  * License version 2.1 along with this program.
  * If not, see <http://www.gnu.org/licenses/>.
  */
-package com.hz.tgb.encrypt.base64;
+package com.hz.tgb.crypto.base64;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

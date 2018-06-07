@@ -1,4 +1,4 @@
-package com.hz.tgb.encrypt.sign;
+package com.hz.tgb.crypto.sign;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

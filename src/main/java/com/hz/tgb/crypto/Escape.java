@@ -1,4 +1,4 @@
-package com.hz.tgb.encrypt;
+package com.hz.tgb.crypto;
 
 /**
  * 编解码
