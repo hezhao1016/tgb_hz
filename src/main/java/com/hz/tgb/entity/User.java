@@ -23,7 +23,7 @@ package com.hz.tgb.entity;
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
  * <p>
- * Created by hezhao on 2018-08-16 16:33
+ * Created by hezhao on 2017-08-16 16:33
  */
 public class User {
 	private String name;

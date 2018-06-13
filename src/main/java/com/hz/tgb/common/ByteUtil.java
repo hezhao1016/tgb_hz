@@ -53,6 +53,11 @@ public class ByteUtil {
         return (byte) "0123456789ABCDEF".indexOf(c);
     }
 
+    /**
+     * Long转换成Byte数组
+     * @param l
+     * @return
+     */
     public static byte[] toByteArray(Long l) {
         byte[] b = new byte[8];
 
@@ -63,6 +68,11 @@ public class ByteUtil {
         return b;
     }
 
+    /**
+     * Integer转换成Byte数组
+     * @param i
+     * @return
+     */
     public static byte[] toByteArray(Integer i) {
         byte[] b = new byte[4];
 

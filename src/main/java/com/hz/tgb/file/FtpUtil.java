@@ -19,11 +19,9 @@ import java.io.InputStream;
  * 
  * @author hezhao
  */
-public class FtpUtil
-{
+public class FtpUtil {
 
 	private static Logger logger = Logger.getLogger(FtpUtil.class);
-
 
 	/**
 	 * 向FTP服务器上传文件。
@@ -45,12 +43,10 @@ public class FtpUtil
 	 * @return boolean 上传成功与否
 	 */
 	public static boolean ftpUpload(final String ftpUrl, final int ftpPort, final String userName,
-			final String password, final String uploadPath, final String fileName, final InputStream input)
-	{
+			final String password, final String uploadPath, final String fileName, final InputStream input) {
 		boolean uploadResult = false;
 		final FTPClient ftp = new FTPClient();
-		try
-		{
+		try {
 			int reply;
 
 			// 连接FTP服务器
@@ -65,8 +61,7 @@ public class FtpUtil
 			ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
 			reply = ftp.getReplyCode();
 
-			if (!FTPReply.isPositiveCompletion(reply))
-			{
+			if (!FTPReply.isPositiveCompletion(reply)) {
 				logger.error("链接FTP服务器失败:[" + reply + "]");
 				logger.error("ftpUrl:" + ftpUrl + " ftpPort:" + ftpPort + " userName:" + userName + " password:"
 						+ password + " uploadPath:" + uploadPath + " fileName:" + fileName);
@@ -78,19 +73,15 @@ public class FtpUtil
 				}
 				logger.error(ftp.getReplyString() + " " + sb.toString());
 				ftp.disconnect();
-			}
-			else
-			{
+			} else {
 
 				final String[] paths = uploadPath.split("/");
 
 				final StringBuffer sb = new StringBuffer();
 				sb.append("/");
 				// 循环每级目录
-				for (int i = 0; i < paths.length; i++)
-				{
-					if (!paths[i].equals(""))
-					{
+				for (int i = 0; i < paths.length; i++) {
+					if (!paths[i].equals("")) {
 						sb.append(paths[i] + "/");
 
 						// 重新拼成目录，
@@ -98,19 +89,15 @@ public class FtpUtil
 
 						System.out.println(path + "path");
 						// 切换工作目录，如果返回false表示该目录不存在，同时检查每级目录是否已经创建
-						if (!ftp.changeWorkingDirectory(path))
-						{
+						if (!ftp.changeWorkingDirectory(path)) {
 							logger.debug("上传路径不存在。开始创建该路径目录...---第" + i + "次创建---...");
 							// 创建目录
 
-							if (ftp.makeDirectory(path))
-							{
+							if (ftp.makeDirectory(path)) {
 								// 切换到新生成的工作目录
 								ftp.changeWorkingDirectory(path);
 								logger.debug("创建目录成功。");
-							}
-							else
-							{
+							} else {
 								logger.debug("创建目录失败！");
 								return uploadResult;
 							}
@@ -120,12 +107,9 @@ public class FtpUtil
 
 				final boolean result = ftp.storeFile(fileName, input);
 
-				if (result)
-				{
+				if (result) {
 					logger.debug("上传文件到FTP服务器成功。");
-				}
-				else
-				{
+				} else {
 					logger.debug("上传文件到FTP服务器失败!");
 				}
 
@@ -133,18 +117,13 @@ public class FtpUtil
 				ftp.logout();
 				uploadResult = true;
 			}
-		} catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			logger.error("上传文件到FTP服务器失败!", e);
-		} finally
-		{
-			if (ftp.isConnected())
-			{
-				try
-				{
+		} finally {
+			if (ftp.isConnected()) {
+				try {
 					ftp.disconnect();
-				} catch (final IOException ioe)
-				{
+				} catch (final IOException ioe) {
 					logger.error("关闭FTP服务器连接失败!", ioe);
 				}
 			}
@@ -170,12 +149,10 @@ public class FtpUtil
 	 * @return boolean 上传成功与否
 	 */
 	public static boolean ftpDel(final String ftpUrl, final int ftpPort, final String userName,
-			final String password, final String filePath)
-	{
+			final String password, final String filePath) {
 		boolean uploadResult = false;
 		final FTPClient ftp = new FTPClient();
-		try
-		{
+		try {
 			int reply;
 
 			// 连接FTP服务器
@@ -190,8 +167,7 @@ public class FtpUtil
 			ftp.setFileType(FTPClient.BINARY_FILE_TYPE);
 			reply = ftp.getReplyCode();
 
-			if (!FTPReply.isPositiveCompletion(reply))
-			{
+			if (!FTPReply.isPositiveCompletion(reply)) {
 				logger.error("链接FTP服务器失败:[" + reply + "]");
 				logger.error("ftpUrl:" + ftpUrl + " ftpPort:" + ftpPort + " userName:" + userName + " password:"
 						+ password + " filePath:" + filePath);
@@ -203,24 +179,17 @@ public class FtpUtil
 				}
 				logger.error(ftp.getReplyString() + " " + sb.toString());
 				ftp.disconnect();
-			}
-			else
-			{
+			} else {
 				//删除文件
 				uploadResult = ftp.deleteFile(filePath);
 			}
-		} catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			logger.error("删除文件失败!文件："+filePath, e);
-		} finally
-		{
-			if (ftp.isConnected())
-			{
-				try
-				{
+		} finally {
+			if (ftp.isConnected()) {
+				try {
 					ftp.disconnect();
-				} catch (final IOException ioe)
-				{
+				} catch (final IOException ioe) {
 					logger.error("关闭FTP服务器连接失败!", ioe);
 				}
 			}
@@ -243,14 +212,11 @@ public class FtpUtil
 	 *        长度
 	 * @throws IOException
 	 */
-	public static BufferedImage scalePic(final BufferedImage bufferedImage, final int height, final int width)
-	{
-		try
-		{
+	public static BufferedImage scalePic(final BufferedImage bufferedImage, final int height, final int width) {
+		try {
 			final BufferedImage bi = Thumbnails.of(bufferedImage).size(width, height).keepAspectRatio(true).asBufferedImage();
 			return bi;
-		} catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -269,15 +235,12 @@ public class FtpUtil
 	 *        长度
 	 * @throws IOException
 	 */
-	public static BufferedImage cutPic(final BufferedImage bufferedImage, final int height, final int width)
-	{
-		try
-		{
+	public static BufferedImage cutPic(final BufferedImage bufferedImage, final int height, final int width) {
+		try {
 			final BufferedImage bi = Thumbnails.of(bufferedImage).sourceRegion(Positions.BOTTOM_LEFT, width, height)
 					.size(width, height).keepAspectRatio(true).asBufferedImage();
 			return bi;
-		} catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -300,13 +263,11 @@ public class FtpUtil
 	 */
 
 	public static InputStream processPhoto(final BufferedImage stream, final int width, final int height,
-			final String operate)
-	{
+			final String operate) {
 
 		try {
 			// 生成新的图片文件,需要裁剪，返回BufferedImage,如果是裁剪图片
-			if (operate.equals("cut"))
-			{
+			if (operate.equals("cut")) {
 				final BufferedImage newfBufferedImage = FtpUtil.cutPic(stream, width, height);
 				// 将BufferedImage转为inputStream
 				final ByteArrayOutputStream bs = new ByteArrayOutputStream();
@@ -318,9 +279,7 @@ public class FtpUtil
 				final InputStream newIs = new ByteArrayInputStream(bs.toByteArray());
 
 				return newIs;
-			}
-			else if (operate.equals("scale"))
-			{
+			} else if (operate.equals("scale")) {
 				final BufferedImage newfBufferedImage = FtpUtil.scalePic(stream, width, height);
 				// 将BufferedImage转为inputStream
 				final ByteArrayOutputStream bs = new ByteArrayOutputStream();
@@ -333,13 +292,10 @@ public class FtpUtil
 
 				return newIs;
 			}
-		} catch (final IOException e)
-		{
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	
-	
 }

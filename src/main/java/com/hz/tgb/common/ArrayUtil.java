@@ -959,22 +959,20 @@ public class ArrayUtil {
 	 * @return
 	 */
 	public static String join(String[] array) {
-		if (isEmpty(array))
-			return "";
-		if (array.length == 1)
-			return "[" + array[0] + "]";
+		if (array == null)
+			return "null";
+		int iMax = array.length - 1;
+		if (iMax == -1)
+			return "[]";
 
-		StringBuffer result = new StringBuffer("[");
-
-		for (int i = 0; i < array.length; i++) {
-			if (i == array.length - 1) {
-				result.append(array[i] + "]");
-			} else {
-				result.append(array[i] + ",");
-			}
+		StringBuilder sb = new StringBuilder();
+		sb.append('[');
+		for (int i = 0; ; i++) {
+			sb.append(array[i]);
+			if (i == iMax)
+				return sb.append(']').toString();
+			sb.append(", ");
 		}
-
-		return result.toString();
 	}
 
 	/**
@@ -1083,22 +1081,22 @@ public class ArrayUtil {
 	 * @return
 	 */
 	public static String join(String[] array, String splitStr) {
-		StringBuffer result = new StringBuffer("");
+		StringBuilder sb = new StringBuilder();
 		if (isEmpty(array)) {
-			return result.toString();
+			return "";
 		}
 		if (array.length == 1)
 			return array[0];
-
+		int iMax = array.length - 1;
 		for (int i = 0; i < array.length; i++) {
-			if (i == array.length - 1) {
-				result.append(array[i]);
+			if (i == iMax) {
+				sb.append(array[i]);
 			} else {
-				result.append(array[i] + splitStr);
+				sb.append(array[i] + splitStr);
 			}
 		}
 
-		return result.toString();
+		return sb.toString();
 	}
 
 	/**
@@ -1202,7 +1200,7 @@ public class ArrayUtil {
 	 * @param set
 	 * @return
 	 */
-	public static String join_set(Set<String> set, String splitStr) {
+	public static String joinSet(Set<String> set, String splitStr) {
 		if (set == null || set.size() == 0)
 			return "";
 		if (set.size() == 1){
@@ -1211,12 +1209,12 @@ public class ArrayUtil {
 			}
 		}
 
-		StringBuffer result = new StringBuffer("");
+		StringBuilder sb = new StringBuilder();
 
 		for (String s : set) {
-			result.append(s + splitStr);
+			sb.append(s + splitStr);
 		}
-		return result.toString().substring(0,result.length() - 1);
+		return sb.toString().substring(0, sb.length() - 1);
 	}
 
 	/**
@@ -1224,23 +1222,23 @@ public class ArrayUtil {
 	 * @param list
 	 * @return
 	 */
-	public static String join_list(List list, String splitStr) {
+	public static String joinList(List list, String splitStr) {
 		if (list == null || list.size() == 0)
 			return "";
 		if (list.size() == 1){
 			return String.valueOf(list.get(0));
 		}
 
-		StringBuffer result = new StringBuffer("");
+		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < list.size(); i++) {
 			if (i == list.size() - 1) {
-				result.append(list.get(i));
+				sb.append(list.get(i));
 			} else {
-				result.append(list.get(i) + splitStr);
+				sb.append(list.get(i) + splitStr);
 			}
 		}
-		return result.toString();
+		return sb.toString();
 	}
 
 	/**
@@ -1291,7 +1289,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static int[] sort_insert(int[] source) {
+	public static int[] sortByInsert(int[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -1313,7 +1311,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static double[] sort_insert(double[] source) {
+	public static double[] sortByInsert(double[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -1336,7 +1334,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static int[] sort_shell(int[] source) {
+	public static int[] sortByShell(int[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -1377,7 +1375,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static double[] sort_shell(double[] source) {
+	public static double[] sortByShell(double[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -1416,7 +1414,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static int[] sort_bubble(int[] source) {
+	public static int[] sortByBubble(int[] source) {
 		if (source == null || source.length < 2)
 			return source;
 		for (int i = 0; i < source.length - 1; i++) {
@@ -1438,7 +1436,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static int[] sort_bubble_desc(int[] source) {
+	public static int[] sortByBubbleDesc(int[] source) {
 		if (source == null || source.length < 2)
 			return source;
 		for (int i = 0; i < source.length - 1; i++) {
@@ -1460,7 +1458,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static double[] sort_bubble(double[] source) {
+	public static double[] sortByBubble(double[] source) {
 		if (source == null || source.length < 2)
 			return source;
 		for (int i = 0; i < source.length - 1; i++) {
@@ -1482,7 +1480,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static double[] sort_bubble_desc(double[] source) {
+	public static double[] sortByBubbleDesc(double[] source) {
 		if (source == null || source.length < 2)
 			return source;
 		for (int i = 0; i < source.length - 1; i++) {
@@ -1510,7 +1508,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static int[] sort_quick(int[] source) {
+	public static int[] sortByQuick(int[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -1532,7 +1530,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static double[] sort_quick(double[] source) {
+	public static double[] sortByQuick(double[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -1634,7 +1632,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static int[] sort_select(int[] source) {
+	public static int[] sortBySelect(int[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -1660,7 +1658,7 @@ public class ArrayUtil {
 	 *            需要进行排序操作的数组
 	 * @return 排序后的数组
 	 */
-	public static double[] sort_select(double[] source) {
+	public static double[] sortBySelect(double[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -1685,7 +1683,7 @@ public class ArrayUtil {
 	 * @param source
 	 *            数组
 	 */
-	public static int[] sort_heap(int[] source) {
+	public static int[] sortByHeap(int[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -1714,7 +1712,7 @@ public class ArrayUtil {
 	 * @param source
 	 *            数组
 	 */
-	public static double[] sort_heap(double[] source) {
+	public static double[] sortByHeap(double[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -1821,14 +1819,14 @@ public class ArrayUtil {
 	 *            数组
 	 * @return
 	 */
-	public static int[] sort_merge(int[] source) {
+	public static int[] sortByMerge(int[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
 		int left = 0;
 		int right = source.length - 1;
 
-		return sort_merge(source, left, right);
+		return sortByMerge(source, left, right);
 	}
 
 	/**
@@ -1842,17 +1840,17 @@ public class ArrayUtil {
 	 *            数组
 	 * @return
 	 */
-	public static double[] sort_merge(double[] source) {
+	public static double[] sortByMerge(double[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
 		int left = 0;
 		int right = source.length - 1;
 
-		return sort_merge(source, left, right);
+		return sortByMerge(source, left, right);
 	}
 
-	private static int[] sort_merge(int[] source, int left, int right) {
+	private static int[] sortByMerge(int[] source, int left, int right) {
 
 		if (left < right) {
 
@@ -1860,10 +1858,10 @@ public class ArrayUtil {
 			int center = (left + right) / 2;
 
 			// 对左边数组进行递归
-			sort_merge(source, left, center);
+			sortByMerge(source, left, center);
 
 			// 对右边数组进行递归
-			sort_merge(source, center + 1, right);
+			sortByMerge(source, center + 1, right);
 
 			// 合并
 			merge(source, left, center, right);
@@ -1871,7 +1869,7 @@ public class ArrayUtil {
 		return source;
 	}
 
-	private static double[] sort_merge(double[] source, int left, int right) {
+	private static double[] sortByMerge(double[] source, int left, int right) {
 
 		if (left < right) {
 
@@ -1879,10 +1877,10 @@ public class ArrayUtil {
 			int center = (left + right) / 2;
 
 			// 对左边数组进行递归
-			sort_merge(source, left, center);
+			sortByMerge(source, left, center);
 
 			// 对右边数组进行递归
-			sort_merge(source, center + 1, right);
+			sortByMerge(source, center + 1, right);
 
 			// 合并
 			merge(source, left, center, right);
@@ -1922,8 +1920,7 @@ public class ArrayUtil {
 		return source;
 	}
 
-	private static double[] merge(double[] source, int left, int center,
-								  int right) {
+	private static double[] merge(double[] source, int left, int center, int right) {
 
 		double[] tmpArr = new double[source.length];
 		int mid = center + 1;
@@ -1964,7 +1961,7 @@ public class ArrayUtil {
 	 * @Time 2017年8月1日 下午3:34:07
 	 * @param source
 	 */
-	public static int[] sort_radix(int[] source) {
+	public static int[] sortByRadix(int[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -2034,7 +2031,7 @@ public class ArrayUtil {
 	 * @Time 2017年8月1日 下午3:34:07
 	 * @param source
 	 */
-	public static double[] sort_radix(double[] source) {
+	public static double[] sortByRadix(double[] source) {
 		if (source == null || source.length < 2)
 			return source;
 
@@ -2110,7 +2107,7 @@ public class ArrayUtil {
 	 *            需要查找的值
 	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
 	 */
-	public static int search_order(int[] source, int key) {
+	public static int searchByOrder(int[] source, int key) {
 		if (source == null || source.length < 1)
 			return -1;
 		if (source.length == 1)
@@ -2135,7 +2132,7 @@ public class ArrayUtil {
 	 *            需要查找的值
 	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
 	 */
-	public static int search_order(double[] source, int key) {
+	public static int searchByOrder(double[] source, double key) {
 		if (source == null || source.length < 1)
 			return -1;
 		if (source.length == 1)
@@ -2162,7 +2159,7 @@ public class ArrayUtil {
 	 *            需要查找的值
 	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
 	 */
-	public static int search_binary(int[] source, int key) {
+	public static int searchByBinary(int[] source, int key) {
 		if (source == null || source.length < 1)
 			return -1;
 		if (source.length == 1)
@@ -2195,7 +2192,7 @@ public class ArrayUtil {
 	 *            需要查找的值
 	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
 	 */
-	public static int search_binary(double[] source, double key) {
+	public static int searchByBinary(double[] source, double key) {
 		if (source == null || source.length < 1)
 			return -1;
 		if (source.length == 1)
@@ -2210,6 +2207,80 @@ public class ArrayUtil {
 				high = mid - 1;
 			} else {
 				low = mid + 1;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * <strong>分块查找</strong> <br>
+	 * <br>
+	 * a. 首先将查找表分成若干块，在每一块中数据元素的存放是任意的，但块与块之间必须是有序的（假设这种排序是按关键字值递增的，
+	 * 也就是说在第一块中任意一个数据元素的关键字都小于第二块中所有数据元素的关键字
+	 * ，第二块中任意一个数据元素的关键字都小于第三块中所有数据元素的关键字，依次类推）； <br>
+	 * b. 建立一个索引表，把每块中最大的关键字值按块的顺序存放在一个辅助数组中，这个索引表也按升序排列； <br>
+	 * c. 查找时先用给定的关键字值在索引表中查找，确定满足条件的数据元素存放在哪个块中，查找方法既可以是折半方法，也可以是顺序查找。 <br>
+	 * d. 再到相应的块中顺序查找，便可以得到查找的结果。
+	 *
+	 * @param index
+	 *            索引表，其中放的是各块的最大值
+	 * @param source
+	 *            顺序表，
+	 * @param key
+	 *            要查找的值
+	 * @param m
+	 *            顺序表中各块的长度相等，为m
+	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
+	 */
+	public static int searchByBinary(int[] index, int[] source, int key, int m) {
+		// 在序列st数组中，用分块查找方法查找关键字为key的记录
+		// 1.在index[ ] 中折半查找，确定要查找的key属于哪个块中
+		int i = searchByBinary(index, key);
+		if (i >= 0) {
+			int j = i > 0 ? i * m : i;
+			int len = (i + 1) * m;
+			// 在确定的块中用顺序查找方法查找key
+			for (int k = j; k < len; k++) {
+				if (key == source[k]) {
+					return k;
+				}
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * <strong>分块查找</strong> <br>
+	 * <br>
+	 * a. 首先将查找表分成若干块，在每一块中数据元素的存放是任意的，但块与块之间必须是有序的（假设这种排序是按关键字值递增的，
+	 * 也就是说在第一块中任意一个数据元素的关键字都小于第二块中所有数据元素的关键字
+	 * ，第二块中任意一个数据元素的关键字都小于第三块中所有数据元素的关键字，依次类推）； <br>
+	 * b. 建立一个索引表，把每块中最大的关键字值按块的顺序存放在一个辅助数组中，这个索引表也按升序排列； <br>
+	 * c. 查找时先用给定的关键字值在索引表中查找，确定满足条件的数据元素存放在哪个块中，查找方法既可以是折半方法，也可以是顺序查找。 <br>
+	 * d. 再到相应的块中顺序查找，便可以得到查找的结果。
+	 *
+	 * @param index
+	 *            索引表，其中放的是各块的最大值
+	 * @param source
+	 *            顺序表，
+	 * @param key
+	 *            要查找的值
+	 * @param m
+	 *            顺序表中各块的长度相等，为m
+	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
+	 */
+	public static int searchByBinary(double[] index, double[] source, double key, int m) {
+		// 在序列st数组中，用分块查找方法查找关键字为key的记录
+		// 1.在index[ ] 中折半查找，确定要查找的key属于哪个块中
+		int i = searchByBinary(index, key);
+		if (i >= 0) {
+			int j = i > 0 ? i * m : i;
+			int len = (i + 1) * m;
+			// 在确定的块中用顺序查找方法查找key
+			for (int k = j; k < len; k++) {
+				if (key == source[k]) {
+					return k;
+				}
 			}
 		}
 		return -1;
@@ -2231,7 +2302,7 @@ public class ArrayUtil {
 	 *            需要查找的值
 	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
 	 */
-	public static int search_fibonacci(int[] source, int key) {
+	public static int searchByFibonacci(int[] source, int key) {
 		if (source == null || source.length < 1)
 			return -1;
 		if (source.length == 1)
@@ -2276,7 +2347,7 @@ public class ArrayUtil {
 	 *            需要查找的值
 	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
 	 */
-	public static int search_fibonacci(double[] source, double key) {
+	public static int searchByFibonacci(double[] source, double key) {
 		if (source == null || source.length < 1)
 			return -1;
 		if (source.length == 1)
@@ -2329,80 +2400,6 @@ public class ArrayUtil {
 	}
 
 	/**
-	 * <strong>分块查找</strong> <br>
-	 * <br>
-	 * a. 首先将查找表分成若干块，在每一块中数据元素的存放是任意的，但块与块之间必须是有序的（假设这种排序是按关键字值递增的，
-	 * 也就是说在第一块中任意一个数据元素的关键字都小于第二块中所有数据元素的关键字
-	 * ，第二块中任意一个数据元素的关键字都小于第三块中所有数据元素的关键字，依次类推）； <br>
-	 * b. 建立一个索引表，把每块中最大的关键字值按块的顺序存放在一个辅助数组中，这个索引表也按升序排列； <br>
-	 * c. 查找时先用给定的关键字值在索引表中查找，确定满足条件的数据元素存放在哪个块中，查找方法既可以是折半方法，也可以是顺序查找。 <br>
-	 * d. 再到相应的块中顺序查找，便可以得到查找的结果。
-	 *
-	 * @param index
-	 *            索引表，其中放的是各块的最大值
-	 * @param source
-	 *            顺序表，
-	 * @param key
-	 *            要查找的值
-	 * @param m
-	 *            顺序表中各块的长度相等，为m
-	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
-	 */
-	public static int search_binary(int[] index, int[] source, int key, int m) {
-		// 在序列st数组中，用分块查找方法查找关键字为key的记录
-		// 1.在index[ ] 中折半查找，确定要查找的key属于哪个块中
-		int i = search_binary(index, key);
-		if (i >= 0) {
-			int j = i > 0 ? i * m : i;
-			int len = (i + 1) * m;
-			// 在确定的块中用顺序查找方法查找key
-			for (int k = j; k < len; k++) {
-				if (key == source[k]) {
-					return k;
-				}
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * <strong>分块查找</strong> <br>
-	 * <br>
-	 * a. 首先将查找表分成若干块，在每一块中数据元素的存放是任意的，但块与块之间必须是有序的（假设这种排序是按关键字值递增的，
-	 * 也就是说在第一块中任意一个数据元素的关键字都小于第二块中所有数据元素的关键字
-	 * ，第二块中任意一个数据元素的关键字都小于第三块中所有数据元素的关键字，依次类推）； <br>
-	 * b. 建立一个索引表，把每块中最大的关键字值按块的顺序存放在一个辅助数组中，这个索引表也按升序排列； <br>
-	 * c. 查找时先用给定的关键字值在索引表中查找，确定满足条件的数据元素存放在哪个块中，查找方法既可以是折半方法，也可以是顺序查找。 <br>
-	 * d. 再到相应的块中顺序查找，便可以得到查找的结果。
-	 *
-	 * @param index
-	 *            索引表，其中放的是各块的最大值
-	 * @param source
-	 *            顺序表，
-	 * @param key
-	 *            要查找的值
-	 * @param m
-	 *            顺序表中各块的长度相等，为m
-	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
-	 */
-	public static int search_binary(double[] index, double[] source, double key, int m) {
-		// 在序列st数组中，用分块查找方法查找关键字为key的记录
-		// 1.在index[ ] 中折半查找，确定要查找的key属于哪个块中
-		int i = search_binary(index, key);
-		if (i >= 0) {
-			int j = i > 0 ? i * m : i;
-			int len = (i + 1) * m;
-			// 在确定的块中用顺序查找方法查找key
-			for (int k = j; k < len; k++) {
-				if (key == source[k]) {
-					return k;
-				}
-			}
-		}
-		return -1;
-	}
-
-	/**
 	 * <strong>Hash查找 </strong> <br>
 	 * 哈希表查找是通过对记录的关键字值进行运算，直接求出结点的地址，是关键字到地址的直接转换方法，不用反复比较。假设f包含n个结点，Ri为其中某个结点（
 	 * 1≤i≤n），keyi是其关键字值，在keyi与Ri的地址之间建立某种函数关系，可以通过这个函数把关键字值转换成相应结点的地址，有：addr(Ri
@@ -2422,7 +2419,7 @@ public class ArrayUtil {
 	 *            要查找的值
 	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
 	 */
-	public static int search_hash(int[] hash, int hashLength, int key) {
+	public static int searchByHash(int[] hash, int hashLength, int key) {
 		// 哈希函数
 		int hashAddress = key % hashLength;
 
@@ -2458,7 +2455,7 @@ public class ArrayUtil {
 	 *            要查找的值
 	 * @return 需要查找的值在数组中的位置，若未查到则返回-1
 	 */
-	public static int search_hash(double[] hash, int hashLength, double key) {
+	public static int searchByHash(double[] hash, int hashLength, double key) {
 		// 哈希函数
 		int hashAddress = (int) (key % hashLength);
 
@@ -3139,65 +3136,67 @@ public class ArrayUtil {
 	}
 
 	public static void main(String[] args) {
-//		 int[] array1 = { 21, 24, 13, 46, 35, 26, 14, 43, 11
-//		 ,41,46,45,98,45,49,61,94,72};
-//		 int[] array2 = { 21, 24, 13, 46, 35, 26, 14, 43, 11
-//		 ,41,46,45,98,45,49,61,94,72};
-//		 int[] array3 = { 21, 24, 13, 46, 35, 26, 14, 43, 11
-//		 ,41,46,45,98,45,49,61,94,72};
-//		 int[] array4 = { 21, 24, 13, 46, 35, 26, 14, 43, 11
-//		 ,41,46,45,98,45,49,61,94,72};
-//		 int[] array5 = { 21, 24, 13, 46, 35, 26, 14, 43, 11
-//		 ,41,46,45,98,45,49,61,94,72};
-//		 int[] array6 = { 21, 24, 13, 46, 35, 26, 14, 43, 11
-//		 ,41,46,45,98,45,49,61,94,72};
-//		 int[] array7 = { 21, 24, 13, 46, 35, 26, 14, 43, 11
-//		 ,41,46,45,98,45,49,61,94,72};
-//		 int[] array8 = { 21, 24, 13, 46, 35, 26, 14, 43, 11
-//		 ,41,46,45,98,45,49,61,94,72};
-		double[] array1 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165,
-				46.41, 0.15, 514.5, 485, 7, 3, 5496 };
-		double[] array2 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165,
-				46.41, 0.15, 514.5, 485, 7, 3, 5496 };
-		double[] array3 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165,
-				46.41, 0.15, 514.5, 485, 7, 3, 5496 };
-		double[] array4 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165,
-				46.41, 0.15, 514.5, 485, 7, 3, 5496 };
-		double[] array5 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165,
-				46.41, 0.15, 514.5, 485, 7, 3, 5496 };
-		double[] array6 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165,
-				46.41, 0.15, 514.5, 485, 7, 3, 5496 };
-		double[] array7 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165,
-				46.41, 0.15, 514.5, 485, 7, 3, 5496 };
-		double[] array8 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165,
-				46.41, 0.15, 514.5, 485, 7, 3, 5496 };
+//		int[] array1 = { 21, 24, 13, 46, 35, 26, 14, 43, 11,41,46,45,98,45,49,61,94,72};
+//		int[] array2 = { 21, 24, 13, 46, 35, 26, 14, 43, 11,41,46,45,98,45,49,61,94,72};
+//		int[] array3 = { 21, 24, 13, 46, 35, 26, 14, 43, 11,41,46,45,98,45,49,61,94,72};
+//		int[] array4 = { 21, 24, 13, 46, 35, 26, 14, 43, 11,41,46,45,98,45,49,61,94,72};
+//		int[] array5 = { 21, 24, 13, 46, 35, 26, 14, 43, 11,41,46,45,98,45,49,61,94,72};
+//		int[] array6 = { 21, 24, 13, 46, 35, 26, 14, 43, 11,41,46,45,98,45,49,61,94,72};
+//		int[] array7 = { 21, 24, 13, 46, 35, 26, 14, 43, 11,41,46,45,98,45,49,61,94,72};
+//		int[] array8 = { 21, 24, 13, 46, 35, 26, 14, 43, 11,41,46,45,98,45,49,61,94,72};
+
+		double[] array1 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165, 46.41, 0.15, 514.5, 485, 7, 3, 5496 };
+		double[] array2 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165, 46.41, 0.15, 514.5, 485, 7, 3, 5496 };
+		double[] array3 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165, 46.41, 0.15, 514.5, 485, 7, 3, 5496 };
+		double[] array4 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165, 46.41, 0.15, 514.5, 485, 7, 3, 5496 };
+		double[] array5 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165, 46.41, 0.15, 514.5, 485, 7, 3, 5496 };
+		double[] array6 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165, 46.41, 0.15, 514.5, 485, 7, 3, 5496 };
+		double[] array7 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165, 46.41, 0.15, 514.5, 485, 7, 3, 5496 };
+		double[] array8 = { 11.21, 2.12, 45.33, 4.254, 55.5, 52266, 4641.165, 46.41, 0.15, 514.5, 485, 7, 3, 5496 };
 
 //		 int[] temp;
 		double[] temp;
 
-		temp = sort_bubble(array1);
+		////// 排序
+		temp = sortByBubble(array1);
 		System.out.println(join(temp));
 
-		temp = sort_heap(array2);
+		temp = sortByHeap(array2);
 		System.out.println(join(temp));
 
-		temp = sort_insert(array3);
+		temp = sortByInsert(array3);
 		System.out.println(join(temp));
 
-		temp = sort_merge(array4);
+		temp = sortByMerge(array4);
 		System.out.println(join(temp));
 
-		temp = sort_quick(array5);
+		temp = sortByQuick(array5);
 		System.out.println(join(temp));
 
-		temp = sort_radix(array6);
+		temp = sortByRadix(array6);
 		System.out.println(join(temp));
 
-		temp = sort_select(array7);
+		temp = sortBySelect(array7);
 		System.out.println(join(temp));
 
-		temp = sort_shell(array8);
+		temp = sortByShell(array8);
 		System.out.println(join(temp));
+
+
+		////// 查找
+		int index;
+
+		index = searchByOrder(array1, 46.41);
+		System.out.println(index);
+
+		index = searchByBinary(array1, 46.41);
+		System.out.println(index);
+
+		index = searchByFibonacci(array1, 46.41);
+		System.out.println(index);
+
+		index = searchByHash(array1,10, 46.41);
+		System.out.println(index);
 
 
 		int[] is = new int[6];
@@ -3205,7 +3204,7 @@ public class ArrayUtil {
 		is[1] = 2;
 		is[2] = 3;
 
-		double[] ds = {0.5,1.5,2.5,3.5};
+		double[] ds = {0.5, 1.5, 2.5, 3.5};
 
 		int[] add = add(is, 4);
 		double[] add2 = add(ds,4.5);

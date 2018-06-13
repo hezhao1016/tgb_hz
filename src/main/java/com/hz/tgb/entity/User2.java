@@ -25,7 +25,7 @@ import com.hz.tgb.common.reflect.EntityToString;
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
  * <p>
- * Created by hezhao on 2018-08-16 16:33
+ * Created by hezhao on 2017-08-16 16:33
  */
 public class User2 {
 	private String name;
