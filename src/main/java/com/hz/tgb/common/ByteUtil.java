@@ -1,5 +1,7 @@
 package com.hz.tgb.common;
 
+import java.util.Arrays;
+
 /**
  * byte转字符串相关工具类
  * @author hezhao
@@ -81,5 +83,19 @@ public class ByteUtil {
         }
 
         return b;
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        byte[] bytes = "测试".getBytes("utf-8");
+        System.out.println("字节数组为：" + Arrays.toString(bytes));
+        String str = bytesToHexString(bytes);
+        System.out.println("to 16进制字符串：" + str);
+
+        System.out.println("==================================");
+
+        byte[] bytes1 = hexStringToBytes(str);
+        System.out.println("转换后的字节数组：" + Arrays.toString(bytes1));
+        System.out.println(new String(bytes1, "utf-8"));
     }
 }
