@@ -14,11 +14,10 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MD5Util {
 
-	static final char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-			'A', 'B', 'C', 'D', 'E', 'F' };
+	private static final char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 	/**此字符串相当于加密用的串，数据校验时结果不会被猜测。*/
-	static final String default_key = "dAA%D#V*2a9r4I!V";
+	private static final String default_key = "dAA%D#V*2a9r4I!V";
 	
 	private MD5Util(){
 		// 私有类构造方法

@@ -12,7 +12,7 @@ import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
+/** 文件MD5
  * Created by jimin on 15/11/29.
  */
 public class FileMD5Util {
