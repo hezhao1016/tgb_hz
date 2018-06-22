@@ -727,21 +727,24 @@
             <groupId>net.sf.json-lib</groupId>
             <artifactId>json-lib</artifactId>
             <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ezmorph</groupId>
+            <artifactId>ezmorph</artifactId>
+            <version>1.0.6</version>
         </dependency>
         <dependency>
             <groupId>de.odysseus.staxon</groupId>
             <artifactId>staxon</artifactId>
             <version>1.3</version>
         </dependency>
+
+        <!-- time -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.8.1</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.ezmorph</groupId>
-            <artifactId>ezmorph</artifactId>
-            <version>1.0.6</version>
         </dependency>
 
         <!--dom-->
@@ -832,6 +835,30 @@
             <groupId>com.itextpdf</groupId>
             <artifactId>itext-xtra</artifactId>
             <version>${itextpdf.version}</version>
+        </dependency>
+
+        <!-- 拼音转换 -->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
+        <!-- 并发框架 -->
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>3.3.6</version>
+        </dependency>
+
+        <!-- Lombok是一个可以通过简单的注解形式来帮助我们简化消除一些必须有但显得很臃肿的Java代码的工具,可以自动生成getter/setter -->
+        <!-- 需要配合插件使用(Lombok Plugin) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.0</version>
+            <!-- provided是指编译的时候依赖这个jar包,但是最终打包的时候不打进去 -->
+            <scope>provided</scope>
         </dependency>
 
         <!-- others -->
