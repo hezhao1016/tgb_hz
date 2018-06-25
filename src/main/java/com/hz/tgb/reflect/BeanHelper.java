@@ -1,4 +1,4 @@
-package com.hz.tgb.common.reflect;
+package com.hz.tgb.reflect;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;

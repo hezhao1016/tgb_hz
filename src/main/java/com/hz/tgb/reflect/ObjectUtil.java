@@ -1,4 +1,4 @@
-package com.hz.tgb.common.reflect;
+package com.hz.tgb.reflect;
 
 import com.hz.tgb.datetime.DateUtil;
 

@@ -1,4 +1,4 @@
-package com.hz.tgb.common.reflect;
+package com.hz.tgb.reflect;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;

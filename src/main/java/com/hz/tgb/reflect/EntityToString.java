@@ -1,4 +1,4 @@
-package com.hz.tgb.common.reflect;
+package com.hz.tgb.reflect;
 
 import java.lang.reflect.Field;
 

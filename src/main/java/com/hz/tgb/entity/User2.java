@@ -1,6 +1,6 @@
 package com.hz.tgb.entity;
 
-import com.hz.tgb.common.reflect.EntityToString;
+import com.hz.tgb.reflect.EntityToString;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
