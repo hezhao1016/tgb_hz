@@ -8,10 +8,10 @@ package com.hz.tgb.datetime;
 public class DateEnums {
 
 	/**
-	 * 日期类型枚举
-	 * 
+	 * 日期风格枚举
+	 *
 	 * @author user
-	 * 
+	 *
 	 */
 	public enum DateStyle {
 
@@ -193,9 +193,9 @@ public class DateEnums {
 
 	/**
 	 * 星期 枚举
-	 * 
+	 *
 	 * @author user
-	 * 
+	 *
 	 */
 	public enum Week {
 
@@ -256,5 +256,31 @@ public class DateEnums {
 			return number;
 		}
 	}
-	
+
+	/**
+	 * 日期类型，包括年月日周
+	 */
+	public enum DateType {
+		/**
+		 * 年
+		 */
+		YEAR,
+
+		/**
+		 * 月
+		 */
+		MONTH,
+
+		/**
+		 * 周
+		 */
+		WEEK,
+
+		/**
+		 * 日
+		 */
+		DAY;
+
+	}
+
 }
