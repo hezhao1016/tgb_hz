@@ -1,6 +1,6 @@
 package com.hz.tgb.common;
 
-import com.hz.tgb.common.entity.CountryInfo;
+import com.hz.tgb.common.pojo.CountryInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;

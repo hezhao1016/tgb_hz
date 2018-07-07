@@ -1,4 +1,4 @@
-package com.hz.tgb.common.entity;
+package com.hz.tgb.common.pojo;
 
 import java.math.BigDecimal;
 

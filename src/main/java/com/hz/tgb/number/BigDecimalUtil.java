@@ -20,7 +20,7 @@ public class BigDecimalUtil {
 
 	/**
 	 * 提供精确的加法运算。
-	 * 
+	 *
 	 * @param v1
 	 *            被加数
 	 * @param v2
@@ -34,8 +34,23 @@ public class BigDecimalUtil {
 	}
 
 	/**
+	 * 提供精确的加法运算。
+	 *
+	 * @param v1
+	 *            被加数
+	 * @param v2
+	 *            加数
+	 * @param scale
+	 *    		    表示表示需要精确到小数点以后几位。
+	 * @return 两个参数的和
+	 */
+	public static double add(double v1, double v2, int scale) {
+		return round(add(v1, v2), scale);
+	}
+
+	/**
 	 * 提供精确的减法运算。
-	 * 
+	 *
 	 * @param v1
 	 *            被减数
 	 * @param v2
@@ -49,8 +64,23 @@ public class BigDecimalUtil {
 	}
 
 	/**
+	 * 提供精确的减法运算。
+	 *
+	 * @param v1
+	 *            被减数
+	 * @param v2
+	 *            减数
+	 * @param scale
+	 *    		    表示表示需要精确到小数点以后几位。
+	 * @return 两个参数的差
+	 */
+	public static double sub(double v1, double v2, int scale) {
+		return round(sub(v1, v2), scale);
+	}
+
+	/**
 	 * 提供精确的乘法运算。
-	 * 
+	 *
 	 * @param v1
 	 *            被乘数
 	 * @param v2
@@ -64,8 +94,23 @@ public class BigDecimalUtil {
 	}
 
 	/**
+	 * 提供精确的乘法运算。
+	 *
+	 * @param v1
+	 *            被乘数
+	 * @param v2
+	 *            乘数
+	 * @param scale
+	 *    		    表示表示需要精确到小数点以后几位。
+	 * @return 两个参数的积
+	 */
+	public static double mul(double v1, double v2, int scale) {
+		return round(mul(v1, v2), scale);
+	}
+
+	/**
 	 * 提供（相对）精确的除法运算，当发生除不尽的情况时，精确到 小数点以后10位，以后的数字四舍五入。
-	 * 
+	 *
 	 * @param v1
 	 *            被除数
 	 * @param v2
@@ -78,7 +123,7 @@ public class BigDecimalUtil {
 
 	/**
 	 * 提供（相对）精确的除法运算。当发生除不尽的情况时，由scale参数指 定精度，以后的数字四舍五入。
-	 * 
+	 *
 	 * @param v1
 	 *            被除数
 	 * @param v2
@@ -99,7 +144,7 @@ public class BigDecimalUtil {
 
 	/**
 	 * 提供精确的小数位四舍五入处理。
-	 * 
+	 *
 	 * @param v
 	 *            需要四舍五入的数字
 	 * @param scale
@@ -118,7 +163,7 @@ public class BigDecimalUtil {
 
 	/**
 	 * 提供精确的类型转换(Float)
-	 * 
+	 *
 	 * @param v
 	 *            需要被转换的数字
 	 * @return 返回转换结果
@@ -130,7 +175,7 @@ public class BigDecimalUtil {
 
 	/**
 	 * 提供精确的类型转换(Int)不进行四舍五入
-	 * 
+	 *
 	 * @param v
 	 *            需要被转换的数字
 	 * @return 返回转换结果
@@ -142,7 +187,7 @@ public class BigDecimalUtil {
 
 	/**
 	 * 提供精确的类型转换(Long)
-	 * 
+	 *
 	 * @param v
 	 *            需要被转换的数字
 	 * @return 返回转换结果
@@ -154,7 +199,7 @@ public class BigDecimalUtil {
 
 	/**
 	 * 返回两个数中大的一个值
-	 * 
+	 *
 	 * @param v1
 	 *            需要被对比的第一个数
 	 * @param v2
@@ -169,7 +214,7 @@ public class BigDecimalUtil {
 
 	/**
 	 * 返回两个数中小的一个值
-	 * 
+	 *
 	 * @param v1
 	 *            需要被对比的第一个数
 	 * @param v2
@@ -184,7 +229,7 @@ public class BigDecimalUtil {
 
 	/**
 	 * 精确对比两个数字
-	 * 
+	 *
 	 * @param v1
 	 *            需要被对比的第一个数
 	 * @param v2
@@ -197,11 +242,11 @@ public class BigDecimalUtil {
 		return b1.compareTo(b2);
 	}
 
-	
-	public static void main(String[] args) {  
-        double info = 0.000;  
-        double base = BigDecimalUtil.div(5, 14, 3);  
-        info += (-1) * base * Math.log(base);  
-        System.out.println(info);  
-    }  
+
+	public static void main(String[] args) {
+		double info = 0.000;
+		double base = BigDecimalUtil.div(5, 14, 3);
+		info += (-1) * base * Math.log(base);
+		System.out.println(info);
+	}
 }

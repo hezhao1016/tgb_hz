@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hz.tgb.data.redis;
 
 import org.slf4j.Logger;
@@ -28,10 +25,10 @@ public class RedisOperate {
     /***
      * 缓存key的前缀
      */
-    private static final String PREFIX = "loan_";
+    private static final String PREFIX = "demo_";
 
     @Autowired
-    @Qualifier("JedisConnectionFactory")
+    @Qualifier("jedisConnectionFactory")
     private JedisConnectionFactory jedisConnFactory;
 
     /***
@@ -56,7 +53,7 @@ public class RedisOperate {
                 if(timeout > 0){
                     stringRedisConnection.expire(key, timeout);
                 }
-                
+
                 return 1;
             }
         } catch (Exception e) {
@@ -120,7 +117,7 @@ public class RedisOperate {
 
         return -1;
     }
-    
+
     /***
      * 设置数据到redis hash表中,命令hset
      *
@@ -208,7 +205,7 @@ public class RedisOperate {
         }
         return -1;
     }
-    
+
     /***
      * hMset命令,设置map
      *
@@ -242,7 +239,7 @@ public class RedisOperate {
 
         return -1;
     }
-    
+
     /***
      * 从redis hash表中取值,hmget命令
      *
@@ -274,7 +271,7 @@ public class RedisOperate {
 
         return null;
     }
-    
+
     /***
      * 检查redis中key值是否存在
      * @param key
@@ -297,10 +294,10 @@ public class RedisOperate {
         } finally {
             RedisConnectionUtils.releaseConnection(redisConnection, jedisConnFactory);
         }
-        
+
         return false;
     }
-    
+
     /***
      * 自增,redis的CAS操作
      * @param key redis中key值
@@ -324,7 +321,7 @@ public class RedisOperate {
         } finally {
             RedisConnectionUtils.releaseConnection(redisConnection, jedisConnFactory);
         }
-        
+
         return null;
     }
 }

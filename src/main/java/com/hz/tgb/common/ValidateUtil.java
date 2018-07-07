@@ -2,12 +2,14 @@ package com.hz.tgb.common;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * 公用参数校验工具类。
- * 
+ *
  * @Author hezhao
  * @Date 2015年3月25日
  */
@@ -29,7 +31,7 @@ public class ValidateUtil {
 
 	/**
 	 * 校验字符串是否是英文字母，不分大小写
-	 * 
+	 *
 	 * @author yuanchangjian
 	 * @return
 	 */
@@ -44,7 +46,7 @@ public class ValidateUtil {
 
 	/**
 	 * 校验数字,包括小数和负数
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */
@@ -73,7 +75,7 @@ public class ValidateUtil {
 
 	/**
 	 * 校验正整数,0-9
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */
@@ -88,7 +90,7 @@ public class ValidateUtil {
 
 	/**
 	 * 校验电话号码（座机）
-	 * 
+	 *
 	 * @author yuanchangjian
 	 * @return
 	 */
@@ -104,7 +106,7 @@ public class ValidateUtil {
 
 	/**
 	 * 校验电话号码（手机）
-	 * 
+	 *
 	 * @author yuanchangjian
 	 * @return
 	 */
@@ -146,7 +148,7 @@ public class ValidateUtil {
 
 	/**
 	 * 校验电子邮箱
-	 * 
+	 *
 	 * @author yuanchangjian
 	 * @return
 	 */
@@ -172,6 +174,30 @@ public class ValidateUtil {
 		Matcher m = purl.matcher(str);
 		return m.matches();
 	}
+
+	/**
+	 * 验证URL地址是否存在
+	 *
+	 * @param url
+	 * @return
+	 */
+	public static boolean checkURLExist(String url) {
+		try {
+			URL u = new URL(url);
+			HttpURLConnection urlconn = (HttpURLConnection) u.openConnection();
+			int state = urlconn.getResponseCode();
+			if (state == 200) { // 表示URL地址存在
+				// String succ = urlconn.getURL().toString();
+				return true;
+			}
+			// 表示URL地址不存在
+
+		} catch (Exception e) {
+
+		}
+		return false;
+	}
+
 
 	/**
 	 * 是否是主域名如 baidu.com
@@ -224,6 +250,19 @@ public class ValidateUtil {
 	}
 
 	/**
+	 * 校验 0-9a-zA-Z
+	 * @param s
+	 * @return
+	 */
+	public static boolean checkCharAndDigit(String s) {
+		if (isEmptyString(s)) {
+			return false;
+		}
+		Matcher m = pcharanddigit.matcher(s);
+		return m.matches();
+	}
+
+	/**
 	 * 校验编号, 只能是数字,字母, 下划线, 减号
 	 *
 	 * @param str 目标字符串 例如：http://www.oppo.com
@@ -237,6 +276,18 @@ public class ValidateUtil {
 
 		Matcher isSerialNo = pserialno.matcher(str);
 		return isSerialNo.matches();
+	}
+
+	/**
+	 * 检测字符串中只能包含：中文、数字、下划线(_)、横线(-)
+	 * @param sequence
+	 * @return
+	 */
+	public static boolean checkNickName(String sequence) {
+		final String format = "[^//u4E00-//u9FA5//uF900-//uFA2D//w-_]";
+		Pattern pattern = Pattern.compile(format);
+		Matcher matcher = pattern.matcher(sequence);
+		return !matcher.find();
 	}
 
 	/**
@@ -261,7 +312,7 @@ public class ValidateUtil {
 
 	/**
 	 * 校验密码
-	 * 
+	 *
 	 * @author yuanchangjian
 	 * @return
 	 */
@@ -276,7 +327,7 @@ public class ValidateUtil {
 
 	/**
 	 * 验证用户名
-	 * 
+	 *
 	 * @param value
 	 *            用户名
 	 * @return 布尔
@@ -292,7 +343,7 @@ public class ValidateUtil {
 
 	/**
 	 * 验证姓名
-	 * 
+	 *
 	 * @param value
 	 *            姓名
 	 * @return 布尔
@@ -308,7 +359,7 @@ public class ValidateUtil {
 
 	/**
 	 * 获取字符长度
-	 * 
+	 *
 	 * @param value
 	 * @return 长度
 	 */
@@ -318,7 +369,7 @@ public class ValidateUtil {
 
 	/**
 	 * 判断字符串是否为空或者空字符串。
-	 * 
+	 *
 	 * @author weiguobin
 	 * @param value
 	 * @return 如果为空或者空字符串，返回true；否则返回false。
@@ -389,7 +440,7 @@ public class ValidateUtil {
 
 	/**
 	 * 通用长度为1-50验证
-	 * 
+	 *
 	 * @param value
 	 *            校验值
 	 * @return 布尔
@@ -405,7 +456,7 @@ public class ValidateUtil {
 
 	/**
 	 * 验证地址
-	 * 
+	 *
 	 * @param value
 	 *            校验值
 	 * @return 布尔
@@ -421,7 +472,7 @@ public class ValidateUtil {
 
 	/**
 	 * 通用长度为1-255验证
-	 * 
+	 *
 	 * @param value
 	 *            校验值
 	 * @return 布尔
@@ -455,7 +506,7 @@ public class ValidateUtil {
 
 	/**
 	 * 验证经度
-	 * 
+	 *
 	 * @param value
 	 *            校验值
 	 * @return 布尔
@@ -471,7 +522,7 @@ public class ValidateUtil {
 
 	/**
 	 * 验证纬度
-	 * 
+	 *
 	 * @param value
 	 *            校验值
 	 * @return 布尔
@@ -515,16 +566,19 @@ public class ValidateUtil {
 	}
 
 	/**
-	 * 校验 0-9a-zA-Z
-	 * @param s
+	 * 验证正则表达式
+	 * @param pattern 正则表达式
+	 * @param str 要验证的字符串
 	 * @return
 	 */
-	public static boolean checkCharAndDigit(String s) {
-		if (isEmptyString(s)) {
+	public static boolean test(String pattern,String str) {
+		try {
+			Pattern regex = Pattern.compile(pattern);
+			Matcher m = regex.matcher(str);
+			return m.matches();
+		} catch (Exception e) {
 			return false;
 		}
-		Matcher m = pcharanddigit.matcher(s);
-		return m.matches();
 	}
 
 

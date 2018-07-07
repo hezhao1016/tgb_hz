@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,29 +61,29 @@ public class StringUtil {
 				+ isJavaIdentifier("\u0391var"));
 		System.out.println("\"\1$my_var\" is an identifier? "
 				+ isJavaIdentifier("\1$my_var"));
-		
+
 		System.out.println(substringByByte("abcdefg", 3));
 		System.out.println(substringByByte("我的滑板鞋是什么", 3));
-		
+
 		System.out.println(getStringLen("我的滑板鞋是什么"));
-		
+
 		System.out.println(getLimitLengthString("我的滑板鞋是什么是什么是什么是什么是什么",10));
 		System.out.println(getLimitLengthStringZh("我的滑板鞋是什么是什么是什么是什么是什么",10));
 		System.out.println(getLimitLengthString("sfhnasdfjlksdgf",10));
 		System.out.println(getLimitLengthStringZh("sfhnasdfjlksdgf",10));
-		
-		String str = "12345abcde";  
-	    System.out.println("--------------------------------");  
-	    System.out.println("正向截取长度为4，结果：\n" + StringUtil.subStr(str, 4));  
-	    System.out.println("反向截取长度为4，结果：\n" + StringUtil.subStr(str, -4));  
-	    System.out.println("--------------------------------");  
-	    System.out.println("正向截取到第4个字符的位置，结果：\n" + StringUtil.subStrStart(str, 4));  
-	    System.out.println("反向截取到第4个字符的位置，结果：\n" + StringUtil.subStrEnd(str, 4));  
-	    System.out.println("--------------------------------");  
-	    System.out.println("从第2个截取到第9个，结果：\n" + StringUtil.subStr(str, 1, 9));  
-	    System.out.println("从第2个截取到倒数第1个，结果：\n" + StringUtil.subStr(str, 1, -1));  
-	    System.out.println("从倒数第4个开始截取，结果：\n" + StringUtil.subStr(str, -4, 0));  
-	    System.out.println("从倒数第4个开始截取，结果：\n" + StringUtil.subStr(str, -4, 10));  
+
+		String str = "12345abcde";
+		System.out.println("--------------------------------");
+		System.out.println("正向截取长度为4，结果：\n" + StringUtil.subStr(str, 4));
+		System.out.println("反向截取长度为4，结果：\n" + StringUtil.subStr(str, -4));
+		System.out.println("--------------------------------");
+		System.out.println("正向截取到第4个字符的位置，结果：\n" + StringUtil.subStrStart(str, 4));
+		System.out.println("反向截取到第4个字符的位置，结果：\n" + StringUtil.subStrEnd(str, 4));
+		System.out.println("--------------------------------");
+		System.out.println("从第2个截取到第9个，结果：\n" + StringUtil.subStr(str, 1, 9));
+		System.out.println("从第2个截取到倒数第1个，结果：\n" + StringUtil.subStr(str, 1, -1));
+		System.out.println("从倒数第4个开始截取，结果：\n" + StringUtil.subStr(str, -4, 0));
+		System.out.println("从倒数第4个开始截取，结果：\n" + StringUtil.subStr(str, -4, 10));
 	}
 
 	/**
@@ -391,7 +392,7 @@ public class StringUtil {
 
 	/**
 	 * 把输入字符串的首字母改成大写
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -424,7 +425,7 @@ public class StringUtil {
 
 	/**
 	 * 是否是信件
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -438,7 +439,7 @@ public class StringUtil {
 
 	/**
 	 * 此方法判断输入字符是否为字母a-z或A-Z 是返回true不是返回false
-	 * 
+	 *
 	 * @param c
 	 *            char
 	 * @return boolean
@@ -449,7 +450,7 @@ public class StringUtil {
 
 	/**
 	 * 判断输入字符是否为字母a-z或A-Z 是返回true不是返回false
-	 * 
+	 *
 	 * @author hezhao
 	 * @Time 2017年7月31日 下午5:04:35
 	 * @param inputStr
@@ -483,7 +484,7 @@ public class StringUtil {
 
 	/**
 	 * 此方法检查email有效性 返回提示信息
-	 * 
+	 *
 	 * @param email
 	 * @return
 	 */
@@ -499,7 +500,7 @@ public class StringUtil {
 
 	/**
 	 * 判断手机号码是否合法
-	 * 
+	 *
 	 * @param handset
 	 *            手机号
 	 * @return 是否合法
@@ -526,7 +527,7 @@ public class StringUtil {
 
 	/**
 	 * 判断大陆地区固话及小灵通 区号：010,020,021,022,023,024,025,027,028,029
-	 * 
+	 *
 	 * @param tel
 	 *            电话号码
 	 * @return 是否合法
@@ -583,7 +584,7 @@ public class StringUtil {
 
 	/**
 	 * 验证用户名是否只含中英文和数字
-	 * 
+	 *
 	 * @param userName
 	 *            用户名
 	 * @return 是否合法
@@ -654,7 +655,7 @@ public class StringUtil {
 
 	/**
 	 * 功能：判断字符串是否为日期格式
-	 * 
+	 *
 	 * @param strDate
 	 *            字符串
 	 * @return
@@ -671,8 +672,223 @@ public class StringUtil {
 	}
 
 	/**
+	 * 身份证的有效验证
+	 *
+	 * @param idStr
+	 *            身份证号
+	 * @return 有效：true 无效：false
+	 * @throws ParseException
+	 */
+	public boolean idCardValidate(String idStr) {
+		try {
+			String errorInfo = "";// 记录错误信息
+			String[] ValCodeArr = { "1", "0", "x", "9", "8", "7", "6", "5", "4",
+					"3", "2" };
+			String[] Wi = { "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7",
+					"9", "10", "5", "8", "4", "2" };
+			// String[] Checker = {"1","9","8","7","6","5","4","3","2","1","1"};
+			String Ai = "";
+
+			// ================ 号码的长度 15位或18位 ================
+			if (idStr.length() != 15 && idStr.length() != 18) {
+				errorInfo = "号码长度应该为15位或18位。";
+				logger.debug(errorInfo);
+				return false;
+			}
+			// =======================(end)========================
+
+			// ================ 数字 除最后以为都为数字 ================
+			if (idStr.length() == 18) {
+				Ai = idStr.substring(0, 17);
+			} else if (idStr.length() == 15) {
+				Ai = idStr.substring(0, 6) + "19" + idStr.substring(6, 15);
+			}
+			if (isNumeric(Ai) == false) {
+				errorInfo = "15位号码都应为数字 ; 18位号码除最后一位外，都应为数字。";
+				logger.debug(errorInfo);
+				return false;
+			}
+			// =======================(end)========================
+
+			// ================ 出生年月是否有效 ================
+			String strYear = Ai.substring(6, 10);// 年份
+			String strMonth = Ai.substring(10, 12);// 月份
+			String strDay = Ai.substring(12, 14);// 月份
+
+			if (checkDate(strYear + "-" + strMonth + "-" + strDay) == false) {
+				errorInfo = "生日无效。";
+				logger.debug(errorInfo);
+				return false;
+			}
+
+			GregorianCalendar gc = new GregorianCalendar();
+			SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+			if ((gc.get(Calendar.YEAR) - Integer.parseInt(strYear)) > 150
+					|| (gc.getTime().getTime() - s.parse(
+					strYear + "-" + strMonth + "-" + strDay).getTime()) < 0) {
+				errorInfo = "生日不在有效范围。";
+				logger.debug(errorInfo);
+				return false;
+			}
+			if (Integer.parseInt(strMonth) > 12 || Integer.parseInt(strMonth) == 0) {
+				errorInfo = "月份无效";
+				logger.debug(errorInfo);
+				return false;
+			}
+			if (Integer.parseInt(strDay) > 31 || Integer.parseInt(strDay) == 0) {
+				errorInfo = "日期无效";
+				logger.debug(errorInfo);
+				return false;
+			}
+			// =====================(end)=====================
+
+			// ================ 地区码时候有效 ================
+			Hashtable<String, String> h = getAreaCode();
+			if (h.get(Ai.substring(0, 2)) == null) {
+				errorInfo = "地区编码错误。";
+				logger.debug(errorInfo);
+				return false;
+			}
+			// ==============================================
+
+			// ================ 判断最后一位的值 ================
+			int TotalmulAiWi = 0;
+			for (int i = 0; i < 17; i++) {
+				TotalmulAiWi = TotalmulAiWi
+						+ Integer.parseInt(String.valueOf(Ai.charAt(i)))
+						* Integer.parseInt(Wi[i]);
+			}
+			int modValue = TotalmulAiWi % 11;
+			String strVerifyCode = ValCodeArr[modValue];
+			Ai = Ai + strVerifyCode;
+
+			if (idStr.length() == 18) {
+				if (Ai.equals(idStr) == false) {
+					errorInfo = "身份证无效，最后一位字母错误";
+					logger.debug(errorInfo);
+					return false;
+				}
+			} else {
+				logger.debug("所在地区:" + h.get(Ai.substring(0, 2).toString()));
+				logger.debug("新身份证号:" + Ai);
+				return true;
+			}
+			// =====================(end)=====================
+			logger.debug("所在地区:" + h.get(Ai.substring(0, 2).toString()));
+			return true;
+		} catch (ParseException e) {
+			logger.error("idCardValidate error:{}", e);
+		}
+		return false;
+	}
+
+	/**
+	 * 功能：设置地区编码
+	 *
+	 * @return Hashtable 对象
+	 */
+	public Hashtable<String, String> getAreaCode() {
+		Hashtable<String, String> hashtable = new Hashtable<String, String>();
+		hashtable.put("11", "北京");
+		hashtable.put("12", "天津");
+		hashtable.put("13", "河北");
+		hashtable.put("14", "山西");
+		hashtable.put("15", "内蒙古");
+		hashtable.put("21", "辽宁");
+		hashtable.put("22", "吉林");
+		hashtable.put("23", "黑龙江");
+		hashtable.put("31", "上海");
+		hashtable.put("32", "江苏");
+		hashtable.put("33", "浙江");
+		hashtable.put("34", "安徽");
+		hashtable.put("35", "福建");
+		hashtable.put("36", "江西");
+		hashtable.put("37", "山东");
+		hashtable.put("41", "河南");
+		hashtable.put("42", "湖北");
+		hashtable.put("43", "湖南");
+		hashtable.put("44", "广东");
+		hashtable.put("45", "广西");
+		hashtable.put("46", "海南");
+		hashtable.put("50", "重庆");
+		hashtable.put("51", "四川");
+		hashtable.put("52", "贵州");
+		hashtable.put("53", "云南");
+		hashtable.put("54", "西藏");
+		hashtable.put("61", "陕西");
+		hashtable.put("62", "甘肃");
+		hashtable.put("63", "青海");
+		hashtable.put("64", "宁夏");
+		hashtable.put("65", "新疆");
+		hashtable.put("71", "台湾");
+		hashtable.put("81", "香港");
+		hashtable.put("82", "澳门");
+		hashtable.put("91", "国外");
+		return hashtable;
+	}
+
+	/**
+	 * 功能:在判定已经是正确的身份证号码之后,查找出身份证所在地区
+	 *
+	 * @param idCard
+	 *            身份证号码
+	 * @return 所在地区
+	 */
+	public String getArea(String idCard) {
+		Hashtable<String, String> ht = getAreaCode();
+		String area = ht.get(idCard.substring(0, 2));
+		return area;
+	}
+
+	/**
+	 * 功能:在判定已经是正确的身份证号码之后,查找出此人性别
+	 *
+	 * @param idCard
+	 *            身份证号码
+	 * @return 男或者女
+	 */
+	public String getSex(String idCard) {
+		String sex = "";
+		if (idCard.length() == 15)
+			sex = idCard.substring(idCard.length() - 3, idCard.length());
+
+		if (idCard.length() == 18)
+			sex = idCard.substring(idCard.length() - 4, idCard.length() - 1);
+
+		logger.debug(sex);
+		int sexNum = Integer.parseInt(sex) % 2;
+		if (sexNum == 0) {
+			return "女";
+		}
+		return "男";
+	}
+
+	/**
+	 * 功能:在判定已经是正确的身份证号码之后,查找出此人出生日期
+	 *
+	 * @param idCard
+	 *            身份证号码
+	 * @return 出生日期 XXXX MM-DD
+	 */
+
+	public String getBirthday(String idCard) {
+		String Ain = "";
+		if (idCard.length() == 18) {
+			Ain = idCard.substring(0, 17);
+		} else if (idCard.length() == 15) {
+			Ain = idCard.substring(0, 6) + "19" + idCard.substring(6, 15);
+		}
+
+		// ================ 出生年月是否有效 ================
+		String strYear = Ain.substring(6, 10);// 年份
+		String strMonth = Ain.substring(10, 12);// 月份
+		String strDay = Ain.substring(12, 14);// 日期
+		return strYear + "-" + strMonth + "-" + strDay;
+	}
+
+	/**
 	 * 此方法判断输入字符是否为数字0-9 是返回true不是返回false
-	 * 
+	 *
 	 * @param c
 	 *            char
 	 * @return boolean
@@ -683,7 +899,7 @@ public class StringUtil {
 
 	/**
 	 * 是否是数字0-9
-	 * 
+	 *
 	 * @author hezhao
 	 * @Time 2017年7月28日 下午9:43:45
 	 * @param inputStr
@@ -704,7 +920,7 @@ public class StringUtil {
 
 	/**
 	 * 校验数字,包括小数和负数
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 */
@@ -716,7 +932,7 @@ public class StringUtil {
 
 	/**
 	 * 是否是整数
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -727,7 +943,7 @@ public class StringUtil {
 
 	/**
 	 * 是否是小数
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -768,12 +984,12 @@ public class StringUtil {
 		}
 		return head
 				+ s.replaceAll("(零.)*零元", "元").replaceFirst("(零.)+", EMPTY)
-						.replaceAll("(零.)+", "零").replaceAll("^整$", "零元整");
+				.replaceAll("(零.)+", "零").replaceAll("^整$", "零元整");
 	}
 
 	/**
 	 * 删除重复字符
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -789,13 +1005,13 @@ public class StringUtil {
 				sb.append(strArray[i] + SPACE);
 			}
 		}
-		System.out.println(mLinkedSet);
+		// System.out.println(mLinkedSet);
 		return sb.toString();
 	}
 
 	/**
 	 * 截取字符串，字母、汉字都可以，汉字不会截取半
-	 * 
+	 *
 	 * @param str
 	 *            字符串
 	 * @param n
@@ -823,102 +1039,102 @@ public class StringUtil {
 		}
 		return str.substring(0, num);
 	}
-	
-	/** 
-	 * 从头开始截取 
-	 *  
-	 * @param str 字符串 
-	 * @param end 结束位置 
-	 * @return 
-	 */  
-	public static String subStrStart(String str, int end){  
-	    return subStr(str, 0, end);  
-	}  
-	  
-	/** 
-	 * 从尾开始截取 
-	 *  
-	 * @param str 字符串 
-	 * @param start 开始位置 
-	 * @return 
-	 */  
-	public static String subStrEnd(String str, int start){  
-	    return subStr(str, str.length()-start, str.length());  
-	}  
-	  
-	/** 
-	 * 截取字符串 （支持正向、反向截取）<br/> 
-	 *  
-	 * @param str 待截取的字符串 
-	 * @param length 长度 ，>=0时，从头开始向后截取length长度的字符串；<0时，从尾开始向前截取length长度的字符串 
-	 * @return 返回截取的字符串 
-	 * @throws RuntimeException 
-	 */  
-	public static String subStr(String str, int length) throws RuntimeException{  
-	    if(str==null){  
-	        throw new NullPointerException("字符串为null");  
-	    }  
-	    int len = str.length();  
-	    if(len<Math.abs(length)){  
-	        throw new StringIndexOutOfBoundsException("最大长度为"+len+"，索引超出范围为:"+(len-Math.abs(length)));  
-	    }  
-	    if(length>=0){  
-	        return  subStr(str, 0,length);  
-	    }else{  
-	        return subStr(str, len-Math.abs(length), len);  
-	    }  
-	}  
-	  
-	  
-	/** 
-	 * 截取字符串 （支持正向、反向选择）<br/> 
-	 *  
-	 * @param str  待截取的字符串 
-	 * @param start 起始索引 ，>=0时，从start开始截取；<0时，从length-|start|开始截取 
-	 * @param end 结束索引 ，>=0时，从end结束截取；<0时，从length-|end|结束截取 
-	 * @return 返回截取的字符串 
-	 * @throws RuntimeException 
-	 */  
-	public static String subStr(String str, int start, int end) throws RuntimeException{  
-	    if(str==null){  
-	        throw new NullPointerException(EMPTY);
-	    }  
-	    int len = str.length();  
-	    int s = 0;//记录起始索引  
-	    int e = 0;//记录结尾索引  
-	    if(len<Math.abs(start)){  
-	        throw new StringIndexOutOfBoundsException("最大长度为"+len+"，索引超出范围为:"+(len-Math.abs(start)));  
-	    }else if(start<0){  
-	        s = len - Math.abs(start);  
-	    }else if(start<0){  
-	        s=0;  
-	    }else{//>=0  
-	        s = start;  
-	    }  
-	    if(len<Math.abs(end)){  
-	        throw new StringIndexOutOfBoundsException("最大长度为"+len+"，索引超出范围为:"+(len-Math.abs(end)));  
-	    }else if (end <0){  
-	        e = len - Math.abs(end);  
-	    }else if (end==0){  
-	        e = len;  
-	    }else{//>=0  
-	        e = end;  
-	    }  
-	    if(e<s){  
-	        throw new StringIndexOutOfBoundsException("截至索引小于起始索引:"+(e-s));  
-	    }  
-	  
-	    return str.substring(s, e);  
-	}  
-	
-	 /**
-     * 截取字符串　超出的字符用symbol代替 　　
-     *
-     * @param length 字符串长度　中文和英文都是一个单位长度
-     * @param str
-     * @param symbol
-     * @return
-     */
+
+	/**
+	 * 从头开始截取
+	 *
+	 * @param str 字符串
+	 * @param end 结束位置
+	 * @return
+	 */
+	public static String subStrStart(String str, int end){
+		return subStr(str, 0, end);
+	}
+
+	/**
+	 * 从尾开始截取
+	 *
+	 * @param str 字符串
+	 * @param start 开始位置
+	 * @return
+	 */
+	public static String subStrEnd(String str, int start){
+		return subStr(str, str.length()-start, str.length());
+	}
+
+	/**
+	 * 截取字符串 （支持正向、反向截取）<br/>
+	 *
+	 * @param str 待截取的字符串
+	 * @param length 长度 ，>=0时，从头开始向后截取length长度的字符串；<0时，从尾开始向前截取length长度的字符串
+	 * @return 返回截取的字符串
+	 * @throws RuntimeException
+	 */
+	public static String subStr(String str, int length) throws RuntimeException{
+		if(str==null){
+			throw new NullPointerException("字符串为null");
+		}
+		int len = str.length();
+		if(len<Math.abs(length)){
+			throw new StringIndexOutOfBoundsException("最大长度为"+len+"，索引超出范围为:"+(len-Math.abs(length)));
+		}
+		if(length>=0){
+			return  subStr(str, 0,length);
+		}else{
+			return subStr(str, len-Math.abs(length), len);
+		}
+	}
+
+
+	/**
+	 * 截取字符串 （支持正向、反向选择）<br/>
+	 *
+	 * @param str  待截取的字符串
+	 * @param start 起始索引 ，>=0时，从start开始截取；<0时，从length-|start|开始截取
+	 * @param end 结束索引 ，>=0时，从end结束截取；<0时，从length-|end|结束截取
+	 * @return 返回截取的字符串
+	 * @throws RuntimeException
+	 */
+	public static String subStr(String str, int start, int end) throws RuntimeException{
+		if(str==null){
+			throw new NullPointerException(EMPTY);
+		}
+		int len = str.length();
+		int s = 0;//记录起始索引
+		int e = 0;//记录结尾索引
+		if(len<Math.abs(start)){
+			throw new StringIndexOutOfBoundsException("最大长度为"+len+"，索引超出范围为:"+(len-Math.abs(start)));
+		}else if(start<0){
+			s = len - Math.abs(start);
+		}else if(start<0){
+			s=0;
+		}else{//>=0
+			s = start;
+		}
+		if(len<Math.abs(end)){
+			throw new StringIndexOutOfBoundsException("最大长度为"+len+"，索引超出范围为:"+(len-Math.abs(end)));
+		}else if (end <0){
+			e = len - Math.abs(end);
+		}else if (end==0){
+			e = len;
+		}else{//>=0
+			e = end;
+		}
+		if(e<s){
+			throw new StringIndexOutOfBoundsException("截至索引小于起始索引:"+(e-s));
+		}
+
+		return str.substring(s, e);
+	}
+
+	/**
+	 * 截取字符串　超出的字符用symbol代替 　　
+	 *
+	 * @param length 字符串长度　中文和英文都是一个单位长度
+	 * @param str
+	 * @param symbol
+	 * @return
+	 */
 	public static String getLimitLengthString(String str, int length, String symbol) {
 		if (str == null) {
 			return null;
@@ -939,18 +1155,18 @@ public class StringUtil {
 		}
 		buff.append(symbol);
 		return buff.toString();
-    }
- 
-	 /**
-     * 截取字符串　超出的字符用symbol代替 　　
-     *
-     * @param length 字符串长度　中文和英文都是一个单位长度
-     * @param str
-     * @return
-     */
-    public static String getLimitLengthString(String str, int length) {
-        return getLimitLengthString(str, length, "...");
-    }
+	}
+
+	/**
+	 * 截取字符串　超出的字符用symbol代替 　　
+	 *
+	 * @param length 字符串长度　中文和英文都是一个单位长度
+	 * @param str
+	 * @return
+	 */
+	public static String getLimitLengthString(String str, int length) {
+		return getLimitLengthString(str, length, "...");
+	}
 
 	/**
 	 * 截取指定长度的字符串,超出的字符用symbol代替
@@ -1003,28 +1219,28 @@ public class StringUtil {
 	public static String getLimitLengthStringZh(String str, int length) {
 		return getLimitLengthStringZh(str, length,"...");
 	}
-	
+
 	/**
-     * 取得字符串的实际长度,一个汉字算两个长度
-     *
-     * @param SrcStr
-     *            源字符串
-     * @return 字符串的实际长度
-     */
-    public static int getStringLen(String SrcStr) {
-        int return_value = 0;
-        if (SrcStr != null) {
-            char[] theChars = SrcStr.toCharArray();
-            for (int i = 0; i < theChars.length; i++) {
-                return_value += (theChars[i] <= 255) ? 1 : 2;
-            }
-        }
-        return return_value;
-    }
+	 * 取得字符串的实际长度,一个汉字算两个长度
+	 *
+	 * @param SrcStr
+	 *            源字符串
+	 * @return 字符串的实际长度
+	 */
+	public static int getStringLen(String SrcStr) {
+		int return_value = 0;
+		if (SrcStr != null) {
+			char[] theChars = SrcStr.toCharArray();
+			for (int i = 0; i < theChars.length; i++) {
+				return_value += (theChars[i] <= 255) ? 1 : 2;
+			}
+		}
+		return return_value;
+	}
 
 	/**
 	 * 按照 分隔符 将字符串 拆分成String数组
-	 * 
+	 *
 	 * @param str
 	 *            字符串
 	 * @param splitsign
@@ -1044,198 +1260,198 @@ public class StringUtil {
 		al.add(str);
 		return (String[]) al.toArray(new String[0]);
 	}
-	
+
 	/**
-     * 自定义的分隔字符串函数 例如: 1,2,3 =>[1,2,3] 3个元素 ,2,3=>[,2,3] 3个元素 ,2,3,=>[,2,3,]
-     * 4个元素 ,,,=>[,,,] 4个元素
-     *
-     * 5.22算法修改，为提高速度不用正则表达式 两个间隔符,,返回""元素
-     *
-     * @param split
-     *            分割字符 默认,
-     * @param src
-     *            输入字符串
-     * @return 分隔后的list
-     * @author Robin
-     */
-    public static List<String> splitToList(String split, String src) {
-        // 默认,
-        String sp = ",";
-        if (split != null && split.length() == 1) {
-            sp = split;
-        }
-        List<String> r = new ArrayList<String>();
-        int lastIndex = -1;
-        int index = src.indexOf(sp);
-        if (-1 == index && src != null) {
-            r.add(src);
-            return r;
-        }
-        while (index >= 0) {
-            if (index > lastIndex) {
-                r.add(src.substring(lastIndex + 1, index));
-            } else {
-                r.add(EMPTY);
-            }
- 
-            lastIndex = index;
-            index = src.indexOf(sp, index + 1);
-            if (index == -1) {
-                r.add(src.substring(lastIndex + 1, src.length()));
-            }
-        }
-        return r;
-    }
- 
-    /**
-     * 把 名=值 参数表转换成字符串 (a=1,b=2 =>a=1&b=2)
-     *
-     * @param map
-     * @return
-     */
-    public static String linkedHashMapToString(LinkedHashMap<String, String> map) {
-        if (map != null && map.size() > 0) {
-            String result = EMPTY;
-            Iterator<String> it = map.keySet().iterator();
-            while (it.hasNext()) {
-                String name = it.next();
-                String value = map.get(name);
-                result += (result.equals(EMPTY)) ? EMPTY : "&";
-                result += String.format("%s=%s", name, value);
-            }
-            return result;
-        }
-        return null;
-    }
- 
-    /**
-     * 解析字符串返回 名称=值的参数表 (a=1&b=2 => a=1,b=2)
-     *
-     * test.koubei.util.StringUtilTest#testParseStr()
-     * @param str
-     * @return
-     */
-    public static LinkedHashMap<String, String> toLinkedHashMap(String str) {
-        if (str != null && !str.equals(EMPTY) && str.indexOf("=") > 0) {
-            LinkedHashMap<String,String> result = new LinkedHashMap<String,String>();
- 
-            String name = null;
-            String value = null;
-            int i = 0;
-            while (i < str.length()) {
-                char c = str.charAt(i);
-                switch (c) {
-                case 61: // =
-                    value = EMPTY;
-                    break;
-                case 38: // &
-                    if (name != null && value != null && !name.equals(EMPTY)) {
-                        result.put(name, value);
-                    }
-                    name = null;
-                    value = null;
-                    break;
-                default:
-                    if (value != null) {
-                        value = (value != null) ? (value + c) : EMPTY + c;
-                    } else {
-                        name = (name != null) ? (name + c) : EMPTY + c;
-                    }
-                }
-                i++;
- 
-            }
- 
-            if (name != null && value != null && !name.equals(EMPTY)) {
-                result.put(name, value);
-            }
- 
-            return result;
- 
-        }
-        return null;
-    }
- 
-    /**
-     * 根据输入的多个解释和下标返回一个值
-     *
-     * @param captions
-     *            例如:"无,爱干净,一般,比较乱"
-     * @param index
-     *            1
-     * @return 一般
-     */
-    public static String getCaption(String captions, int index) {
-        if (index > 0 && captions != null && !captions.equals(EMPTY)) {
-            String[] ss = captions.split(",");
-            if (ss != null && ss.length > 0 && index < ss.length) {
-                return ss[index];
-            }
-        }
-        return null;
-    }
- 
-    /**
-     * 数字转字符串,如果num<=0 则输出"";
-     *
-     * @param num
-     * @return
-     */
-    public static String numberToString(Object num) {
-        if (num == null) {
-            return null;
-        } else if (num instanceof Integer && (Integer) num > 0) {
-            return Integer.toString((Integer) num);
-        } else if (num instanceof Long && (Long) num > 0) {
-            return Long.toString((Long) num);
-        } else if (num instanceof Float && (Float) num > 0) {
-            return Float.toString((Float) num);
-        } else if (num instanceof Double && (Double) num > 0) {
-            return Double.toString((Double) num);
-        } else {
-            return EMPTY;
-        }
-    }
- 
-    /**
-     * 货币转字符串
-     *
-     * @param money
-     * @param style
-     *            样式 [default]要格式化成的格式 such as #.00, #.#
-     * @return
-     */
- 
-    public static String moneyToString(Object money, String style) {
-        if (money != null && style != null
-                && (money instanceof Double || money instanceof Float)) {
-            Double num = (Double) money;
- 
-            if (style.equalsIgnoreCase("default")) {
-                // 缺省样式 0 不输出 ,如果没有输出小数位则不输出.0
-                if (num == 0) {
-                    // 不输出0
-                    return EMPTY;
-                } else if ((num * 10 % 10) == 0) {
-                    // 没有小数
-                    return Integer.toString((int) num.intValue());
-                } else {
-                    // 有小数
-                    return num.toString();
-                }
- 
-            } else {
-                DecimalFormat df = new DecimalFormat(style);
-                return df.format(num);
-            }
-        }
-        return null;
-    }
- 
+	 * 自定义的分隔字符串函数 例如: 1,2,3 =>[1,2,3] 3个元素 ,2,3=>[,2,3] 3个元素 ,2,3,=>[,2,3,]
+	 * 4个元素 ,,,=>[,,,] 4个元素
+	 *
+	 * 5.22算法修改，为提高速度不用正则表达式 两个间隔符,,返回""元素
+	 *
+	 * @param split
+	 *            分割字符 默认,
+	 * @param src
+	 *            输入字符串
+	 * @return 分隔后的list
+	 * @author Robin
+	 */
+	public static List<String> splitToList(String split, String src) {
+		// 默认,
+		String sp = ",";
+		if (split != null && split.length() == 1) {
+			sp = split;
+		}
+		List<String> r = new ArrayList<String>();
+		int lastIndex = -1;
+		int index = src.indexOf(sp);
+		if (-1 == index && src != null) {
+			r.add(src);
+			return r;
+		}
+		while (index >= 0) {
+			if (index > lastIndex) {
+				r.add(src.substring(lastIndex + 1, index));
+			} else {
+				r.add(EMPTY);
+			}
+
+			lastIndex = index;
+			index = src.indexOf(sp, index + 1);
+			if (index == -1) {
+				r.add(src.substring(lastIndex + 1, src.length()));
+			}
+		}
+		return r;
+	}
+
+	/**
+	 * 把 名=值 参数表转换成字符串 (a=1,b=2 =>a=1&b=2)
+	 *
+	 * @param map
+	 * @return
+	 */
+	public static String linkedHashMapToString(LinkedHashMap<String, String> map) {
+		if (map != null && map.size() > 0) {
+			String result = EMPTY;
+			Iterator<String> it = map.keySet().iterator();
+			while (it.hasNext()) {
+				String name = it.next();
+				String value = map.get(name);
+				result += (result.equals(EMPTY)) ? EMPTY : "&";
+				result += String.format("%s=%s", name, value);
+			}
+			return result;
+		}
+		return null;
+	}
+
+	/**
+	 * 解析字符串返回 名称=值的参数表 (a=1&b=2 => a=1,b=2)
+	 *
+	 * test.koubei.util.StringUtilTest#testParseStr()
+	 * @param str
+	 * @return
+	 */
+	public static LinkedHashMap<String, String> toLinkedHashMap(String str) {
+		if (str != null && !str.equals(EMPTY) && str.indexOf("=") > 0) {
+			LinkedHashMap<String,String> result = new LinkedHashMap<String,String>();
+
+			String name = null;
+			String value = null;
+			int i = 0;
+			while (i < str.length()) {
+				char c = str.charAt(i);
+				switch (c) {
+					case 61: // =
+						value = EMPTY;
+						break;
+					case 38: // &
+						if (name != null && value != null && !name.equals(EMPTY)) {
+							result.put(name, value);
+						}
+						name = null;
+						value = null;
+						break;
+					default:
+						if (value != null) {
+							value = (value != null) ? (value + c) : EMPTY + c;
+						} else {
+							name = (name != null) ? (name + c) : EMPTY + c;
+						}
+				}
+				i++;
+
+			}
+
+			if (name != null && value != null && !name.equals(EMPTY)) {
+				result.put(name, value);
+			}
+
+			return result;
+
+		}
+		return null;
+	}
+
+	/**
+	 * 根据输入的多个解释和下标返回一个值
+	 *
+	 * @param captions
+	 *            例如:"无,爱干净,一般,比较乱"
+	 * @param index
+	 *            1
+	 * @return 一般
+	 */
+	public static String getCaption(String captions, int index) {
+		if (index > 0 && captions != null && !captions.equals(EMPTY)) {
+			String[] ss = captions.split(",");
+			if (ss != null && ss.length > 0 && index < ss.length) {
+				return ss[index];
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 数字转字符串,如果num<=0 则输出"";
+	 *
+	 * @param num
+	 * @return
+	 */
+	public static String numberToString(Object num) {
+		if (num == null) {
+			return null;
+		} else if (num instanceof Integer && (Integer) num > 0) {
+			return Integer.toString((Integer) num);
+		} else if (num instanceof Long && (Long) num > 0) {
+			return Long.toString((Long) num);
+		} else if (num instanceof Float && (Float) num > 0) {
+			return Float.toString((Float) num);
+		} else if (num instanceof Double && (Double) num > 0) {
+			return Double.toString((Double) num);
+		} else {
+			return EMPTY;
+		}
+	}
+
+	/**
+	 * 货币转字符串
+	 *
+	 * @param money
+	 * @param style
+	 *            样式 [default]要格式化成的格式 such as #.00, #.#
+	 * @return
+	 */
+
+	public static String moneyToString(Object money, String style) {
+		if (money != null && style != null
+				&& (money instanceof Double || money instanceof Float)) {
+			Double num = (Double) money;
+
+			if (style.equalsIgnoreCase("default")) {
+				// 缺省样式 0 不输出 ,如果没有输出小数位则不输出.0
+				if (num == 0) {
+					// 不输出0
+					return EMPTY;
+				} else if ((num * 10 % 10) == 0) {
+					// 没有小数
+					return Integer.toString((int) num.intValue());
+				} else {
+					// 有小数
+					return num.toString();
+				}
+
+			} else {
+				DecimalFormat df = new DecimalFormat(style);
+				return df.format(num);
+			}
+		}
+		return null;
+	}
+
 
 	/**
 	 * 将字符串 source 中的 oldStr 替换为 newStr, matchCase 为是否设置大小写敏感查找
-	 * 
+	 *
 	 * @param source
 	 *            需要替换的源字符串
 	 * @param oldStr
@@ -1246,7 +1462,7 @@ public class StringUtil {
 	 *            是否需要按照大小写敏感方式查找
 	 */
 	public static String replace(String source, String oldStr, String newStr,
-			boolean matchCase) {
+								 boolean matchCase) {
 		if (source == null) {
 			return null;
 		}
@@ -1285,7 +1501,7 @@ public class StringUtil {
 
 	/**
 	 * 验证字符串
-	 * 
+	 *
 	 * @param content
 	 * @return
 	 */
@@ -1335,7 +1551,7 @@ public class StringUtil {
 
 	/**
 	 * 编码
-	 * 
+	 *
 	 * @param src
 	 * @return
 	 */
@@ -1347,36 +1563,36 @@ public class StringUtil {
 			src = src.trim();
 			for (int pos = 0; pos < src.length(); pos++) {
 				switch (src.charAt(pos)) {
-				case '"':
-					result.append("'");
-					break;
-				case '<':
-					result.append("<");
-					break;
-				case '>':
-					result.append(">");
-					break;
-				case '\'':
-					result.append("'");
-					break;
-				case '&':
-					result.append("&");
-					break;
-				case '%':
-					result.append("&pc;");
-					break;
-				case '_':
-					result.append("&ul;");
-					break;
-				case '#':
-					result.append("&shap;");
-					break;
-				case '?':
-					result.append("&ques;");
-					break;
-				default:
-					result.append(src.charAt(pos));
-					break;
+					case '"':
+						result.append("'");
+						break;
+					case '<':
+						result.append("<");
+						break;
+					case '>':
+						result.append(">");
+						break;
+					case '\'':
+						result.append("'");
+						break;
+					case '&':
+						result.append("&");
+						break;
+					case '%':
+						result.append("&pc;");
+						break;
+					case '_':
+						result.append("&ul;");
+						break;
+					case '#':
+						result.append("&shap;");
+						break;
+					case '?':
+						result.append("&ques;");
+						break;
+					default:
+						result.append(src.charAt(pos));
+						break;
 				}
 			}
 		}
@@ -1385,7 +1601,7 @@ public class StringUtil {
 
 	/**
 	 * 解码
-	 * 
+	 *
 	 * @param src
 	 * @return
 	 */
@@ -1420,7 +1636,7 @@ public class StringUtil {
 
 	/**
 	 * 对给定字符进行 URL 解码
-	 * 
+	 *
 	 * @param value
 	 *            解码前的字符串
 	 * @return 解码后的字符串
@@ -1441,7 +1657,7 @@ public class StringUtil {
 
 	/**
 	 * 将字符串转换为 int.
-	 * 
+	 *
 	 * @param input
 	 *            输入的字串
 	 * @date 2005-07-29
@@ -1461,7 +1677,7 @@ public class StringUtil {
 
 	/**
 	 * 将字符串转换为 double.
-	 * 
+	 *
 	 * @param input
 	 *            输入的字串
 	 * @date 2005-07-29
@@ -1481,7 +1697,7 @@ public class StringUtil {
 
 	/**
 	 * 将字符串转换为 long.
-	 * 
+	 *
 	 * @param input
 	 *            输入的字串
 	 * @date 2005-07-29
@@ -1501,7 +1717,7 @@ public class StringUtil {
 
 	/**
 	 * 将字符串转换为 short.
-	 * 
+	 *
 	 * @param input
 	 *            输入的字串
 	 * @date 2005-07-29
@@ -1521,7 +1737,7 @@ public class StringUtil {
 
 	/**
 	 * 将字符串转换为 float.
-	 * 
+	 *
 	 * @param input
 	 *            输入的字串
 	 * @date 2005-07-29
@@ -1541,7 +1757,7 @@ public class StringUtil {
 
 	/**
 	 * 将字符串转换为 byte.
-	 * 
+	 *
 	 * @param input
 	 *            输入的字串
 	 * @date 2005-07-29
@@ -1561,7 +1777,7 @@ public class StringUtil {
 
 	/**
 	 * 将字符串转换为 char.
-	 * 
+	 *
 	 * @param input
 	 *            输入的字串
 	 * @date 2005-07-29
@@ -1581,7 +1797,7 @@ public class StringUtil {
 
 	/**
 	 * 格式化日期到日时分秒时间格式的显示. d日 HH:mm:ss
-	 * 
+	 *
 	 * @return - String 格式化后的时间
 	 */
 	public static String formatDateToDHMSString(Date date) {
@@ -1598,7 +1814,7 @@ public class StringUtil {
 
 	/**
 	 * 格式化日期到时分秒时间格式的显示.
-	 * 
+	 *
 	 * @return - String 格式化后的时间
 	 */
 	public static String formatDateToHMSString(Date date) {
@@ -1615,7 +1831,7 @@ public class StringUtil {
 
 	/**
 	 * 将时分秒时间格式的字符串转换为日期.
-	 * 
+	 *
 	 * @param input
 	 * @return
 	 */
@@ -1634,7 +1850,7 @@ public class StringUtil {
 
 	/**
 	 * 格式化日期到 Mysql 数据库日期格式字符串的显示.
-	 * 
+	 *
 	 * @return - String 格式化后的时间
 	 */
 	public static String formatDateToMysqlString(Date date) {
@@ -1651,7 +1867,7 @@ public class StringUtil {
 
 	/**
 	 * 将 Mysql 数据库日期格式字符串转换为日期.
-	 * 
+	 *
 	 * @param input
 	 * @return
 	 */
@@ -1670,7 +1886,7 @@ public class StringUtil {
 
 	/**
 	 * 返回时间字符串, 可读形式的, M月d日 HH:mm 格式. 2004-09-22, LiuChangjiong
-	 * 
+	 *
 	 * @return - String 格式化后的时间
 	 */
 	public static String formatDateToMMddHHmm(Date date) {
@@ -1686,7 +1902,7 @@ public class StringUtil {
 
 	/**
 	 * 返回时间字符串, 可读形式的, yy年M月d日HH:mm 格式. 2004-10-04, LiuChangjiong
-	 * 
+	 *
 	 * @return - String 格式化后的时间
 	 */
 	public static String formatDateToyyMMddHHmm(Date date) {
@@ -1702,7 +1918,7 @@ public class StringUtil {
 
 	/**
 	 * 生成一个 18 位的 yyyyMMddHHmmss.SSS 格式的日期字符串.
-	 * 
+	 *
 	 * @param date
 	 *            Date
 	 * @return String
@@ -1716,7 +1932,7 @@ public class StringUtil {
 	/**
 	 * Change the null string value to "", if not null, then return it self, use
 	 * this to avoid display a null string to "null".
-	 * 
+	 *
 	 * @param input
 	 *            the string to clear
 	 * @return the result
@@ -1728,7 +1944,7 @@ public class StringUtil {
 	/**
 	 * Return the limited length string of the input string (added at:April 10,
 	 * 2004).
-	 * 
+	 *
 	 * @param input
 	 *            String
 	 * @param maxLength
@@ -1748,9 +1964,9 @@ public class StringUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * HTML编码格式
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -1763,7 +1979,7 @@ public class StringUtil {
 
 	/**
 	 * HTML解码格式
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -1777,7 +1993,7 @@ public class StringUtil {
 
 	/**
 	 * 转HTML格式
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -1799,7 +2015,7 @@ public class StringUtil {
 	/**
 	 * 将字符串转换为一个 javascript 的 alert 调用. eg: htmlAlert("What?"); returns <SCRIPT
 	 * language="javascript">alert("What?")</SCRIPT>
-	 * 
+	 *
 	 * @param message
 	 *            需要显示的信息
 	 * @return 转换结果
@@ -1812,7 +2028,7 @@ public class StringUtil {
 	/**
 	 * 将字符串转换为一个 javascript 的 document.location 改变调用. eg: htmlAlert("a.jsp");
 	 * returns <SCRIPT language="javascript">document.location="a.jsp";</SCRIPT>
-	 * 
+	 *
 	 * @param url
 	 *            需要显示的 URL 字符串
 	 * @return 转换结果
@@ -1824,7 +2040,7 @@ public class StringUtil {
 
 	/**
 	 * 返回脚本语句 <SCRIPT language="javascript">history.back();</SCRIPT>
-	 * 
+	 *
 	 * @return 脚本语句
 	 */
 	public static String scriptHistoryBack() {
@@ -1833,7 +2049,7 @@ public class StringUtil {
 
 	/**
 	 * 滤除帖子中的危险 HTML 代码, 主要是脚本代码, 滚动字幕代码以及脚本事件处理代码
-	 * 
+	 *
 	 * @param content
 	 *            需要滤除的字符串
 	 * @return 过滤的结果
@@ -1875,7 +2091,7 @@ public class StringUtil {
 
 	/**
 	 * 滤除 HTML 标记. 因为 XML 中转义字符依然有效, 因此把特殊字符过滤成中文的全角字符.
-	 * 
+	 *
 	 * @author beansoft
 	 * @param s
 	 *            输入的字串
@@ -1939,7 +2155,7 @@ public class StringUtil {
 
 	/**
 	 * 转换由表单读取的数据的内码(从 ISO8859 转换到 gb2312).
-	 * 
+	 *
 	 * @param input
 	 *            输入的字符串
 	 * @return 转换结果, 如果有错误发生, 则返回原来的值
@@ -1955,7 +2171,7 @@ public class StringUtil {
 
 	/**
 	 * 转换由表单读取的数据的内码到 ISO(从 GBK 转换到ISO8859-1).
-	 * 
+	 *
 	 * @param input
 	 *            输入的字符串
 	 * @return 转换结果, 如果有错误发生, 则返回原来的值
@@ -1966,7 +2182,7 @@ public class StringUtil {
 
 	/**
 	 * 转换字符串的内码.
-	 * 
+	 *
 	 * @param input
 	 *            输入的字符串
 	 * @param sourceEncoding
@@ -1976,7 +2192,7 @@ public class StringUtil {
 	 * @return 转换结果, 如果有错误发生, 则返回原来的值
 	 */
 	public static String changeEncoding(String input, String sourceEncoding,
-			String targetEncoding) {
+										String targetEncoding) {
 		if (input == null || input.equals(EMPTY)) {
 			return input;
 		}
@@ -1999,7 +2215,7 @@ public class StringUtil {
 
 	/**
 	 * 获得输入字符串的字节长度(即二进制字节数), 用于发送短信时判断是否超出长度.
-	 * 
+	 *
 	 * @param input
 	 *            输入字符串
 	 * @return 字符串的字节长度(不是 Unicode 长度)
@@ -2019,7 +2235,7 @@ public class StringUtil {
 	/**
 	 * Gets the absolute pathname of the class or resource file containing the
 	 * specified class or resource name, as prescribed by the current classpath.
-	 * 
+	 *
 	 * @param resourceName
 	 *            Name of the class or resource name.
 	 * @return the absolute pathname of the given resource
@@ -2055,7 +2271,7 @@ public class StringUtil {
 
 	/**
 	 * 将 TEXT 文本转换为 HTML 代码, 已便于网页正确的显示出来.
-	 * 
+	 *
 	 * @param input
 	 *            输入的文本字符串
 	 * @return 转换后的 HTML 代码

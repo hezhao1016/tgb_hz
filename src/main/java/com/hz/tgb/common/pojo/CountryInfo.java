@@ -1,4 +1,4 @@
-package com.hz.tgb.common.entity;
+package com.hz.tgb.common.pojo;
 
  /**
  * 国家信息

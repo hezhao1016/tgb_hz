@@ -2,7 +2,7 @@ package com.hz.tgb.test;
 
 import com.hz.tgb.common.StringUtil;
 import com.hz.tgb.number.AmountUtil;
-import com.hz.tgb.number.NumberToCN;
+import com.hz.tgb.number.RMBUtil;
 import com.hz.tgb.number.NumberUtil;
 
 import java.math.BigDecimal;
@@ -54,7 +54,7 @@ public class Test3 {
         amount = Double.valueOf(changeF2YRoundFour(amountL.doubleValue()+""));
 
         // 三种 金额 转大写
-        amountChinese = NumberToCN.number2CNMontrayUnit(new BigDecimal(Double.valueOf(formatFloatNumber(amount))));
+        amountChinese = RMBUtil.number2CNMontrayUnit(new BigDecimal(Double.valueOf(formatFloatNumber(amount))));
 
         if(amountChinese == null || "".equals(amountChinese)){
             amountChinese = "零";
@@ -71,7 +71,7 @@ public class Test3 {
 
     }
 
-//    /**
+    //    /**
 //     * 当浮点型数据位数超过10位之后，数据变成科学计数法显示。用此方法可以使其正常显示。
 //     * @param value
 //     * @return Sting

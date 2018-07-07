@@ -2,7 +2,7 @@ package com.hz.tgb.test;
 
 import com.hz.tgb.datetime.DateUtil;
 import com.hz.tgb.number.AmountUtil;
-import com.hz.tgb.number.NumberToCN;
+import com.hz.tgb.number.RMBUtil;
 import com.hz.tgb.number.NumberUtil;
 
 import java.math.BigDecimal;
@@ -47,7 +47,7 @@ public class Test4 {
 
         System.out.println("--------------------");
         Double amount = Double.valueOf(AmountUtil.changeF2YRound(123110456789.0+""));
-        String amountChinese = NumberToCN.number2CNMontrayUnit(new BigDecimal(Double.valueOf(NumberUtil.formatFloatNumber(amount))));
+        String amountChinese = RMBUtil.number2CNMontrayUnit(new BigDecimal(Double.valueOf(NumberUtil.formatFloatNumber(amount))));
         System.out.println(amount);
         System.out.println(NumberUtil.formatFloatNumber(amount));
         System.out.println(amountChinese);

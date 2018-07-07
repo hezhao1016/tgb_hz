@@ -1,6 +1,6 @@
 package com.hz.tgb.common;
 
-import com.hz.tgb.common.entity.Point;
+import com.hz.tgb.common.pojo.Point;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
