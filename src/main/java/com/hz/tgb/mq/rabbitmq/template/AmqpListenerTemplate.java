@@ -1,4 +1,4 @@
-package com.hz.tgb.template;
+package com.hz.tgb.mq.rabbitmq.template;
 
 import com.hz.tgb.thread.ThreadUtil;
 import org.slf4j.Logger;
