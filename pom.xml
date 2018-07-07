@@ -47,7 +47,7 @@
         <org.springframework>4.1.6.RELEASE</org.springframework>
         <mysql.version>5.1.35</mysql.version>
         <druid.version>1.0.18</druid.version>
-        <spring-redis>1.5.1.RELEASE</spring-redis>
+        <spring-redis>2.0.3.RELEASE</spring-redis>
         <dubbo-version>2.5.3</dubbo-version>
         <zkclient.version>0.1</zkclient.version>
         <zookeeper.version>3.4.6</zookeeper.version>
@@ -114,13 +114,14 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- spring -->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-redis</artifactId>
-            <version>${spring-redis}</version>
-        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -176,6 +177,7 @@
             <artifactId>spring-expression</artifactId>
             <version>${org.springframework}</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -271,11 +273,33 @@
             <version>2.4.0</version>
         </dependency>
 
+        <!-- mq -->
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>1.4.0.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-amqp</artifactId>
+            <version>1.4.0.RELEASE</version>
+        </dependency>
+
         <!--nosql-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>${spring-redis}</version>
+        </dependency>
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>2.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>2.0.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>
