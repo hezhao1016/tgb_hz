@@ -10,15 +10,20 @@ import com.alibaba.fastjson.JSON;
  */
 public class JsonpUtil {
 
+    private static final String defaultCallback = "callback";
+
     /**
      * 用于做JSONP回调函数拼接
-     * @param back 回调函数
+     * @param callback 回调函数
      * @param result 返回结果
      * @return 返回拼接后的字符串
      */
-    public static String callbackStr(String back, String result){
+    public static String callbackStr(String callback, String result){
+        if(callback == null || callback.trim().length() == 0){
+            callback = defaultCallback;
+        }
         // 返回字符串拼接
-        return back+"("+result+");";
+        return callback+"("+result+");";
     }
 
     /**
@@ -27,19 +32,21 @@ public class JsonpUtil {
      * @return 返回拼接后的字符串
      */
     public static String callbackStr(String result){
-        String back = "callback";
-        return callbackStr(back, result);
+        return callbackStr(defaultCallback, result);
     }
 
     /**
      * 用于做JSONP回调函数拼接
-     * @param back 回调函数
+     * @param callback 回调函数
      * @param result 返回结果对象，将会转换为JSON字符串
      * @return 返回拼接后的字符串
      */
-    public static String callbackStr(String back, Object result){
-        String resultStr = JSON.toJSONString(result);
-        return callbackStr(back, resultStr);
+    public static String callbackStr(String callback, Object result){
+        String resultStr = "";
+        if(result != null) {
+            resultStr = JSON.toJSONString(result);
+        }
+        return callbackStr(callback, resultStr);
     }
 
     /**
@@ -48,8 +55,7 @@ public class JsonpUtil {
      * @return 返回拼接后的字符串
      */
     public static String callbackStr(Object result){
-        String back = "callback";
-        return callbackStr(back, result);
+        return callbackStr(defaultCallback, result);
     }
 
 }
