@@ -1,15 +1,16 @@
 package com.hz.tgb.datetime;
 
+import com.hz.tgb.common.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
-
-import com.hz.tgb.common.ArrayUtil;
-import com.hz.tgb.common.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * 日期、时间处理工具类
@@ -92,9 +93,6 @@ public class DateUtil {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
-		List<String> dateList = getDateList(DateEnums.DateType.DAY, "2018-05-29", "2018-06-05");
-		System.out.println(ArrayUtil.joinList(dateList, ","));
 
 	}
 
@@ -339,45 +337,6 @@ public class DateUtil {
 		int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
 		int month = (aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR)) * 12;
 		return Math.abs(month + result);
-	}
-
-	/**
-	 * 填充日期列表
-	 * @param dateType 日期类型， 支持日、月、年
-	 * @param startTime 开始日期
-	 * @param endTime 结束日期
-	 * @return
-	 */
-	public static List<String> getDateList(DateEnums.DateType dateType, String startTime, String endTime) {
-		List<String> dateList = new ArrayList<>();
-		// 日
-		if(dateType == DateEnums.DateType.DAY) {
-			int daysBetween = daysBetween(startTime, endTime);
-			for (int i = 0; i <= daysBetween; i++) {
-				dateList.add(addDay(startTime, i));
-			}
-		}else if(dateType == DateEnums.DateType.MONTH) {
-			// 月
-			int monthsBetween = monthsBetween(startTime, endTime);
-			for (int i = 0; i <= monthsBetween; i++) {
-				dateList.add(addMonth(startTime, i));
-			}
-
-		}else if(dateType == DateEnums.DateType.YEAR) {
-			// 年
-			int yearsBetween = 0;
-
-			try {
-				yearsBetween = Math.abs(Integer.parseInt(endTime) - Integer.parseInt(startTime));
-			} catch (Exception e) {
-				logger.error(e.toString(), e);
-			}
-
-			for (int i = 0; i <= yearsBetween; i++) {
-				dateList.add(addYear(startTime, i));
-			}
-		}
-		return dateList;
 	}
 
 	/**

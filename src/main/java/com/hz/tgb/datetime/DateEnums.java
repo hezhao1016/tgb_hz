@@ -36,6 +36,10 @@ public class DateEnums {
 		 */
 		MM_dd_HH_mm_ss("MM-dd HH:mm:ss"),
 		/**
+		 * yyyy-MM-dd HH:mm 例如 2017-03-13 15
+		 */
+		yyyy_MM_dd_HH("yyyy-MM-dd HH"),
+		/**
 		 * yyyy-MM-dd HH:mm 例如 2017-03-13 15:16
 		 */
 		yyyy_MM_dd_HH_mm("yyyy-MM-dd HH:mm"),
@@ -77,6 +81,10 @@ public class DateEnums {
 		 */
 		MM_dd_HH_mm_ss_EN("MM/dd HH:mm:ss"),
 		/**
+		 * yyyy/MM/dd HH:mm 例如 2017/03/13 15
+		 */
+		yyyy_MM_dd_HH_EN("yyyy/MM/dd HH"),
+		/**
 		 * yyyy/MM/dd HH:mm 例如 2017/03/13 15:16
 		 */
 		yyyy_MM_dd_HH_mm_EN("yyyy/MM/dd HH:mm"),
@@ -117,6 +125,10 @@ public class DateEnums {
 		 * MM月dd日 HH:mm:ss 例如 07月27日 13:32:53
 		 */
 		MM_dd_HH_mm_ss_CN("MM月dd日 HH:mm:ss"),
+		/**
+		 * yyyy年MM月dd日 HH:mm 例如 2017年07月27日 13时
+		 */
+		yyyy_MM_dd_HH_CN("yyyy年MM月dd日 HH时"),
 		/**
 		 * yyyy年MM月dd日 HH:mm 例如 2017年07月27日 13:32
 		 */
@@ -162,6 +174,14 @@ public class DateEnums {
 		 * yyyyMMdd 例如 20170727
 		 */
 		yyyyMMdd("yyyyMMdd"),
+		/**
+		 * yyyyMMddHH 例如 2017072713
+		 */
+		yyyyMMddHH("yyyyMMddHH"),
+		/**
+		 * yyyyMMddHHmm 例如 201707271332
+		 */
+		yyyyMMddHHmm("yyyyMMddHHmm"),
 		/**
 		 * yyyyMMddHHmmss 例如 20170727133253
 		 */
@@ -258,28 +278,36 @@ public class DateEnums {
 	}
 
 	/**
-	 * 日期类型，包括年月日周
+	 * 日期类型，包括年、月、周、日、时、分
 	 */
 	public enum DateType {
-		/**
-		 * 年
-		 */
-		YEAR,
+		/** 年 */
+		YEAR("YEAR"),
 
-		/**
-		 * 月
-		 */
-		MONTH,
+		/** 月 */
+		MONTH("MONTH"),
 
-		/**
-		 * 周
-		 */
-		WEEK,
+		/** 周 */
+		WEEK("WEEK"),
 
-		/**
-		 * 日
-		 */
-		DAY;
+		/** 日 */
+		DAY("DAY"),
+
+		/** 时 */
+		HOUR("HOUR"),
+
+		/** 分 */
+		MINUTE("MINUTE");
+
+		private String type;
+
+		DateType(String type){
+			this.type = type;
+		}
+
+		public String getType(){
+			return type;
+		}
 
 	}
 
