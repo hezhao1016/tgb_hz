@@ -1,6 +1,7 @@
 package com.hz.tgb.http.demo;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,13 +18,13 @@ import java.util.Date;
  */
 public class ConnectionHelp {
 	//------ 实例化一个日志类 ------
-	private static Logger logger = Logger.getLogger(ConnectionHelp.class);
+	private static Logger logger = LoggerFactory.getLogger(ConnectionHelp.class);
 	//------ 密钥 ------
 	public static final String PDK = "lmq";
 	//========== 调用接口路径 start ==========
-	
+
 	//========== 调用接口路径 end ==========
-	
+
 	/**
 	 * 连接指定指定地址并传递参数
 	 * @param url		地址
@@ -41,7 +42,7 @@ public class ConnectionHelp {
 		//------ 输入流 ------
 		BufferedReader in = null;
 		//========== 插件变量 end ==========
-		
+
 		//========== 调用接口 start ==========
 		try{
 			//========== 调用接口传输参数 satrt ==========
@@ -57,10 +58,10 @@ public class ConnectionHelp {
 			//------ 发送POST请求必须设置如下两行
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
-			
+
 			//------设置为GET方式请求
-			
-			
+
+
 			//------ 获取URLConnection对象对应的输入流 ------
 			out = new OutputStreamWriter(conn.getOutputStream(),"UTF-8");
 			//------ 发送请求属性 ------
@@ -68,7 +69,7 @@ public class ConnectionHelp {
 			//------ 清除输出流的缓存 ------
 			out.flush();
 			//========== 调用接口传输参数 end ==========
-			
+
 			//========== 获取返回结果并执行相应操作  start ==========
 			//------ 获取输入流 ------
 			in = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
@@ -80,7 +81,7 @@ public class ConnectionHelp {
 			//========== 获取返回结果并执行相应操作 end ==========
 		}catch(Exception e){
 			//------ 日志 ------
-			logger.error(e);
+			logger.error("error:{}", e);
 			e.printStackTrace();
 		}finally{
 			try{
@@ -93,7 +94,7 @@ public class ConnectionHelp {
 		//========== 调用接口 end ==========
 		return result;
 	}
-	
+
 	/**
 	 * 格式化时间格式为 yyyy-MM-dd HH:mm:ss
 	 * @param date 时间
@@ -103,7 +104,7 @@ public class ConnectionHelp {
 		if(date != null) return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
 		else return null;
 	}
-	
+
 	/**
 	 * 将null值转为""
 	 * @param str
@@ -112,7 +113,7 @@ public class ConnectionHelp {
 	public static String funChangeNull(Object str){
 		return str == null ? "" : str.toString();
 	}
-	
+
 	/**
 	 * 参数为空或null转为2，否则转为int类型返回
 	 * @param str
@@ -122,7 +123,7 @@ public class ConnectionHelp {
 		//------ 如果整体处理结果为空或者为null，则表示处理失败，返回2 ------
 		return str == null || "".equals(str+"")? 2 : Integer.parseInt(str+"");
 	}
-	
+
 	/**
 	 * 将字符串转为json
 	 * @param str

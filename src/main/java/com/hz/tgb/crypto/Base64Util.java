@@ -4,17 +4,17 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.hz.tgb.crypto.decoder.BASE64Decoder;
 import com.hz.tgb.crypto.decoder.BASE64Encoder;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Decoder;
 
 /**
  * 统一项目中base64算法的使用。可避免项目中引用不同三方库去实现相同代码<br>
  *
  * 利用 Decoder.BASE64Encoder 进行 MD5加密
- * 
+ *
  * @author hezhao
  * @Time 2017年7月31日 下午4:29:21
  */
@@ -72,7 +72,7 @@ public class Base64Util {
 
 	/**
 	 * 使用Base64 进行 MD5 加密
-	 * 
+	 *
 	 * @author hezhao
 	 * @Time 2017年7月31日 下午4:29:15
 	 * @param str
@@ -96,7 +96,7 @@ public class Base64Util {
 
 	/**
 	 * 使用MD5 对两端加密后的密文进行比较
-	 * 
+	 *
 	 * @author hezhao
 	 * @Time 2017年7月31日 下午4:30:11
 	 * @param strOne

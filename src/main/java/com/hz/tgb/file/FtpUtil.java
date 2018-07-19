@@ -4,7 +4,8 @@ import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
@@ -16,16 +17,16 @@ import java.io.InputStream;
 
 /**
  * Ftp工具类
- * 
+ *
  * @author hezhao
  */
 public class FtpUtil {
 
-	private static Logger logger = Logger.getLogger(FtpUtil.class);
+	private static Logger logger = LoggerFactory.getLogger(FtpUtil.class);
 
 	/**
 	 * 向FTP服务器上传文件。
-	 * 
+	 *
 	 * @param ftpUrl
 	 *        ftp服务器hostname（IP）
 	 * @param ftpPort
@@ -43,7 +44,7 @@ public class FtpUtil {
 	 * @return boolean 上传成功与否
 	 */
 	public static boolean ftpUpload(final String ftpUrl, final int ftpPort, final String userName,
-			final String password, final String uploadPath, final String fileName, final InputStream input) {
+									final String password, final String uploadPath, final String fileName, final InputStream input) {
 		boolean uploadResult = false;
 		final FTPClient ftp = new FTPClient();
 		try {
@@ -131,11 +132,11 @@ public class FtpUtil {
 
 		return uploadResult;
 	}
-	
-	
+
+
 	/**
 	 * 在FTP服务器删除文件。
-	 * 
+	 *
 	 * @param ftpUrl
 	 *        ftp服务器hostname（IP）
 	 * @param ftpPort
@@ -149,7 +150,7 @@ public class FtpUtil {
 	 * @return boolean 上传成功与否
 	 */
 	public static boolean ftpDel(final String ftpUrl, final int ftpPort, final String userName,
-			final String password, final String filePath) {
+								 final String password, final String filePath) {
 		boolean uploadResult = false;
 		final FTPClient ftp = new FTPClient();
 		try {
@@ -197,11 +198,11 @@ public class FtpUtil {
 
 		return uploadResult;
 	}
-	
+
 
 	/**
 	 * 按长宽进行缩放图片,不需要裁剪的情况使用<br>
-	 * 
+	 *
 	 * @author yuanchangjian<br>
 	 *         2015年4月7日17:04:19
 	 * @param bufferedImage
@@ -224,7 +225,7 @@ public class FtpUtil {
 
 	/**
 	 * 裁剪的情况使用，以左下角的位置进行裁剪<br>
-	 * 
+	 *
 	 * @author yuanchangjian<br>
 	 *         2015年4月8日10:48:11
 	 * @param bufferedImage
@@ -249,7 +250,7 @@ public class FtpUtil {
 	/**
 	 * 将BufferedImage的图片进行处理并返回输入流<br>
 	 * 2015年4月9日09:15:56
-	 * 
+	 *
 	 * @author yuanchangjian
 	 * @param stream
 	 *        ,传入的BufferedImage
@@ -263,7 +264,7 @@ public class FtpUtil {
 	 */
 
 	public static InputStream processPhoto(final BufferedImage stream, final int width, final int height,
-			final String operate) {
+										   final String operate) {
 
 		try {
 			// 生成新的图片文件,需要裁剪，返回BufferedImage,如果是裁剪图片

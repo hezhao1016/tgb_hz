@@ -5,7 +5,8 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Map;
@@ -13,11 +14,11 @@ import java.util.Map.Entry;
 
 /** HTTP请求工具类 . 中车
  * @author hezhao
- * 
+ *
  */
 public class HttpClientUtils {
 
-	private static Logger log = Logger.getLogger(HttpClientUtils.class);
+	private static Logger log = LoggerFactory.getLogger(HttpClientUtils.class);
 
 	@Deprecated
 	public static String request(final Map<String, String> reqParams, final String paramName, final String url) {
@@ -25,7 +26,7 @@ public class HttpClientUtils {
 	}
 
 	/**
-	 * 
+	 *
 	 * @author luo bohui
 	 * @date 2015年8月7日
 	 * @param reqParams
@@ -35,7 +36,7 @@ public class HttpClientUtils {
 	public static String request(final Map<String, String> reqParams, final String url) {
 		final HttpClient client = new HttpClient();
 		final PostMethod method = new PostMethod(url);
-		method.setRequestHeader("Connection", "close");  
+		method.setRequestHeader("Connection", "close");
 		if (MapUtils.isNotEmpty(reqParams)) {
 			final NameValuePair[] params = new NameValuePair[reqParams.size()];
 			int i = 0;
