@@ -6,223 +6,56 @@ import java.util.regex.Pattern;
 
 /**
  * 防Xss攻击,对请求数据进行转义
- * 
- * @author moshaohua
+ *
+ * @author hezhao
  */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-	private HttpServletRequest orgRequest;
-
 	public XssHttpServletRequestWrapper(HttpServletRequest request) {
 		super(request);
-		orgRequest = request;
-	}
-
-	/**
-	 * 覆盖getParameter方法，将参数名和参数值都做xss过滤。<br/>
-	 * 如果需要获得原始的值，则通过super.getParameterValues(name)来获取<br/>
-	 * getParameterNames,getParameterValues和getParameterMap也可能需要覆盖
-	 */
-	@Override
-	public String getParameter(String name) {
-		String value = super.getParameter(xssEncode(name));
-		if (value != null) {
-			value = xssEncode(value);
-		}
-		return value;
 	}
 
 	public String[] getParameterValues(String parameter) {
 		String[] values = super.getParameterValues(parameter);
-		if (values == null) {
+		if (values==null) {
 			return null;
 		}
 		int count = values.length;
 		String[] encodedValues = new String[count];
 		for (int i = 0; i < count; i++) {
-			encodedValues[i] = xssEncode(values[i]);
+			encodedValues[i] = cleanXSS(values[i]);
 		}
 		return encodedValues;
 	}
 
-	/**
-	 * 覆盖getHeader方法，将参数名和参数值都做xss过滤。<br/>
-	 * 如果需要获得原始的值，则通过super.getHeaders(name)来获取<br/>
-	 * getHeaderNames 也可能需要覆盖
-	 */
-	@Override
+	public String getParameter(String parameter) {
+		String value = super.getParameter(parameter);
+		if (value == null) {
+			return null;
+		}
+		return cleanXSS(value);
+	}
+
 	public String getHeader(String name) {
-		String value = super.getHeader(xssEncode(name));
-		if (value != null) {
-			value = xssEncode(value);
-		}
-		return value;
+		String value = super.getHeader(name);
+		if (value == null)
+			return null;
+		return cleanXSS(value);
 	}
 
 	/**
-	 * 获取最原始的request
-	 * 
-	 * @return
+	 * 对特殊字符进行转义
+	 *
+	 * @param @param value
+	 * @return String
 	 */
-	public HttpServletRequest getOrgRequest() {
-		return orgRequest;
-	}
-
-	/**
-	 * 获取最原始的request的静态方法
-	 * 
-	 * @return
-	 */
-	public static HttpServletRequest getOrgRequest(HttpServletRequest req) {
-		if (req instanceof XssHttpServletRequestWrapper) {
-			return ((XssHttpServletRequestWrapper) req).getOrgRequest();
-		}
-		return req;
-	}
-
-	public String escape(String s) {
-		StringBuilder sb = new StringBuilder(s.length() + 16);
-		for (int i = 0; i < s.length(); i++) {
-			char c = s.charAt(i);
-			switch (c) {
-			case '>':
-				sb.append('＞');// 全角大于号
-				break;
-			case '<':
-				sb.append('＜');// 全角小于号
-				break;
-			case '\'':
-				sb.append('‘');// 全角单引号
-				break;
-			case '\"':
-				// 有可能影响到json格式字符串中的双引号。
-				sb.append('“');// 全角双引号
-				break;
-			case '\\':
-				sb.append('＼');// 全角斜线
-				break;
-			case '%':
-				sb.append('％'); // 全角冒号
-				break;
-			default:
-				sb.append(c);
-				break;
-			}
-
-		}
-		return sb.toString();
-	}
-
-	/**
-	 * 将容易引起xss漏洞的半角字符直接替换成全角字符
-	 * 
-	 * @param s
-	 * @return
-	 */
-	public String xssEncode(String s) {
-		if (s == null || s.isEmpty()) {
-			return s;
-		}
-
-		String result = stripXSS(s);
-		if (null != result) {
-			result = escape(result);
-		}
-
-		return result;
-	}
-
-//	/**
-//	 * 将容易引起xss漏洞的半角字符直接替换成全角字符
-//	 *
-//	 * @param s
-//	 * @return
-//	 */
-//	private static String xssEncode(String s) {
-//		if (s == null || s.isEmpty()) {
-//			return s;
-//		}
-//
-//		StringReader reader = new StringReader(s);
-//		StringWriter writer = new StringWriter();
-//		try {
-//			HTMLParser.process(reader, writer, new XSSFilter(), true);
-//			return writer.toString();
-//		} catch (NullPointerException e) {
-//			return s;
-//		} catch (Exception ex) {
-//			ex.printStackTrace(System.out);
-//		}
-//		return null;
-//	}
-
-	private String stripXSS(String value) {
-		if (value != null) {
-			// NOTE: It's highly recommended to use the ESAPI library and
-			// uncomment the following line to
-			// avoid encoded attacks.
-			// value = ESAPI.encoder().canonicalize(value);
-			// Avoid null characters
-			value = value.replaceAll("", "");
-			// Avoid anything between script tags
-			Pattern scriptPattern = Pattern.compile("<script>(.*?)</script>",
-					Pattern.CASE_INSENSITIVE);
-			value = scriptPattern.matcher(value).replaceAll("");
-			// Avoid anything in a src='...' type of expression
-			scriptPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\\'(.*?)\\\'",
-					Pattern.CASE_INSENSITIVE | Pattern.MULTILINE
-							| Pattern.DOTALL);
-			value = scriptPattern.matcher(value).replaceAll("");
-			scriptPattern = Pattern.compile("src[\r\n]*=[\r\n]*\\\"(.*?)\\\"",
-					Pattern.CASE_INSENSITIVE | Pattern.MULTILINE
-							| Pattern.DOTALL);
-			value = scriptPattern.matcher(value).replaceAll("");
-			// Remove any lonesome </script> tag
-			scriptPattern = Pattern.compile("</script>",
-					Pattern.CASE_INSENSITIVE);
-			value = scriptPattern.matcher(value).replaceAll("");
-			// Remove any lonesome <script ...> tag
-			scriptPattern = Pattern.compile("<script(.*?)>",
-					Pattern.CASE_INSENSITIVE | Pattern.MULTILINE
-							| Pattern.DOTALL);
-			value = scriptPattern.matcher(value).replaceAll("");
-			// Avoid eval(...) expressions
-			scriptPattern = Pattern.compile("eval\\((.*?)\\)",
-					Pattern.CASE_INSENSITIVE | Pattern.MULTILINE
-							| Pattern.DOTALL);
-			value = scriptPattern.matcher(value).replaceAll("");
-			// Avoid expression(...) expressions
-			scriptPattern = Pattern.compile("expression\\((.*?)\\)",
-					Pattern.CASE_INSENSITIVE | Pattern.MULTILINE
-							| Pattern.DOTALL);
-			value = scriptPattern.matcher(value).replaceAll("");
-			// Avoid javascript:... expressions
-			scriptPattern = Pattern.compile("javascript:",
-					Pattern.CASE_INSENSITIVE);
-			value = scriptPattern.matcher(value).replaceAll("");
-			// Avoid vbscript:... expressions
-			scriptPattern = Pattern.compile("vbscript:",
-					Pattern.CASE_INSENSITIVE);
-			value = scriptPattern.matcher(value).replaceAll("");
-			// Avoid onload= expressions
-			scriptPattern = Pattern.compile("onload(.*?)=",
-					Pattern.CASE_INSENSITIVE | Pattern.MULTILINE
-							| Pattern.DOTALL);
-			value = scriptPattern.matcher(value).replaceAll("");
-
-			scriptPattern = Pattern.compile("<iframe>(.*?)</iframe>",
-					Pattern.CASE_INSENSITIVE);
-			value = scriptPattern.matcher(value).replaceAll("");
-
-			scriptPattern = Pattern.compile("</iframe>",
-					Pattern.CASE_INSENSITIVE);
-			value = scriptPattern.matcher(value).replaceAll("");
-			// Remove any lonesome <script ...> tag
-			scriptPattern = Pattern.compile("<iframe(.*?)>",
-					Pattern.CASE_INSENSITIVE | Pattern.MULTILINE
-							| Pattern.DOTALL);
-			value = scriptPattern.matcher(value).replaceAll("");
-		}
+	private String cleanXSS(String value) {
+		value = value.replaceAll("<", "& lt;").replaceAll(">", "& gt;");
+		value = value.replaceAll("\\(", "& #40;").replaceAll("\\)", "& #41;");
+		value = value.replaceAll("'", "& #39;");
+		value = value.replaceAll("eval\\((.*)\\)", "");
+		value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
+		value = value.replaceAll("script", "");
 		return value;
 	}
 }

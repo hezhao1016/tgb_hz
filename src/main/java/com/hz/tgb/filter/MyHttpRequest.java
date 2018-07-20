@@ -1,11 +1,10 @@
 package com.hz.tgb.filter;
 
-import java.util.regex.Pattern;
+import com.hz.tgb.crypto.aes.BackAES;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-
-import com.hz.tgb.crypto.aes.BackAES;
+import java.util.regex.Pattern;
 
 /**
  * 对参数进行解密，以及进行XXS保护。
@@ -13,42 +12,51 @@ import com.hz.tgb.crypto.aes.BackAES;
  * @date 2015年6月9日
  */
 public class MyHttpRequest extends HttpServletRequestWrapper {
+
+	/** 原始Request */
 	private HttpServletRequest orgRequest;
+	/** 加密字符串 */
 	private String AES_KEY = "dAA%D#V*2a9r4I!V";
-	
+
 	public MyHttpRequest(HttpServletRequest request) {
 		super(request);
 		orgRequest = request;
 	}
 
 	/**
-	 * 覆盖getParameter方法，将参数名和参数值都做xss过滤。<br/>
-	 * 如果需要获得原始的值，则通过super.getParameterValues(name)来获取<br/>
+	 * 覆盖getParameter()方法，将参数名和参数值都做xss过滤。<br/>
+	 * 如果需要获得原始的值，则通过super.getParameter(name)来获取<br/>
 	 * getParameterNames,getParameterValues和getParameterMap也可能需要覆盖
 	 */
 	@Override
 	public String getParameter(String name) {
 		String value = super.getParameter(xssEncode(name));
 		if(value != null) {
-			value = BackAES.decrypt(value,AES_KEY,0);
+			value = BackAES.decrypt(value, AES_KEY, 0);
 			value = xssEncode(value);
 		}
 		return value;
 	}
 
+	/**
+	 * 覆盖getParameterValues()方法，将参数名和参数值都做xss过滤。<br/>
+	 * 如果需要获得原始的值，则通过super.getParameterValues(name)来获取<br/>
+	 */
 	public String[] getParameterValues(String parameter) {
-		String[] values = super.getParameterValues(parameter);
-		if (values == null) {
+		String[] values = super.getParameterValues(xssEncode(parameter));
+		if (values == null || values.length == 0) {
 			return null;
 		}
+		String value;
 		int count = values.length;
 		String[] encodedValues = new String[count];
 		for (int i = 0; i < count; i++) {
-			encodedValues[i] = xssEncode(values[i]);
+			value = BackAES.decrypt(values[i], AES_KEY, 0);
+			encodedValues[i] = xssEncode(value);
 		}
 		return encodedValues;
 	}
-	
+
 	/**
 	 * 覆盖getHeader方法，将参数名和参数值都做xss过滤。<br/>
 	 * 如果需要获得原始的值，则通过super.getHeaders(name)来获取<br/>
@@ -63,33 +71,9 @@ public class MyHttpRequest extends HttpServletRequestWrapper {
 		return value;
 	}
 
-//	/**
-//	 * 将容易引起xss漏洞的半角字符直接替换成全角字符
-//	 *
-//	 * @param s
-//	 * @return
-//	 */
-//	private static String xssEncode(String s) {
-//		if (s == null || s.isEmpty()) {
-//			return s;
-//		}
-//
-//		StringReader reader = new StringReader(s);
-//		StringWriter writer = new StringWriter();
-//		try {
-//			HTMLParser.process(reader, writer, new XSSFilter(), true);
-//			return writer.toString();
-//		} catch (NullPointerException e) {
-//			return s;
-//		} catch (Exception ex) {
-//			ex.printStackTrace(System.out);
-//		}
-//		return null;
-//	}
-
 	/**
 	 * 获取最原始的request
-	 * 
+	 *
 	 * @return
 	 */
 	public HttpServletRequest getOrgRequest() {
@@ -98,12 +82,12 @@ public class MyHttpRequest extends HttpServletRequestWrapper {
 
 	/**
 	 * 获取最原始的request的静态方法
-	 * 
+	 *
 	 * @return
 	 */
 	public static HttpServletRequest getOrgRequest(HttpServletRequest req) {
-		if (req instanceof XssHttpServletRequestWrapper) {
-			return ((XssHttpServletRequestWrapper) req).getOrgRequest();
+		if (req instanceof MyHttpRequest) {
+			return ((MyHttpRequest) req).getOrgRequest();
 		}
 		return req;
 	}
@@ -141,9 +125,33 @@ public class MyHttpRequest extends HttpServletRequestWrapper {
 		return sb.toString();
 	}
 
+//	/**
+//	 * 将容易引起xss漏洞的半角字符直接替换成全角字符
+//	 *
+//	 * @param s
+//	 * @return
+//	 */
+//	private static String xssEncode(String s) {
+//		if (s == null || s.isEmpty()) {
+//			return s;
+//		}
+//
+//		StringReader reader = new StringReader(s);
+//		StringWriter writer = new StringWriter();
+//		try {
+//			HTMLParser.process(reader, writer, new XSSFilter(), true);
+//			return writer.toString();
+//		} catch (NullPointerException e) {
+//			return s;
+//		} catch (Exception ex) {
+//			ex.printStackTrace(System.out);
+//		}
+//		return null;
+//	}
+
 	/**
 	 * 将容易引起xss漏洞的半角字符直接替换成全角字符
-	 * 
+	 *
 	 * @param s
 	 * @return
 	 */
