@@ -1,10 +1,12 @@
 package com.hz.tgb.data.redis;
 
 import com.alibaba.fastjson.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -13,8 +15,10 @@ import java.util.List;
  * 
  * @author Yaphis 2015年7月19日 下午10:57:47
  */
+@Service
 public class RedisService {
 
+    @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     /**
@@ -267,11 +271,4 @@ public class RedisService {
         return redisTemplate.opsForValue().increment(key, delta);
     }
 
-    public RedisTemplate<String, String> getRedisTemplate() {
-        return redisTemplate;
-    }
-
-    public void setRedisTemplate(RedisTemplate<String, String> redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
 }
