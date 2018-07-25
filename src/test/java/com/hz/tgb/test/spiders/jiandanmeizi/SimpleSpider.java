@@ -1,5 +1,6 @@
 package com.hz.tgb.test.spiders.jiandanmeizi;
 
+import com.hz.tgb.test.spiders.jiandanmeizi.Utils;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -13,7 +14,7 @@ import java.util.concurrent.Executors;
 
 /**
  * 使用HttpClient实现一个简单爬虫，抓取煎蛋妹子图
- * 
+ *
  * @author hezhao
  * @Time 2017年8月2日 上午10:07:55
  */
@@ -24,6 +25,7 @@ public class SimpleSpider {
 	public static void main(String[] args) {
 		// 线程池
 		ExecutorService pool = Executors.newFixedThreadPool(10);
+
 		try {
 			// HttpClient 超时配置
 			RequestConfig globalConfig = RequestConfig.custom()
@@ -34,6 +36,7 @@ public class SimpleSpider {
 					.setDefaultRequestConfig(globalConfig).build();
 			System.out.println("3秒后开始抓取煎蛋妹子图……");
 			Thread.sleep(3000);
+
 			for (int i = page; i > 0; i--) {
 				// 创建一个GET请求
 				HttpGet httpGet = new HttpGet("http://jandan.net/ooxx/page-"

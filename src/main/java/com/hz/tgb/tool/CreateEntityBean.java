@@ -13,7 +13,8 @@ import java.util.Date;
  *
  */
 public class CreateEntityBean {
-	private String authorName = "HeZhao";// 作者名字
+	// 作者名字
+	private String authorName = "HeZhao";
 
 	// 数据库名
 	private static final String databaseName = "orcl";
@@ -54,8 +55,8 @@ public class CreateEntityBean {
 	private boolean f_sql = false; // 是否需要导入包java.sql.*
 
 	private static final String NBSP = "    ";
-	
-	private static final String[] newTablenames = new String[tablenames.length]; 
+
+	private static final String[] newTablenames = new String[tablenames.length];
 
 	/**
 	 * 获得链接
@@ -82,7 +83,7 @@ public class CreateEntityBean {
 			newTablenames[i] = tablenames[i].substring(tablenames[i].lastIndexOf(".")+1);
 		}
 	}
-	
+
 	/**
 	 * 入口
 	 */
@@ -171,7 +172,7 @@ public class CreateEntityBean {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 解析处理(生成实体类主体代码)
 	 */
@@ -204,7 +205,7 @@ public class CreateEntityBean {
 
 	/**
 	 * 生成所有的方法
-	 * 
+	 *
 	 * @param sb
 	 */
 	private void processAllMethod(StringBuffer sb) {
@@ -228,7 +229,7 @@ public class CreateEntityBean {
 
 	/**
 	 * 解析输出属性
-	 * 
+	 *
 	 * @return
 	 */
 	private void processAllAttrs(StringBuffer sb) {
@@ -241,7 +242,7 @@ public class CreateEntityBean {
 
 	/**
 	 * 生成构造方法
-	 * 
+	 *
 	 * @param sb
 	 */
 	private void processAllConstructors(StringBuffer sb,int index) {
@@ -274,7 +275,7 @@ public class CreateEntityBean {
 
 	/**
 	 * 把输入字符串的首字母改成大写
-	 * 
+	 *
 	 * @param str
 	 * @return
 	 */
@@ -288,7 +289,7 @@ public class CreateEntityBean {
 
 	/**
 	 * 功能：获得属性的数据类型
-	 * 
+	 *
 	 * @param sqlType
 	 * @return
 	 */
@@ -312,7 +313,7 @@ public class CreateEntityBean {
 			} else if (sqlType.equalsIgnoreCase("date")
 					|| sqlType.equalsIgnoreCase("timestamp")
 					|| sqlType
-							.equalsIgnoreCase("timestamp with local time zone")
+					.equalsIgnoreCase("timestamp with local time zone")
 					|| sqlType.equalsIgnoreCase("timestamp with time zone")) {
 				return "Date";
 			} else if (sqlType.equalsIgnoreCase("number")) {

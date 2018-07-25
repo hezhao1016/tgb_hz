@@ -6,6 +6,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+/**
+ * 保存文件
+ */
 public class JianDanImageCreator implements Runnable {
 	private static int count = 0;
 	private String imageUrl;

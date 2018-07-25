@@ -50,7 +50,7 @@ public class GetURLInfo {
 			String urlStr = "http://www.sina.com.cn:80/index.htm";
 			URL url = new URL(urlStr);
 			printInfo(url);
-			
+
 		} catch (Exception e) {
 			System.err.println(e);
 		}

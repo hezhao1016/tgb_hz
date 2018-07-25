@@ -3,6 +3,7 @@ package com.hz.tgb.test.spiders.jiandanmeizi;
 import java.io.*;
 
 public class Utils {
+
 	public static void writeToFile(InputStream in, String path) {
 		File file = new File(path);
 		System.out.println("是否为文件：" + file.isFile());

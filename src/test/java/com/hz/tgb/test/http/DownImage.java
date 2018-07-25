@@ -35,22 +35,22 @@ public class DownImage {
 				fos.write(buf, 0, size);
 			}
 			fos.flush();
-			
+
 			System.out.println("下载成功！");
 		} catch (Exception e) {
-			
+
 		} finally {
 			try {
 				fos.close();
 				bis.close();
 				httpUrl.disconnect();
 			} catch (Exception e) {
-				
+
 			}
 		}
 	}
 
 	public static void main(String[] args) {
-		downImage("http://o2osite.xc580.net/ycxczone_imgs/2016/11/20161109171703012sys7033.jpg");  
+		downImage("http://o2osite.xc580.net/ycxczone_imgs/2016/11/20161109171703012sys7033.jpg");
 	}
 }

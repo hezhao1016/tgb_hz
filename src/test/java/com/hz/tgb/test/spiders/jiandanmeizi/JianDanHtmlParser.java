@@ -3,6 +3,9 @@ package com.hz.tgb.test.spiders.jiandanmeizi;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 解析HTML
+ */
 public class JianDanHtmlParser implements Runnable {
 	private String html;
 	private int page;
