@@ -44,13 +44,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <junit.version>4.12</junit.version>
-        <org.springframework>4.1.6.RELEASE</org.springframework>
-        <mysql.version>5.1.35</mysql.version>
-        <druid.version>1.0.18</druid.version>
+        <org.springframework>4.3.8.RELEASE</org.springframework>
+        <mysql.version>5.1.46</mysql.version>
+        <druid.version>1.0.29</druid.version>
         <spring-redis>2.0.3.RELEASE</spring-redis>
-        <dubbo-version>2.5.3</dubbo-version>
-        <zkclient.version>0.1</zkclient.version>
-        <zookeeper.version>3.4.6</zookeeper.version>
+        <dubbo-version>2.6.2</dubbo-version>
+        <zkclient.version>0.10</zkclient.version>
+        <zookeeper.version>3.4.11</zookeeper.version>
         <disconf.version>2.6.36</disconf.version>
         <slf4j.version>1.7.25</slf4j.version>
         <fasterxml.jackson.version>2.9.5</fasterxml.jackson.version>
@@ -539,14 +539,15 @@
 
         <!-- ZooKeeper -->
         <dependency>
-            <groupId>com.github.sgroschupf</groupId>
-            <artifactId>zkclient</artifactId>
-            <version>${zkclient.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
             <version>${zookeeper.version}</version>
+        </dependency>
+        <!-- zkClient -->
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>${zkclient.version}</version>
         </dependency>
 
         <!--http-->
