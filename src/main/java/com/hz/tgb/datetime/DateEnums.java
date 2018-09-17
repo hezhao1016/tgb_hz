@@ -48,7 +48,7 @@ public class DateEnums {
 		 */
 		yyyy_MM_dd_HH_mm_ss("yyyy-MM-dd HH:mm:ss"),
 		/**
-		 * yyyy-MM-dd HH:mm:ss 例如 2017-03-13 星期一 15:16:47
+		 * yyyy-MM-dd E HH:mm:ss 例如 2017-03-13 星期一 15:16:47
 		 */
 		yyyy_MM_dd_E_HH_mm_ss("yyyy-MM-dd E HH:mm:ss"),
 		/**
@@ -56,7 +56,7 @@ public class DateEnums {
 		 */
 		yyyy_MM_dd_HH_mm_ss_S("yyyy-MM-dd HH:mm:ss:S"),
 		/**
-		 * yyyy-MM-dd HH:mm:ss:S 例如 2017-03-13 星期一 15:16:47:356
+		 * yyyy-MM-dd E HH:mm:ss:S 例如 2017-03-13 星期一 15:16:47:356
 		 */
 		yyyy_MM_dd_E_HH_mm_ss_S("yyyy-MM-dd E HH:mm:ss:S"),
 
