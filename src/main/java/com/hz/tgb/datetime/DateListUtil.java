@@ -1,10 +1,13 @@
 package com.hz.tgb.datetime;
 
-import com.hz.tgb.common.ArrayUtil;
+import com.hz.tgb.common.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 日期列表工具类
@@ -28,7 +31,7 @@ public class DateListUtil {
      * @return 日期列表
      */
     public static List<String> getDateList(String dateType, String startTime, String endTime) {
-        if (dateType == null || dateType.trim().length() == 0){
+        if (StringUtil.isBlank(dateType)){
             return new ArrayList<>();
         }
 
@@ -46,7 +49,7 @@ public class DateListUtil {
      * @return 日期列表
      */
     public static List<String> getDateList(DateEnums.DateType dateType, String startTime, String endTime) {
-        if (dateType == null) {
+        if (dateType == null || StringUtil.isBlank(startTime) || StringUtil.isBlank(endTime)) {
             return new ArrayList<>();
         }
 
