@@ -1,6 +1,5 @@
 package com.hz.tgb.datetime;
 
-import com.hz.tgb.common.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +15,7 @@ import java.util.GregorianCalendar;
  * 日期、时间处理工具类
  *
  * @author hezhao
+ * @Time   2017年7月31日 上午11:50:45
  *
  */
 public class DateUtil {
@@ -28,6 +28,7 @@ public class DateUtil {
 		System.out.println(format(now, "yyyy-MM-dd HH:mm:ss"));
 		System.out.println(format(now, "yyyy/MM/dd E HH:mm:ss:S"));
 		System.out.println(format(now, "yyMMddHHmmss"));
+		System.out.println("=========================1===========================");
 
 		String format = format(now, "yyyy-MM-dd HH:mm:ss");
 		System.out.println(parse(format, "yyyy-MM-dd HH:mm:ss"));
@@ -45,12 +46,14 @@ public class DateUtil {
 
 		System.out.println(daysBetween(getNow(), parse("2017-06-22")));
 		System.out.println(daysBetween("2017-01-12", "2017-08-22"));
+		System.out.println("===========================2=========================");
 
 		Date addDay = addDay(getNow(), -39);
 		System.out.println(formatDate(addDay));
 
 		System.out.println(check("2017-12-12"));
 		System.out.println(check("12-12"));
+		System.out.println("==========================3==========================");
 
 		System.out.println("First day of week is : "
 				+ formatDateTime(getFirstDateByWeek(new Date())));
@@ -60,6 +63,7 @@ public class DateUtil {
 				+ formatDateTime(getFirstDateByWeekBySunDay(new Date())));
 		System.out.println("Last day of week by sunday is : "
 				+ formatDateTime(getLastDateByWeekBySunDay(new Date())));
+		System.out.println("===========================4=========================");
 
 		System.out.println("First day of month is : "
 				+ formatDateTime(getFirstDateByMonth(new Date())));
@@ -72,6 +76,7 @@ public class DateUtil {
 		System.out.println("Last day of month is : " + getLastDateByMonth());
 		System.out.println("Last day of month is : "
 				+ getLastDateByMonth(2017, 8));
+		System.out.println("==========================5==========================");
 
 		System.out.println("First day of year is : "
 				+ formatDateTime(getFirstDateByYear()));
@@ -86,6 +91,7 @@ public class DateUtil {
 				+ formatDateTime(getLastDateByYear()));
 		System.out.println("Last day of year is : "
 				+ formatDateTime(getLastDateByYear(2017)));
+		System.out.println("==========================6==========================");
 
 		try {
 			System.out.println("calculateTime is : "
@@ -93,6 +99,11 @@ public class DateUtil {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+
+		System.out.println(changeFormat("2018/09/06", "yyyy-MM-dd"));
+		long time = DateUtil.dateDiffer("2018-09-18 23:45:11", "2018-09-19 02:45:12", DateEnums.DateStyle.yyyy_MM_dd_HH_mm_ss.getValue());
+		double hour = time / 1000.0 / 60 / 60;
+		System.out.println(hour);
 
 	}
 
@@ -129,6 +140,16 @@ public class DateUtil {
 
 	private DateUtil() {
 		// 私有类构造方法
+	}
+
+	private static boolean isEmpty(String str) {
+		if (str == null || str.trim().length() == 0)
+			return true;
+		return false;
+	}
+
+	private static boolean isNotEmpty(String str) {
+		return !isEmpty(str);
 	}
 
 	/**
@@ -207,6 +228,9 @@ public class DateUtil {
 	 * @return 任意格式[DateStyle] 只要有一个转换成功就返回true，否则返回false
 	 */
 	public static boolean check(String dateString) {
+		if (isEmpty(dateString))
+			return false;
+
 		for (DateEnums.DateStyle style : DateEnums.DateStyle.values()) {
 			Date date = null;
 			SimpleDateFormat sdf = new SimpleDateFormat(style.getValue());
@@ -225,40 +249,72 @@ public class DateUtil {
 	/**
 	 * 返回两个时间之间的差(毫秒数)
 	 *
-	 * @param time1
-	 * @param time2
-	 * @param formatStr
-	 * @return
-	 * @throws ParseException
+	 * @param time1 日期一
+	 * @param time2 日期二
+	 * @return 毫秒数[绝对值]
 	 */
-	public static long dateDiffer(String time1, String time2, String formatStr) throws ParseException {
-		SimpleDateFormat sp = new SimpleDateFormat(formatStr);
-		Date date1 = sp.parse(time1);
-		Date date2 = sp.parse(time2);
-		long differ = Math.abs(date1.getTime() - date2.getTime());
+	public static long dateDiffer(Date time1, Date time2) {
+		if (time1 == null || time2 == null) {
+			return 0;
+		}
+
+		long differ = Math.abs(time1.getTime() - time2.getTime());
 		return differ;
 	}
 
 	/**
+	 * 返回两个时间之间的差(毫秒数)
+	 *
+	 * @param time1 日期一
+	 * @param time2 日期二
+	 * @param formatStr 格式字符串
+	 * @return 毫秒数[绝对值]
+	 */
+	public static long dateDiffer(String time1, String time2, String formatStr) {
+		if (isEmpty(time1) || isEmpty(time2)) {
+			return 0L;
+		}
+
+		Date date1 = parse(time1, formatStr);
+		Date date2 = parse(time2, formatStr);
+		return dateDiffer(date1, date2);
+	}
+
+	/**
+	 * 返回两个时间之间的差(毫秒数)
+	 *
+	 * @param time1 日期一
+	 * @param time2 日期二
+	 * @return 毫秒数[绝对值]
+	 */
+	public static long dateDiffer(String time1, String time2) {
+		return dateDiffer(time1, time2, "");
+	}
+
+	/**
 	 * 计算日期差
 	 *
 	 * @author hezhao
 	 * @Time 2016年8月26日 上午9:48:50
-	 * @param now
+	 * @param time1
 	 *            日期一
-	 * @param returnDate
+	 * @param time2
 	 *            日期二
 	 * @return 日期差[绝对值]
 	 */
-	public static int daysBetween(Date now, Date returnDate) {
-		Calendar cNow = Calendar.getInstance();
-		Calendar cReturnDate = Calendar.getInstance();
-		cNow.setTime(now);
-		cReturnDate.setTime(returnDate);
-		setTimeToMidnight(cNow);
-		setTimeToMidnight(cReturnDate);
-		long todayMs = cNow.getTimeInMillis();
-		long returnMs = cReturnDate.getTimeInMillis();
+	public static int daysBetween(Date time1, Date time2) {
+		if (time1 == null || time2 == null) {
+			return 0;
+		}
+
+		Calendar cDate1 = Calendar.getInstance();
+		Calendar cDate2 = Calendar.getInstance();
+		cDate1.setTime(time1);
+		cDate2.setTime(time2);
+		setTimeToMidnight(cDate1);
+		setTimeToMidnight(cDate2);
+		long todayMs = cDate1.getTimeInMillis();
+		long returnMs = cDate2.getTimeInMillis();
 		long intervalMs = returnMs - todayMs;
 		return Math.abs(millisecondsToDays(intervalMs));
 	}
@@ -268,23 +324,37 @@ public class DateUtil {
 	 *
 	 * @author hezhao
 	 * @Time 2016年8月26日 上午9:48:50
-	 * @param now
+	 * @param time1
 	 *            日期一
-	 * @param returnDate
+	 * @param time2
+	 *            日期二
+	 * @param formatStr
+	 *            格式字符串
+	 * @return 日期差[绝对值]
+	 */
+	public static int daysBetween(String time1, String time2, String formatStr) {
+		if (isEmpty(time1) || isEmpty(time2)) {
+			return 0;
+		}
+
+		Date date1 = parse(time1, formatStr);
+		Date date2 = parse(time2, formatStr);
+		return daysBetween(date1, date2);
+	}
+
+	/**
+	 * 计算日期差
+	 *
+	 * @author hezhao
+	 * @Time 2016年8月26日 上午9:48:50
+	 * @param time1
+	 *            日期一
+	 * @param time2
 	 *            日期二
 	 * @return 日期差[绝对值]
 	 */
-	public static int daysBetween(String now, String returnDate) {
-		Calendar cNow = Calendar.getInstance();
-		Calendar cReturnDate = Calendar.getInstance();
-		cNow.setTime(parse(now));
-		cReturnDate.setTime(parse(returnDate));
-		setTimeToMidnight(cNow);
-		setTimeToMidnight(cReturnDate);
-		long todayMs = cNow.getTimeInMillis();
-		long returnMs = cReturnDate.getTimeInMillis();
-		long intervalMs = returnMs - todayMs;
-		return Math.abs(millisecondsToDays(intervalMs));
+	public static int daysBetween(String time1, String time2) {
+		return daysBetween(time1, time2, "");
 	}
 
 	private static int millisecondsToDays(long intervalMs) {
@@ -302,17 +372,21 @@ public class DateUtil {
 	 *
 	 * @author hezhao
 	 * @Time 2018年02月24日 上午9:48:50
-	 * @param now
+	 * @param time1
 	 *            日期一
-	 * @param returnDate
+	 * @param time2
 	 *            日期二
 	 * @return 月份差[绝对值]
 	 */
-	public static int monthsBetween(Date now, Date returnDate) {
+	public static int monthsBetween(Date time1, Date time2) {
+		if (time1 == null || time2 == null) {
+			return 0;
+		}
+
 		Calendar bef = Calendar.getInstance();
 		Calendar aft = Calendar.getInstance();
-		bef.setTime(now);
-		aft.setTime(returnDate);
+		bef.setTime(time1);
+		aft.setTime(time2);
 		int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
 		int month = (aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR)) * 12;
 		return Math.abs(month + result);
@@ -323,20 +397,37 @@ public class DateUtil {
 	 *
 	 * @author hezhao
 	 * @Time 2018年02月24日 上午9:48:50
-	 * @param now
+	 * @param time1
 	 *            日期一
-	 * @param returnDate
+	 * @param time2
+	 *            日期二
+	 * @param formatStr
+	 *            格式字符串
+	 * @return 月份差[绝对值]
+	 */
+	public static int monthsBetween(String time1, String time2, String formatStr) {
+		if (isEmpty(time1) || isEmpty(time2)) {
+			return 0;
+		}
+
+		Date date1 = parse(time1, formatStr);
+		Date date2 = parse(time2, formatStr);
+		return monthsBetween(date1, date2);
+	}
+
+	/**
+	 * 计算月份差
+	 *
+	 * @author hezhao
+	 * @Time 2018年02月24日 上午9:48:50
+	 * @param time1
+	 *            日期一
+	 * @param time2
 	 *            日期二
 	 * @return 月份差[绝对值]
 	 */
-	public static int monthsBetween(String now, String returnDate) {
-		Calendar bef = Calendar.getInstance();
-		Calendar aft = Calendar.getInstance();
-		bef.setTime(parse(now));
-		aft.setTime(parse(returnDate));
-		int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
-		int month = (aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR)) * 12;
-		return Math.abs(month + result);
+	public static int monthsBetween(String time1, String time2) {
+		return monthsBetween(time1, time2, "");
 	}
 
 	/**
@@ -561,7 +652,7 @@ public class DateUtil {
 		if (date == null) {
 			return "";
 		}
-		if (StringUtil.isBlank(pattern)) {
+		if (isEmpty(pattern)) {
 			return formatDate(date);
 		}
 		SimpleDateFormat simpleDateFormat = null;
@@ -579,12 +670,12 @@ public class DateUtil {
 	 *
 	 * @param date
 	 *            旧日期字符串
-	 * @param parttern
+	 * @param pattern
 	 *            新日期格式
 	 * @return 新日期字符串
 	 */
-	public static String changeFormat(String date, String parttern) {
-		return changeFormat(date, null, parttern);
+	public static String changeFormat(String date, String pattern) {
+		return changeFormat(date, null, pattern);
 	}
 
 	/**
@@ -592,17 +683,17 @@ public class DateUtil {
 	 *
 	 * @param date
 	 *            旧日期字符串
-	 * @param olddParttern
+	 * @param olddPattern
 	 *            旧日期格式
-	 * @param newParttern
+	 * @param newPattern
 	 *            新日期格式
 	 * @return 新日期字符串
 	 */
-	public static String changeFormat(String date, String olddParttern,
-									  String newParttern) {
+	public static String changeFormat(String date, String olddPattern,
+									  String newPattern) {
 		String dateString = null;
-		Date myDate = parse(date, olddParttern);
-		dateString = format(myDate, newParttern);
+		Date myDate = parse(date, olddPattern);
+		dateString = format(myDate, newPattern);
 		return dateString;
 	}
 
@@ -691,8 +782,10 @@ public class DateUtil {
 	 * @return
 	 */
 	public static Date parse(String dateString, String pattern) {
-		if ("".equals(dateString))
+		if (isEmpty(dateString))
 			return null;
+		if (isEmpty(pattern))
+			return parse(dateString);
 
 		Date date = null;
 		SimpleDateFormat sdf = getFormatInstance(pattern);
@@ -1304,7 +1397,7 @@ public class DateUtil {
 	 * @return
 	 */
 	public static SimpleDateFormat getFormatInstance(String pattern) {
-		if (pattern == null || pattern.length() == 0) {
+		if (isEmpty(pattern)) {
 			pattern = DAFAULT_DATE_FORMAT;
 		}
 		return new SimpleDateFormat(pattern);
@@ -1318,6 +1411,9 @@ public class DateUtil {
 	 * @return 日期风格
 	 */
 	public static DateEnums.DateStyle getDateStyle(String date) {
+		if (isEmpty(date))
+			return null;
+
 		for (DateEnums.DateStyle style : DateEnums.DateStyle.values()) {
 			Date dateTmp = null;
 			SimpleDateFormat sdf = new SimpleDateFormat(style.getValue());
