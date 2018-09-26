@@ -41,14 +41,18 @@ public class FileUtil {
 		// delete("D:/c.jpg");
 		// deleteFolder("D:/new2");
 
-		// System.out.println(mkFile("D://z/z/a.txt"));
-		// System.out.println(mkFile("D://z/z/b"));
-		// System.out.println(mkDir("D://zI/z/b"));
+		// System.out.println(mkFile("D:/z/z/a.txt"));
+		// System.out.println(mkFile("D:/z/z/b"));
+		// System.out.println(mkDir("D:/zI/z/b"));
 
-		// list("D://maven");
+		// list("D:/maven");
 
-		System.out.println(exists("D:\\\\sdf"));
-	}
+		// System.out.println(exists("D:/sdf"));
+
+		byte[] bytes = readFileByBytes("");
+		System.out.println(new String(bytes));
+
+    }
 
 	/**
 	 * 使用NIO进行快速的文件拷贝
@@ -435,8 +439,7 @@ public class FileUtil {
 			file.delete();
 			return true;
 		} else {
-			logger.error("FileUtil.deleteFile.FileNotFoundException :找不到"
-					+ file.getPath() + "文件！");
+			logger.error("FileUtil.deleteFile.FileNotFoundException :找不到" + file.getPath() + "文件！");
 			return false;
 		}
 	}
@@ -642,6 +645,62 @@ public class FileUtil {
 	}
 
 	/**
+	 * 根据文件路径读取byte[] 数组，如果没有内容，字节数组为null
+	 *
+	 * @author hezhao
+	 * @Time 2017年7月28日 下午8:23:26
+	 * @param file
+	 * @return
+	 */
+	public static byte[] readFileByBytes(File file) throws IOException {
+		byte[] data = null;
+		if (file == null || !file.exists()) {
+			String filePath = (file != null && file.getPath().trim().length() > 0)
+					? file.getPath() : "filePath 为空";
+			throw new FileNotFoundException(filePath);
+		} else {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream((int) file.length());
+			BufferedInputStream in = null;
+
+			try {
+				in = new BufferedInputStream(new FileInputStream(file));
+				short bufSize = 1024;
+				byte[] buffer = new byte[bufSize];
+				int len1;
+				while (-1 != (len1 = in.read(buffer, 0, bufSize))) {
+					bos.write(buffer, 0, len1);
+				}
+
+				data = bos.toByteArray();
+			} finally {
+				try {
+					if (in != null) {
+						in.close();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				bos.close();
+			}
+		}
+		return data;
+	}
+
+    /**
+     * 根据文件路径读取byte[] 数组，如果没有内容，字节数组为null
+     *
+     * @author hezhao
+     * @Time 2017年7月28日 下午8:23:26
+     * @param filePath
+     * @return
+     */
+    public static byte[] readFileByBytes(String filePath) throws IOException {
+        File file = new File(filePath);
+        return readFileByBytes(file);
+    }
+
+	/**
 	 * 通过InputStream读取文件
 	 *
 	 * @param sourceFile
@@ -651,12 +710,12 @@ public class FileUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	public static String readFile(File sourceFile, Integer length)
-			throws IOException {
-		if (!sourceFile.exists()) {
-			logger.error("FileUtil.readByInputStream.FileNotFoundException :找不到"
-					+ sourceFile.getPath() + "文件！");
-			return null;
+	public static String readFile(File sourceFile, Integer length) throws IOException {
+		if (sourceFile == null || !sourceFile.exists()) {
+            String filePath = (sourceFile != null && sourceFile.getPath().trim().length() > 0)
+                    ? sourceFile.getPath() : "filePath 为空";
+			logger.error("FileUtil.readFile.FileNotFoundException :找不到 [" + filePath + "] 文件！");
+            throw new FileNotFoundException(filePath);
 		}
 		if (length == null) {
 			length = 1024;
@@ -680,46 +739,23 @@ public class FileUtil {
 	 * 通过InputStream读取文件
 	 *
 	 * @param filePath
-	 *            源文件
+	 *            源文件路径
 	 * @param length
 	 *            缓冲区大小
 	 * @return
 	 * @throws IOException
 	 */
-	public static String readFile(String filePath, Integer length)
-			throws IOException {
+	public static String readFile(String filePath, Integer length) throws IOException {
 		File sourceFile = new File(filePath);
 		return readFile(sourceFile, length);
 	}
 
-	/**
-	 * 把二进制文件读入字节数组，如果没有内容，字节数组为null
-	 *
-	 * @author hezhao
-	 * @Time 2017年7月28日 下午8:23:26
-	 * @param filePath
-	 * @return
-	 */
-	public static byte[] readFile(String filePath) {
-		byte[] data = null;
-		try {
-			BufferedInputStream in = new BufferedInputStream(
-					new FileInputStream(filePath));
-			try {
-				data = new byte[in.available()];
-				in.read(data);
-			} finally {
-				in.close();
-			}
-		} catch (IOException e) {
-			logger.error(e.toString(), e);
-		}
-		return data;
-	}
-
-	/**
-	 * 读取 URL 中的文件
-	 */
+    /**
+     * 读取 URL 中的文件
+     * @param url url
+     * @return
+     * @throws Exception
+     */
 	public static String readText(URL url) throws Exception {
 		logger.info("try to read file, {}", url.toString());
 		try {
@@ -735,15 +771,16 @@ public class FileUtil {
 	/**
 	 * 通过BufferedReader读取文件,自动识别文件编码
 	 *
-	 * @param sourceFile
+	 * @param sourceFile 源文件
 	 * @return
 	 * @throws IOException
 	 */
 	public static String readText(File sourceFile) throws IOException {
-		if (!sourceFile.exists()) {
-			logger.error("FileUtil.readByInputStream.FileNotFoundException :找不到"
-					+ sourceFile.getPath() + "文件！");
-			return null;
+		if (sourceFile == null || !sourceFile.exists()) {
+            String filePath = (sourceFile != null && sourceFile.getPath().trim().length() > 0)
+                    ? sourceFile.getPath() : "filePath 为空";
+			logger.error("FileUtil.readText.FileNotFoundException :找不到" + filePath + "文件！");
+            throw new FileNotFoundException(filePath);
 		}
 		if(sourceFile.length() != 0){
 			//获取文件编码
@@ -765,85 +802,107 @@ public class FileUtil {
 		return "";
 	}
 
-	/**
-	 * 通过BufferedReader读取文件,自动识别文件编码
-	 *
-	 * @param filePath
-	 * @return
-	 * @throws IOException
-	 */
-	public static String readText(String filePath) throws IOException {
-		File sourceFile = new File(filePath);
-		return readText(sourceFile);
-	}
+    /**
+     * 通过BufferedReader读取文件,自动识别文件编码
+     *
+     * @param filePath 源文件路径
+     * @return
+     * @throws IOException
+     */
+    public static String readText(String filePath) throws IOException {
+        File sourceFile = new File(filePath);
+        return readText(sourceFile);
+    }
 
-	/**
-	 * 读取文件内容（使用UTF-8编码）
-	 *
-	 * @param filePath
-	 *            输出文件路径
-	 * @return
-	 * @throws Exception
-	 */
-	public static String readTextUTF8(String filePath) throws Exception {
-		File file = new File(filePath);
-		if (!file.exists()) {
-			logger.error("FileUtil.readByInputStream.FileNotFoundException :找不到"
-					+ file.getPath() + "文件！");
-			return null;
-		}
+    /**
+     * 读取文件内容（使用UTF-8编码）
+     *
+     * @param file 源文件
+     * @return
+     * @throws Exception
+     */
+    public static String readTextUTF8(File file) throws IOException {
+        if (file == null || !file.exists()) {
+            String filePath = (file != null && file.getPath().trim().length() > 0)
+                    ? file.getPath() : "filePath 为空";
+            logger.error("FileUtil.readTextUTF8.FileNotFoundException :找不到" + filePath + "文件！");
+            throw new FileNotFoundException(filePath);
+        }
 
-		FileInputStream fis = new FileInputStream(file);
-		BufferedReader br = new BufferedReader(new InputStreamReader(fis,
-				"UTF-8"));
-		String LINE_SEPARATOR = System.getProperty("line.separator");// 代表换行符
-		StringBuffer sbf = new StringBuffer();
-		String temp = "";
-		while ((temp = br.readLine()) != null) {
-			sbf.append(temp + LINE_SEPARATOR);
-		}
-		br.close();
-		fis.close();
-		return sbf.toString();
-	}
+        FileInputStream fis = new FileInputStream(file);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
+        String LINE_SEPARATOR = System.getProperty("line.separator");// 代表换行符
+        StringBuffer sbf = new StringBuffer();
+        String temp = "";
+        while ((temp = br.readLine()) != null) {
+            sbf.append(temp + LINE_SEPARATOR);
+        }
+        br.close();
+        fis.close();
+        return sbf.toString();
+    }
 
-	/**
-	 * 读取文件内容，返回List。
-	 * 适用于文本内容由标识符分隔而成，需要将其转换为数组
-	 * 自动识别文件编码
-	 *
-	 * @param filePath
-	 *            输出文件路径
-	 * @return
-	 * @throws Exception
-	 */
-	public static List<String[]> readTextForList(String filePath,String regex) {
-		List<String[]> list = new ArrayList<>();
+    /**
+     * 读取文件内容（使用UTF-8编码）
+     *
+     * @param filePath 源文件路径
+     * @return
+     * @throws Exception
+     */
+    public static String readTextUTF8(String filePath) throws IOException {
+        File file = new File(filePath);
+        return readTextUTF8(file);
+    }
 
-		try {
-			File file = new File(filePath);
-			if (!file.exists() || file.length() == 0) {
-				return list;
-			}
-			//获取文件编码
-			String fileEncode = EncodingDetect.getJavaEncode(filePath);
-			FileInputStream fis = new FileInputStream(file);
-			BufferedReader br = new BufferedReader(new InputStreamReader(new BOMInputStream(fis), fileEncode));
-			String temp = "";
-			while ((temp = br.readLine()) != null) {
-				//去除空行，空格
-				if(temp != null && temp.trim().length() > 0) {
-					list.add(temp.trim().split(regex));
-				}
-			}
-			br.close();
-			fis.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    /**
+     * 读取文件内容，返回List。
+     * 适用于文本内容由标识符分隔而成，需要将其转换为数组
+     * 自动识别文件编码
+     *
+     * @param file 源文件
+     * @return
+     * @throws Exception
+     */
+    public static List<String[]> readTextForList(File file, String regex) throws IOException {
+        List<String[]> list = new ArrayList<>();
 
-		return list;
-	}
+        if (file == null || !file.exists()) {
+            String filePath = (file != null && file.getPath().trim().length() > 0)
+                    ? file.getPath() : "filePath 为空";
+            logger.error("FileUtil.readTextForList.FileNotFoundException :找不到" + filePath + "文件！");
+            throw new FileNotFoundException(filePath);
+        }
+
+        //获取文件编码
+        String fileEncode = EncodingDetect.getJavaEncode(file.getAbsolutePath());
+        FileInputStream fis = new FileInputStream(file);
+        BufferedReader br = new BufferedReader(new InputStreamReader(new BOMInputStream(fis), fileEncode));
+        String temp = "";
+        while ((temp = br.readLine()) != null) {
+            //去除空行，空格
+            if(temp != null && temp.trim().length() > 0) {
+                list.add(temp.trim().split(regex));
+            }
+        }
+        br.close();
+        fis.close();
+
+        return list;
+    }
+
+    /**
+     * 读取文件内容，返回List。
+     * 适用于文本内容由标识符分隔而成，需要将其转换为数组
+     * 自动识别文件编码
+     *
+     * @param filePath 源文件路径
+     * @return
+     * @throws Exception
+     */
+    public static List<String[]> readTextForList(String filePath, String regex) throws IOException {
+        File file = new File(filePath);
+        return readTextForList(file, regex);
+    }
 
 	/**
 	 * 读取对象，返回一个对象
@@ -932,8 +991,7 @@ public class FileUtil {
 	 * @param objects
 	 * @param isAppend
 	 */
-	public static void writeObject(String filePath, Object[] objects,
-								   boolean isAppend) {
+	public static void writeObject(String filePath, Object[] objects, boolean isAppend) {
 		if (objects == null || objects.length == 0)
 			return;
 		try {
@@ -960,8 +1018,7 @@ public class FileUtil {
 	 *            输出文件路径
 	 * @throws Exception
 	 */
-	public static void writeTextUTF8(String content, String outputPath)
-			throws Exception {
+	public static void writeTextUTF8(String content, String outputPath) throws Exception {
 		if (content == null || content.length() == 0)
 			return;
 		mkFile(outputPath);
@@ -986,8 +1043,7 @@ public class FileUtil {
 	 *            是否追加
 	 * @throws IOException
 	 */
-	public static void writeText(String content, String outputPath,
-								 boolean isApend) throws IOException {
+	public static void writeText(String content, String outputPath, boolean isApend) throws IOException {
 		if (content == null || content.length() == 0)
 			return;
 		if (new File(outputPath).exists()) {

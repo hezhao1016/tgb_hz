@@ -1,5 +1,6 @@
 package com.hz.tgb.common;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -12,93 +13,90 @@ import java.util.*;
  */
 public class ArrayUtil {
 	/*
-	 * 排序算法的分类如下： 1.插入排序（直接插入排序、折半插入排序、希尔排序）； 2.交换排序（冒泡排序、快速排序）；
-	 * 3.选择排序（直接选择排序、堆排序）； 4.归并排序； 5.分配排序（基数排序）。
+	 * 排序算法的分类如下：
+	 * 1.插入排序（直接插入排序、折半插入排序、希尔排序）；
+	 * 2.交换排序（冒泡排序、快速排序）；
+	 * 3.选择排序（直接选择排序、堆排序）；
+	 * 4.归并排序；
+	 * 5.分配排序（基数排序）。
 	 *
-	 * 关于排序方法的选择： (1)若n较小(如n≤50)，可采用直接插入或直接选择排序。
+	 * 关于排序方法的选择：
+	 * (1)若n较小(如n≤50)，可采用直接插入或直接选择排序。
 	 * (2)若文件初始状态基本有序(指正序)，则应选用直接插人、冒泡或随机的快速排序为宜；
 	 * (3)若n较大，则应采用时间复杂度为O(nlgn)的排序方法：快速排序、堆排序或归并排序。
 	 */
 
-	public static boolean isEmpty(Object[] array) {
-		return (array == null) || (array.length == 0);
-	}
+    /** 数组中元素未找到的下标，值为-1 */
+    public static final int INDEX_NOT_FOUND = -1;
 
-	public static boolean isEmpty(String[] array) {
-		return (array == null) || (array.length == 0);
-	}
+    /**
+     * 对象是否为数组对象
+     *
+     * @param obj 对象
+     * @return 是否为数组对象，如果为{@code null} 返回false
+     */
+    public static boolean isArray(Object obj) {
+        if (null == obj) {
+//			throw new NullPointerException("Object check for isArray is null");
+            return false;
+        }
+        return obj.getClass().isArray();
+    }
 
-	public static boolean isEmpty(long[] array) {
-		return (array == null) || (array.length == 0);
-	}
+    /**
+     * 数组是否为空
+     *
+     * @param <T> 数组元素类型
+     * @param array 数组
+     * @return 是否为空
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> boolean isEmpty(T... array) {
+        return array == null || array.length == 0;
+    }
 
-	public static boolean isEmpty(int[] array) {
-		return (array == null) || (array.length == 0);
-	}
+    /**
+     * 数组是否为空<br>
+     * 此方法会匹配单一对象，如果此对象为{@code null}则返回true<br>
+     * 如果此对象为非数组，理解为此对象为数组的第一个元素，则返回false<br>
+     * 如果此对象为数组对象，数组长度大于0情况下返回false，否则返回true
+     *
+     * @param array 数组
+     * @return 是否为空
+     */
+    public static boolean isEmpty(Object array) {
+        if(null == array) {
+            return true;
+        }else if(isArray(array)) {
+            return 0 == Array.getLength(array);
+        }
+        throw new RuntimeException("Object to provide is not a Array !");
+    }
 
-	public static boolean isEmpty(short[] array) {
-		return (array == null) || (array.length == 0);
-	}
+    /**
+     * 数组是否为非空
+     *
+     * @param <T> 数组元素类型
+     * @param array 数组
+     * @return 是否为非空
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> boolean isNotEmpty(T... array) {
+        return (array != null && array.length != 0);
+    }
 
-	public static boolean isEmpty(char[] array) {
-		return (array == null) || (array.length == 0);
-	}
-
-	public static boolean isEmpty(byte[] array) {
-		return (array == null) || (array.length == 0);
-	}
-
-	public static boolean isEmpty(double[] array) {
-		return (array == null) || (array.length == 0);
-	}
-
-	public static boolean isEmpty(float[] array) {
-		return (array == null) || (array.length == 0);
-	}
-
-	public static boolean isEmpty(boolean[] array) {
-		return (array == null) || (array.length == 0);
-	}
-
-	public static boolean isNotEmpty(Object[] array) {
-		return (array != null) && (array.length != 0);
-	}
-
-	public static boolean isNotEmpty(String[] array) {
-		return (array != null) && (array.length != 0);
-	}
-
-	public static boolean isNotEmpty(long[] array) {
-		return (array != null) && (array.length != 0);
-	}
-
-	public static boolean isNotEmpty(int[] array) {
-		return (array != null) && (array.length != 0);
-	}
-
-	public static boolean isNotEmpty(short[] array) {
-		return (array != null) && (array.length != 0);
-	}
-
-	public static boolean isNotEmpty(char[] array) {
-		return (array != null) && (array.length != 0);
-	}
-
-	public static boolean isNotEmpty(byte[] array) {
-		return (array != null) && (array.length != 0);
-	}
-
-	public static boolean isNotEmpty(double[] array) {
-		return (array != null) && (array.length != 0);
-	}
-
-	public static boolean isNotEmpty(float[] array) {
-		return (array != null) && (array.length != 0);
-	}
-
-	public static boolean isNotEmpty(boolean[] array) {
-		return (array != null) && (array.length != 0);
-	}
+    /**
+     * 数组是否为非空<br>
+     * 此方法会匹配单一对象，如果此对象为{@code null}则返回false<br>
+     * 如果此对象为非数组，理解为此对象为数组的第一个元素，则返回true<br>
+     * 如果此对象为数组对象，数组长度大于0情况下返回true，否则返回false
+     *
+     * @param array 数组
+     * @return 是否为非空
+     */
+    public static boolean isNotEmpty(Object array) {
+        return false == isEmpty((Object) array);
+    }
 
 	/**
 	 * 最后一个元素是不是存了元素
@@ -107,250 +105,930 @@ public class ArrayUtil {
 	 * @param array
 	 * @return
 	 */
-	public static boolean isFull(Object[] array) {
+	public static <T> boolean isFull(T... array) {
 		if(isNotEmpty(array)){
 			return array[array.length - 1 ] != null;
 		}
 		return false;
 	}
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(String[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != null;
-		}
-		return false;
-	}
+    /**
+     * 最后一个元素是不是存了元素
+     * @author hezhao
+     * @Time   2017年8月1日 下午8:32:02
+     * @param array
+     * @return
+     */
+    public static boolean isFull(int[] array) {
+        if(isNotEmpty(array)){
+            return array[array.length - 1 ] != 0;
+        }
+        return false;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(Integer[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != null;
-		}
-		return false;
-	}
+    /**
+     * 最后一个元素是不是存了元素
+     * @author hezhao
+     * @Time   2017年8月1日 下午8:32:02
+     * @param array
+     * @return
+     */
+    public static boolean isFull(double[] array) {
+        if(isNotEmpty(array)){
+            return array[array.length - 1 ] != 0;
+        }
+        return false;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(int[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != 0;
-		}
-		return false;
-	}
+    /**
+     * 最后一个元素是不是存了元素
+     * @author hezhao
+     * @Time   2017年8月1日 下午8:32:02
+     * @param array
+     * @return
+     */
+    public static boolean isFull(float[] array) {
+        if(isNotEmpty(array)){
+            return array[array.length - 1 ] != 0;
+        }
+        return false;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(Double[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != null;
-		}
-		return false;
-	}
+    /**
+     * 最后一个元素是不是存了元素
+     * @author hezhao
+     * @Time   2017年8月1日 下午8:32:02
+     * @param array
+     * @return
+     */
+    public static boolean isFull(long[] array) {
+        if(isNotEmpty(array)){
+            return array[array.length - 1 ] != 0;
+        }
+        return false;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(double[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != 0;
-		}
-		return false;
-	}
+    /**
+     * 最后一个元素是不是存了元素
+     * @author hezhao
+     * @Time   2017年8月1日 下午8:32:02
+     * @param array
+     * @return
+     */
+    public static boolean isFull(short[] array) {
+        if(isNotEmpty(array)){
+            return array[array.length - 1 ] != 0;
+        }
+        return false;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(Float[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != null;
-		}
-		return false;
-	}
+    /**
+     * 最后一个元素是不是存了元素
+     * @author hezhao
+     * @Time   2017年8月1日 下午8:32:02
+     * @param array
+     * @return
+     */
+    public static boolean isFull(char[] array) {
+        if(isNotEmpty(array)){
+            return array[array.length - 1 ] != '\u0000';
+        }
+        return false;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(float[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != 0;
-		}
-		return false;
-	}
+    /**
+     * 最后一个元素是不是存了元素
+     * @author hezhao
+     * @Time   2017年8月1日 下午8:32:02
+     * @param array
+     * @return
+     */
+    public static boolean isFull(byte[] array) {
+        if(isNotEmpty(array)){
+            return array[array.length - 1 ] != 0;
+        }
+        return false;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(Long[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != null;
-		}
-		return false;
-	}
+    /**
+     * 最后一个元素是不是存了元素
+     * @author hezhao
+     * @Time   2017年8月1日 下午8:32:02
+     * @param array
+     * @return
+     */
+    public static boolean isFull(boolean[] array) {
+        if(isNotEmpty(array)){
+            return array[array.length - 1 ] != false;
+        }
+        return false;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(long[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != 0;
-		}
-		return false;
-	}
+    /**
+     * 是否包含{@code null}元素
+     *
+     * @param <T> 数组元素类型
+     * @param array 被检查的数组
+     * @return 是否包含{@code null}元素
+     * @since 3.0.7
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> boolean hasNull(T... array) {
+        if (isNotEmpty(array)) {
+            for (T element : array) {
+                if (null == element) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(Short[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != null;
-		}
-		return false;
-	}
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(short[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != 0;
-		}
-		return false;
-	}
+    /**
+     * 返回数组中第一个非空元素
+     *
+     * @param <T> 数组元素类型
+     * @param array 数组
+     * @return 非空元素，如果不存在非空元素或数组为空，返回{@code null}
+     * @since 3.0.7
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T firstNonNull(T... array) {
+        if (isNotEmpty(array)) {
+            for (final T val : array) {
+                if (null != val) {
+                    return val;
+                }
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(Character[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != null;
-		}
-		return false;
-	}
+    /**
+     * 比较两个对象是否相等。<br>
+     * 相同的条件有两个，满足其一即可：<br>
+     * <ol>
+     * <li>obj1 == null &amp;&amp; obj2 == null</li>
+     * <li>obj1.equals(obj2)</li>
+     * </ol>
+     * 1. obj1 == null &amp;&amp; obj2 == null 2. obj1.equals(obj2)
+     *
+     * @param obj1 对象1
+     * @param obj2 对象2
+     * @return 是否相等
+     */
+    private static boolean equalObject(Object obj1, Object obj2) {
+        return (obj1 != null) ? (obj1.equals(obj2)) : (obj2 == null);
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(char[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != '\u0000';
-		}
-		return false;
-	}
+    /**
+     * 比较两个字符串是否相等。
+     *
+     * @param str1 要比较的字符串1
+     * @param str2 要比较的字符串2
+     * @param ignoreCase 是否忽略大小写
+     * @return 如果两个字符串相同，或者都是<code>null</code>，则返回<code>true</code>
+     * @since 3.2.0
+     */
+    private static boolean equalsString(CharSequence str1, CharSequence str2, boolean ignoreCase) {
+        if (str1 == null) {
+            return str2 == null;
+        }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(Byte[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != null;
-		}
-		return false;
-	}
+        if (ignoreCase) {
+            return str1.toString().equalsIgnoreCase(str2.toString());
+        } else {
+            return str1.equals(str2);
+        }
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(byte[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != 0;
-		}
-		return false;
-	}
+    // ------------------------------------------------------------------- indexOf and lastIndexOf and contains
+    /**
+     * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param <T> 数组类型
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static <T> int indexOf(T[] array, Object value) {
+        for (int i = 0; i < array.length; i++) {
+            if (equalObject(value, array[i])) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(Boolean[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != null;
-		}
-		return false;
-	}
+    /**
+     * 返回数组中指定元素所在位置，忽略大小写，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.1.2
+     */
+    public static int indexOfIgnoreCase(CharSequence[] array, CharSequence value) {
+        for (int i = 0; i < array.length; i++) {
+            if (equalsString(array[i], value, true)) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
 
-	/**
-	 * 最后一个元素是不是存了元素
-	 * @author hezhao
-	 * @Time   2017年8月1日 下午8:32:02
-	 * @param array
-	 * @return
-	 */
-	public static boolean isFull(boolean[] array) {
-		if(isNotEmpty(array)){
-			return array[array.length - 1 ] != false;
-		}
-		return false;
-	}
+    /**
+     * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param <T> 数组类型
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static <T> int lastIndexOf(T[] array, Object value) {
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (equalObject(value, array[i])) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
 
+    /**
+     * 数组中是否包含元素
+     *
+     * @param <T> 数组元素类型
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     */
+    public static <T> boolean contains(T[] array, T value) {
+        return indexOf(array, value) > INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 数组中是否包含元素，忽略大小写
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     * @since 3.1.2
+     */
+    public static boolean containsIgnoreCase(CharSequence[] array, CharSequence value) {
+        return indexOfIgnoreCase(array, value) > INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int indexOf(long[] array, long value) {
+        for (int i = 0; i < array.length; i++) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int lastIndexOf(long[] array, long value) {
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 数组中是否包含元素
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     * @since 3.0.7
+     */
+    public static boolean contains(long[] array, long value) {
+        return indexOf(array, value) > INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int indexOf(int[] array, int value) {
+        for (int i = 0; i < array.length; i++) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int lastIndexOf(int[] array, int value) {
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 数组中是否包含元素
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     * @since 3.0.7
+     */
+    public static boolean contains(int[] array, int value) {
+        return indexOf(array, value) > INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int indexOf(short[] array, short value) {
+        for (int i = 0; i < array.length; i++) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int lastIndexOf(short[] array, short value) {
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 数组中是否包含元素
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     * @since 3.0.7
+     */
+    public static boolean contains(short[] array, short value) {
+        return indexOf(array, value) > INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int indexOf(char[] array, char value) {
+        for (int i = 0; i < array.length; i++) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int lastIndexOf(char[] array, char value) {
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 数组中是否包含元素
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     * @since 3.0.7
+     */
+    public static boolean contains(char[] array, char value) {
+        return indexOf(array, value) > INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int indexOf(byte[] array, byte value) {
+        for (int i = 0; i < array.length; i++) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int lastIndexOf(byte[] array, byte value) {
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 数组中是否包含元素
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     * @since 3.0.7
+     */
+    public static boolean contains(byte[] array, byte value) {
+        return indexOf(array, value) > INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int indexOf(double[] array, double value) {
+        for (int i = 0; i < array.length; i++) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int lastIndexOf(double[] array, double value) {
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 数组中是否包含元素
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     * @since 3.0.7
+     */
+    public static boolean contains(double[] array, double value) {
+        return indexOf(array, value) > INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int indexOf(float[] array, float value) {
+        for (int i = 0; i < array.length; i++) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int lastIndexOf(float[] array, float value) {
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 数组中是否包含元素
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     * @since 3.0.7
+     */
+    public static boolean contains(float[] array, float value) {
+        return indexOf(array, value) > INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int indexOf(boolean[] array, boolean value) {
+        for (int i = 0; i < array.length; i++) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 返回数组中指定元素所在最后的位置，未找到返回{@link #INDEX_NOT_FOUND}
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 数组中指定元素所在位置，未找到返回{@link #INDEX_NOT_FOUND}
+     * @since 3.0.7
+     */
+    public static int lastIndexOf(boolean[] array, boolean value) {
+        for (int i = array.length - 1; i >= 0; i--) {
+            if (value == array[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    /**
+     * 数组中是否包含元素
+     *
+     * @param array 数组
+     * @param value 被检查的元素
+     * @return 是否包含
+     * @since 3.0.7
+     */
+    public static boolean contains(boolean[] array, boolean value) {
+        return indexOf(array, value) > INDEX_NOT_FOUND;
+    }
+
+    // ------------------------------------------------------------------- Wrap and unwrap
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Integer[] wrap(int... values) {
+        final int length = values.length;
+        Integer[] array = new Integer[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = Integer.valueOf(values[i]);
+        }
+        return array;
+    }
+
+    /**
+     * 包装类数组转为原始类型数组
+     *
+     * @param values 包装类型数组
+     * @return 原始类型数组
+     */
+    public static int[] unWrap(Integer... values) {
+        final int length = values.length;
+        int[] array = new int[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i].intValue();
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Long[] wrap(long... values) {
+        final int length = values.length;
+        Long[] array = new Long[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = Long.valueOf(values[i]);
+        }
+        return array;
+    }
+
+    /**
+     * 包装类数组转为原始类型数组
+     *
+     * @param values 包装类型数组
+     * @return 原始类型数组
+     */
+    public static long[] unWrap(Long... values) {
+        final int length = values.length;
+        long[] array = new long[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i].longValue();
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Character[] wrap(char... values) {
+        final int length = values.length;
+        Character[] array = new Character[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = Character.valueOf(values[i]);
+        }
+        return array;
+    }
+
+    /**
+     * 包装类数组转为原始类型数组
+     *
+     * @param values 包装类型数组
+     * @return 原始类型数组
+     */
+    public static char[] unWrap(Character... values) {
+        final int length = values.length;
+        char[] array = new char[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i].charValue();
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Byte[] wrap(byte... values) {
+        final int length = values.length;
+        Byte[] array = new Byte[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = Byte.valueOf(values[i]);
+        }
+        return array;
+    }
+
+    /**
+     * 包装类数组转为原始类型数组
+     *
+     * @param values 包装类型数组
+     * @return 原始类型数组
+     */
+    public static byte[] unWrap(Byte... values) {
+        final int length = values.length;
+        byte[] array = new byte[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i].byteValue();
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Short[] wrap(short... values) {
+        final int length = values.length;
+        Short[] array = new Short[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = Short.valueOf(values[i]);
+        }
+        return array;
+    }
+
+    /**
+     * 包装类数组转为原始类型数组
+     *
+     * @param values 包装类型数组
+     * @return 原始类型数组
+     */
+    public static short[] unWrap(Short... values) {
+        final int length = values.length;
+        short[] array = new short[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i].shortValue();
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Float[] wrap(float... values) {
+        final int length = values.length;
+        Float[] array = new Float[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = Float.valueOf(values[i]);
+        }
+        return array;
+    }
+
+    /**
+     * 包装类数组转为原始类型数组
+     *
+     * @param values 包装类型数组
+     * @return 原始类型数组
+     */
+    public static float[] unWrap(Float... values) {
+        final int length = values.length;
+        float[] array = new float[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i].floatValue();
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Double[] wrap(double... values) {
+        final int length = values.length;
+        Double[] array = new Double[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = Double.valueOf(values[i]);
+        }
+        return array;
+    }
+
+    /**
+     * 包装类数组转为原始类型数组
+     *
+     * @param values 包装类型数组
+     * @return 原始类型数组
+     */
+    public static double[] unWrap(Double... values) {
+        final int length = values.length;
+        double[] array = new double[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i].doubleValue();
+        }
+        return array;
+    }
+
+    /**
+     * 将原始类型数组包装为包装类型
+     *
+     * @param values 原始类型数组
+     * @return 包装类型数组
+     */
+    public static Boolean[] wrap(boolean... values) {
+        final int length = values.length;
+        Boolean[] array = new Boolean[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = Boolean.valueOf(values[i]);
+        }
+        return array;
+    }
+
+    /**
+     * 包装类数组转为原始类型数组
+     *
+     * @param values 包装类型数组
+     * @return 原始类型数组
+     */
+    public static boolean[] unWrap(Boolean... values) {
+        final int length = values.length;
+        boolean[] array = new boolean[length];
+        for (int i = 0; i < length; i++) {
+            array[i] = values[i].booleanValue();
+        }
+        return array;
+    }
+
+    /**
+     * 包装数组对象
+     *
+     * @param obj 对象，可以是对象数组或者基本类型数组
+     * @return 包装类型数组或对象数组
+     * @throws RuntimeException 对象为非数组
+     */
+    public static Object[] wrap(Object obj) {
+        if (isArray(obj)) {
+            try {
+                return (Object[]) obj;
+            } catch (Exception e) {
+                final String className = obj.getClass().getComponentType().getName();
+                switch (className) {
+                    case "long":
+                        return wrap((long[]) obj);
+                    case "int":
+                        return wrap((int[]) obj);
+                    case "short":
+                        return wrap((short[]) obj);
+                    case "char":
+                        return wrap((char[]) obj);
+                    case "byte":
+                        return wrap((byte[]) obj);
+                    case "boolean":
+                        return wrap((boolean[]) obj);
+                    case "float":
+                        return wrap((float[]) obj);
+                    case "double":
+                        return wrap((double[]) obj);
+                    default:
+                        throw new RuntimeException(e);
+                }
+            }
+        }
+        throw new RuntimeException(String.format("[{}] is not Array!", obj.getClass()));
+    }
+
+    // ---------------------------------------------------------------------- toXxxArray
 	public static String[] toStringArray(int[] array) {
 		String[] newArray = new String[array.length];
 		if (isEmpty(array))
@@ -950,6 +1628,7 @@ public class ArrayUtil {
 		return newArray;
 	}
 
+    // ---------------------------------------------------------------------- join
 	/**
 	 * 将数组转为字符串，逗号分隔，如 [1,2,3]
 	 *
@@ -958,7 +1637,7 @@ public class ArrayUtil {
 	 * @param array
 	 * @return
 	 */
-	public static String join(String[] array) {
+	public static <T> String join(T[] array) {
 		if (array == null)
 			return "null";
 		int iMax = array.length - 1;
@@ -1060,18 +1739,6 @@ public class ArrayUtil {
 	}
 
 	/**
-	 * 将数组转为字符串，逗号分隔，如 [1,2,3]
-	 *
-	 * @author hezhao
-	 * @Time 2016年8月18日 下午4:54:04
-	 * @param array
-	 * @return
-	 */
-	public static String join(Object[] array) {
-		return join(toStringArray(array));
-	}
-
-	/**
 	 * 将数组转为字符串,并以某个字符相连，如 1#2#3
 	 *
 	 * @author hezhao
@@ -1080,13 +1747,13 @@ public class ArrayUtil {
 	 * @param splitStr
 	 * @return
 	 */
-	public static String join(String[] array, String splitStr) {
+	public static <T> String join(T[] array, String splitStr) {
 		StringBuilder sb = new StringBuilder();
 		if (isEmpty(array)) {
 			return "";
 		}
 		if (array.length == 1)
-			return array[0];
+			return String.valueOf(array[0]);
 		int iMax = array.length - 1;
 		for (int i = 0; i < array.length; i++) {
 			if (i == iMax) {
@@ -1184,35 +1851,23 @@ public class ArrayUtil {
 	}
 
 	/**
-	 * 将数组转为字符串,并以某个字符相连，如 1#2#3
-	 *
-	 * @author hezhao
-	 * @Time 2016年8月18日 下午4:54:04
-	 * @param array
-	 * @return
-	 */
-	public static String join(Object[] array, String splitStr) {
-		return join(toStringArray(array), splitStr);
-	}
-
-	/**
 	 * 拼接Set集合，并以某个字符相连，如 1#2#3
 	 * @param set
 	 * @return
 	 */
-	public static String joinSet(Set<String> set, String splitStr) {
+	public static <T> String joinSet(Set<T> set, String splitStr) {
 		if (set == null || set.size() == 0)
 			return "";
 		if (set.size() == 1){
-			for (String s : set) {
-				return String.valueOf(s);
+			for (T t : set) {
+				return String.valueOf(t);
 			}
 		}
 
 		StringBuilder sb = new StringBuilder();
 
-		for (String s : set) {
-			sb.append(s + splitStr);
+		for (T t : set) {
+			sb.append(String.valueOf(t) + splitStr);
 		}
 		return sb.toString().substring(0, sb.length() - 1);
 	}
@@ -1222,7 +1877,7 @@ public class ArrayUtil {
 	 * @param list
 	 * @return
 	 */
-	public static String joinList(List list, String splitStr) {
+	public static <T> String joinList(List<T> list, String splitStr) {
 		if (list == null || list.size() == 0)
 			return "";
 		if (list.size() == 1){
@@ -1233,14 +1888,16 @@ public class ArrayUtil {
 
 		for (int i = 0; i < list.size(); i++) {
 			if (i == list.size() - 1) {
-				sb.append(list.get(i));
+				sb.append(String.valueOf(list.get(i)));
 			} else {
-				sb.append(list.get(i) + splitStr);
+				sb.append(String.valueOf(list.get(i)) + splitStr);
 			}
 		}
 		return sb.toString();
 	}
 
+
+    // ---------------------------------------------------------------------- 排序算法开始
 	/**
 	 * 交换数组中两元素
 	 *
@@ -1278,6 +1935,25 @@ public class ArrayUtil {
 		ints[y] = temp;
 		return ints;
 	}
+
+    /**
+     * 交换数组中两元素
+     *
+     * @since 1.1
+     * @param ints
+     *            需要进行交换操作的数组
+     * @param x
+     *            数组中的位置1
+     * @param y
+     *            数组中的位置2
+     * @return 交换后的数组
+     */
+    private static <T> T[] swap(T[] ints, int x, int y) {
+        T temp = ints[x];
+        ints[x] = ints[y];
+        ints[y] = temp;
+        return ints;
+    }
 
 	/**
 	 * <strong>插入排序</strong> <br>
@@ -2091,11 +2767,10 @@ public class ArrayUtil {
 		}
 		return source;
 	}
+    // ---------------------------------------------------------------------- 排序算法结束
 
-	// /////////////////////////////////////////////
-	// 排序算法结束
-	// ////////////////////////////////////////////
 
+    // ---------------------------------------------------------------------- 查找算法开始
 	/**
 	 * 顺序查找 平均时间复杂度 O（n）
 	 *
@@ -2470,6 +3145,7 @@ public class ArrayUtil {
 		return hashAddress;
 
 	}
+    // ---------------------------------------------------------------------- 查找算法结束
 
 	/***
 	 * 数据插入Hash表
@@ -2519,88 +3195,421 @@ public class ArrayUtil {
 		hash[hashAddress] = data;
 	}
 
-	// ////////////////////////////////////////////
-	// 查找算法结束
-	// ///////////////////////////////////////////
+    /**
+     * 新建一个空数组
+     *
+     * @param <T> 数组元素类型
+     * @param componentType 元素类型
+     * @param newSize 大小
+     * @return 空数组
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T[] newArray(Class<?> componentType, int newSize) {
+        return (T[]) Array.newInstance(componentType, newSize);
+    }
 
-	/**
-	 * 反转数组
-	 *
-	 * @since 1.1
-	 * @param source
-	 *            需要进行反转操作的数组
-	 * @return 反转后的数组
-	 */
-	public static int[] reverse(int[] source) {
-		int length = source.length;
-		int temp = 0;
-		for (int i = 0; i < length >> 1; i++) {
-			temp = source[i];
-			source[i] = source[length - 1 - i];
-			source[length - 1 - i] = temp;
-		}
-		return source;
-	}
+    /**
+     * 获取数组对象的元素类型
+     *
+     * @param array 数组对象
+     * @return 元素类型
+     * @since 3.2.2
+     */
+    public static Class<?> getComponentType(Object array){
+        return null == array ? null : array.getClass().getComponentType();
+    }
 
-	/**
-	 * 反转数组
-	 *
-	 * @since 1.1
-	 * @param source
-	 *            需要进行反转操作的数组
-	 * @return 反转后的数组
-	 */
-	public static double[] reverse(double[] source) {
-		int length = source.length;
-		double temp = 0;
-		for (int i = 0; i < length >> 1; i++) {
-			temp = source[i];
-			source[i] = source[length - 1 - i];
-			source[length - 1 - i] = temp;
-		}
-		return source;
-	}
+    /**
+     * 获取数组对象的元素类型
+     *
+     * @param arrayClass 数组类
+     * @return 元素类型
+     * @since 3.2.2
+     */
+    public static Class<?> getComponentType(Class<?> arrayClass){
+        return null == arrayClass ? null : arrayClass.getComponentType();
+    }
+
+    /**
+     * 根据数组元素类型，获取数组的类型<br>
+     * 方法是通过创建一个空数组从而获取其类型
+     *
+     * @param componentType 数组元素类型
+     * @return 数组类型
+     * @since 3.2.2
+     */
+    public static Class<?> getArrayType(Class<?> componentType) {
+        return newArray(componentType, 0).getClass();
+    }
+
+    /**
+     * 强转数组类型<br>
+     * 强制转换的前提是数组元素类型可被强制转换<br>
+     * 强制转换后会生成一个新数组
+     *
+     * @param type 数组类型或数组元素类型
+     * @param arrayObj 原数组
+     * @return 转换后的数组类型
+     * @throws NullPointerException 提供参数为空
+     * @throws IllegalArgumentException 参数arrayObj不是数组
+     * @since 3.0.6
+     */
+    public static Object[] cast(Class<?> type, Object arrayObj) throws NullPointerException, IllegalArgumentException {
+        if (null == arrayObj) {
+            throw new NullPointerException("Argument [arrayObj] is null !");
+        }
+        if (false == arrayObj.getClass().isArray()) {
+            throw new IllegalArgumentException("Argument [arrayObj] is not array !");
+        }
+        if (null == type) {
+            return (Object[]) arrayObj;
+        }
+
+        final Class<?> componentType = type.isArray() ? type.getComponentType() : type;
+        final Object[] array = (Object[]) arrayObj;
+        final Object[] result = ArrayUtil.newArray(componentType, array.length);
+        System.arraycopy(array, 0, result, 0, array.length);
+        return result;
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     *
+     * @param <T> 数组元素类型
+     * @param array 数组，会变更
+     * @param startIndexInclusive 其实位置（包含）
+     * @param endIndexExclusive 结束位置（不包含）
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static <T> T[] reverse(final T[] array, final int startIndexInclusive, final int endIndexExclusive) {
+        if (isEmpty(array)) {
+            return array;
+        }
+        int i = startIndexInclusive < 0 ? 0 : startIndexInclusive;
+        int j = Math.min(array.length, endIndexExclusive) - 1;
+        T tmp;
+        while (j > i) {
+            tmp = array[j];
+            array[j] = array[i];
+            array[i] = tmp;
+            j--;
+            i++;
+        }
+        return array;
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     *
+     * @param <T> 数组元素类型
+     * @param array 数组，会变更
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static <T> T[] reverse(final T[] array) {
+        return reverse(array, 0, array.length);
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     *
+     * @param array 数组，会变更
+     * @param startIndexInclusive 其实位置（包含）
+     * @param endIndexExclusive 结束位置（不包含）
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static long[] reverse(final long[] array, final int startIndexInclusive, final int endIndexExclusive) {
+        if (isEmpty(array)) {
+            return array;
+        }
+        int i = startIndexInclusive < 0 ? 0 : startIndexInclusive;
+        int j = Math.min(array.length, endIndexExclusive) - 1;
+        long tmp;
+        while (j > i) {
+            tmp = array[j];
+            array[j] = array[i];
+            array[i] = tmp;
+            j--;
+            i++;
+        }
+        return array;
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static long[] reverse(final long[] array) {
+        return reverse(array, 0, array.length);
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @param startIndexInclusive 其实位置（包含）
+     * @param endIndexExclusive 结束位置（不包含）
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static int[] reverse(final int[] array, final int startIndexInclusive, final int endIndexExclusive) {
+        if (isEmpty(array)) {
+            return array;
+        }
+        int i = startIndexInclusive < 0 ? 0 : startIndexInclusive;
+        int j = Math.min(array.length, endIndexExclusive) - 1;
+        int tmp;
+        while (j > i) {
+            tmp = array[j];
+            array[j] = array[i];
+            array[i] = tmp;
+            j--;
+            i++;
+        }
+        return array;
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static int[] reverse(final int[] array) {
+        return reverse(array, 0, array.length);
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @param startIndexInclusive 其实位置（包含）
+     * @param endIndexExclusive 结束位置（不包含）
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static short[] reverse(final short[] array, final int startIndexInclusive, final int endIndexExclusive) {
+        if (isEmpty(array)) {
+            return array;
+        }
+        int i = startIndexInclusive < 0 ? 0 : startIndexInclusive;
+        int j = Math.min(array.length, endIndexExclusive) - 1;
+        short tmp;
+        while (j > i) {
+            tmp = array[j];
+            array[j] = array[i];
+            array[i] = tmp;
+            j--;
+            i++;
+        }
+        return array;
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static short[] reverse(final short[] array) {
+        return reverse(array, 0, array.length);
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @param startIndexInclusive 其实位置（包含）
+     * @param endIndexExclusive 结束位置（不包含）
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static char[] reverse(final char[] array, final int startIndexInclusive, final int endIndexExclusive) {
+        if (isEmpty(array)) {
+            return array;
+        }
+        int i = startIndexInclusive < 0 ? 0 : startIndexInclusive;
+        int j = Math.min(array.length, endIndexExclusive) - 1;
+        char tmp;
+        while (j > i) {
+            tmp = array[j];
+            array[j] = array[i];
+            array[i] = tmp;
+            j--;
+            i++;
+        }
+        return array;
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static char[] reverse(final char[] array) {
+        return reverse(array, 0, array.length);
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @param startIndexInclusive 其实位置（包含）
+     * @param endIndexExclusive 结束位置（不包含）
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static byte[] reverse(final byte[] array, final int startIndexInclusive, final int endIndexExclusive) {
+        if (isEmpty(array)) {
+            return array;
+        }
+        int i = startIndexInclusive < 0 ? 0 : startIndexInclusive;
+        int j = Math.min(array.length, endIndexExclusive) - 1;
+        byte tmp;
+        while (j > i) {
+            tmp = array[j];
+            array[j] = array[i];
+            array[i] = tmp;
+            j--;
+            i++;
+        }
+        return array;
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static byte[] reverse(final byte[] array) {
+        return reverse(array, 0, array.length);
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @param startIndexInclusive 其实位置（包含）
+     * @param endIndexExclusive 结束位置（不包含）
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static double[] reverse(final double[] array, final int startIndexInclusive, final int endIndexExclusive) {
+        if (isEmpty(array)) {
+            return array;
+        }
+        int i = startIndexInclusive < 0 ? 0 : startIndexInclusive;
+        int j = Math.min(array.length, endIndexExclusive) - 1;
+        double tmp;
+        while (j > i) {
+            tmp = array[j];
+            array[j] = array[i];
+            array[i] = tmp;
+            j--;
+            i++;
+        }
+        return array;
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static double[] reverse(final double[] array) {
+        return reverse(array, 0, array.length);
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @param startIndexInclusive 其实位置（包含）
+     * @param endIndexExclusive 结束位置（不包含）
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static float[] reverse(final float[] array, final int startIndexInclusive, final int endIndexExclusive) {
+        if (isEmpty(array)) {
+            return array;
+        }
+        int i = startIndexInclusive < 0 ? 0 : startIndexInclusive;
+        int j = Math.min(array.length, endIndexExclusive) - 1;
+        float tmp;
+        while (j > i) {
+            tmp = array[j];
+            array[j] = array[i];
+            array[i] = tmp;
+            j--;
+            i++;
+        }
+        return array;
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static float[] reverse(final float[] array) {
+        return reverse(array, 0, array.length);
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @param startIndexInclusive 其实位置（包含）
+     * @param endIndexExclusive 结束位置（不包含）
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static boolean[] reverse(final boolean[] array, final int startIndexInclusive, final int endIndexExclusive) {
+        if (isEmpty(array)) {
+            return array;
+        }
+        int i = startIndexInclusive < 0 ? 0 : startIndexInclusive;
+        int j = Math.min(array.length, endIndexExclusive) - 1;
+        boolean tmp;
+        while (j > i) {
+            tmp = array[j];
+            array[j] = array[i];
+            array[i] = tmp;
+            j--;
+            i++;
+        }
+        return array;
+    }
+
+    /**
+     * 反转数组，会变更原数组
+     * @param array 数组，会变更
+     * @return 变更后的原数组
+     * @since 3.0.9
+     */
+    public static boolean[] reverse(final boolean[] array) {
+        return reverse(array, 0, array.length);
+    }
 
 	/**
 	 * 在当前位置插入一个元素,数组中原有元素向后移动; 如果插入位置超出原数组，则抛IllegalArgumentException异常
 	 *
 	 * @param array
 	 * @param index
-	 * @param insertNumber
+	 * @param insertObj
 	 * @return
 	 */
-	public static int[] insert(int[] array, int index, int insertNumber) {
+	public static <T> T[] insert(T[] array, int index, T insertObj) {
 		if (isEmpty(array)) {
 			throw new IllegalArgumentException();
 		}
 		if (index - 1 > array.length || index <= 0) {
 			throw new IllegalArgumentException();
 		}
-		int[] dest = new int[array.length + 1];
+		T[] dest = newArray(array.getClass().getComponentType(), array.length + 1);
 		System.arraycopy(array, 0, dest, 0, index - 1);
-		dest[index - 1] = insertNumber;
-		System.arraycopy(array, index - 1, dest, index, dest.length - index);
-		return dest;
-	}
-
-	/**
-	 * 在当前位置插入一个元素,数组中原有元素向后移动; 如果插入位置超出原数组，则抛IllegalArgumentException异常
-	 *
-	 * @param array
-	 * @param index
-	 * @param insertNumber
-	 * @return
-	 */
-	public static double[] insert(double[] array, int index, int insertNumber) {
-		if (isEmpty(array)) {
-			throw new IllegalArgumentException();
-		}
-		if (index - 1 > array.length || index <= 0) {
-			throw new IllegalArgumentException();
-		}
-		double[] dest = new double[array.length + 1];
-		System.arraycopy(array, 0, dest, 0, index - 1);
-		dest[index - 1] = insertNumber;
+		dest[index - 1] = insertObj;
 		System.arraycopy(array, index - 1, dest, index, dest.length - index);
 		return dest;
 	}
@@ -2612,25 +3621,25 @@ public class ArrayUtil {
 	 * @param value
 	 * @return
 	 */
-	public static int[] add(int[] array, int value) {
+	public static <T> T[] add(T[] array, T value) {
 		if (isEmpty(array)) {
 			throw new IllegalArgumentException();
 		}
-		int[] dest = null;
+		T[] dest = null;
 
-		//满了
+		// 满了
 		if(isFull(array)){
 			int len =  array.length + (array.length / 2);
-			dest = new int[len];
+            dest = newArray(array.getClass().getComponentType(), len);
 			System.arraycopy(array, 0, dest, 0, array.length);
 			dest[array.length] = value;
 		}else{
-			//没满 自己查出存放了多少元素
-			dest = new int[array.length];
+			// 没满 自己查出存放了多少元素
+            dest = newArray(array.getClass().getComponentType(), array.length);
 
 			int index = 0;
 			for (int i = array.length-1; i >= 0 ; i--) {
-				if(array[i] == 0){
+				if(array[i] == null){
 					index = i;
 				}else{
 					break;
@@ -2643,119 +3652,468 @@ public class ArrayUtil {
 		return dest;
 	}
 
+    /**
+     * 在元素末尾添加元素，如果已存满则重新开辟50%空间
+     *
+     * @param array
+     * @param value
+     * @return
+     */
+    public static int[] add(int[] array, int value) {
+        if (isEmpty(array)) {
+            throw new IllegalArgumentException();
+        }
+        int[] dest = null;
+
+        //满了
+        if(isFull(array)){
+            int len =  array.length + (array.length / 2);
+            dest = new int[len];
+            System.arraycopy(array, 0, dest, 0, array.length);
+            dest[array.length] = value;
+        }else{
+            //没满 自己查出存放了多少元素
+            dest = new int[array.length];
+
+            int index = 0;
+            for (int i = array.length-1; i >= 0 ; i--) {
+                if(array[i] == 0){
+                    index = i;
+                }else{
+                    break;
+                }
+            }
+
+            System.arraycopy(array, 0, dest, 0, array.length - 1);
+            dest[index] = value;
+        }
+        return dest;
+    }
+
+    /**
+     * 在元素末尾添加元素，如果已存满则重新开辟50%空间
+     *
+     * @param array
+     * @param value
+     * @return
+     */
+    public static double[] add(double[] array, double value) {
+        if (isEmpty(array)) {
+            throw new IllegalArgumentException();
+        }
+        double[] dest = null;
+
+        //满了
+        if(isFull(array)){
+            int len =  array.length + (array.length / 2);
+            dest = new double[len];
+            System.arraycopy(array, 0, dest, 0, array.length);
+            dest[array.length] = value;
+        }else{
+            //没满 自己查出存放了多少元素
+            dest = new double[array.length];
+
+            int index = 0;
+            for (int i = array.length-1; i >= 0 ; i--) {
+                if(array[i] == 0){
+                    index = i;
+                }else{
+                    break;
+                }
+            }
+
+            System.arraycopy(array, 0, dest, 0, array.length - 1);
+            dest[index] = value;
+        }
+        return dest;
+    }
+
+    /**
+     * 将新元素添加到已有数组中<br>
+     * 添加新元素会生成一个新的数组，不影响原数组
+     *
+     * @param <T> 数组元素类型
+     * @param buffer 已有数组
+     * @param newElements 新元素
+     * @return 新数组
+     */
+    @SafeVarargs
+    public static <T> T[] append(T[] buffer, T... newElements) {
+        if (isEmpty(newElements)) {
+            return buffer;
+
+        }
+        T[] t = resize(buffer, buffer.length + newElements.length);
+        System.arraycopy(newElements, 0, t, buffer.length, newElements.length);
+        return t;
+    }
+
+    /**
+     * 生成一个新的重新设置大小的数组<br>
+     * 调整大小后拷贝原数组到新数组下。扩大则占位前N个位置，缩小则截断
+     *
+     * @param <T> 数组元素类型
+     * @param buffer 原数组
+     * @param newSize 新的数组大小
+     * @param componentType 数组元素类型
+     * @return 调整后的新数组
+     */
+    public static <T> T[] resize(T[] buffer, int newSize, Class<?> componentType) {
+        T[] newArray = newArray(componentType, newSize);
+        if (isNotEmpty(buffer)) {
+            System.arraycopy(buffer, 0, newArray, 0, Math.min(buffer.length, newSize));
+        }
+        return newArray;
+    }
+
+    /**
+     * 生成一个新的重新设置大小的数组<br>
+     * 新数组的类型为原数组的类型，调整大小后拷贝原数组到新数组下。扩大则占位前N个位置，缩小则截断
+     *
+     * @param <T> 数组元素类型
+     * @param buffer 原数组
+     * @param newSize 新的数组大小
+     * @return 调整后的新数组
+     */
+    public static <T> T[] resize(T[] buffer, int newSize) {
+        return resize(buffer, newSize, buffer.getClass().getComponentType());
+    }
+
 	/**
-	 * 在元素末尾添加元素，如果已存满则重新开辟50%空间
-	 *
-	 * @param array
-	 * @param value
-	 * @return
-	 */
-	public static double[] add(double[] array, double value) {
-		if (isEmpty(array)) {
-			throw new IllegalArgumentException();
-		}
-		double[] dest = null;
-
-		//满了
-		if(isFull(array)){
-			int len =  array.length + (array.length / 2);
-			dest = new double[len];
-			System.arraycopy(array, 0, dest, 0, array.length);
-			dest[array.length] = value;
-		}else{
-			//没满 自己查出存放了多少元素
-			dest = new double[array.length];
-
-			int index = 0;
-			for (int i = array.length-1; i >= 0 ; i--) {
-				if(array[i] == 0){
-					index = i;
-				}else{
-					break;
-				}
-			}
-
-			System.arraycopy(array, 0, dest, 0, array.length - 1);
-			dest[index] = value;
-		}
-		return dest;
-	}
-
-	/**
-	 * 整形数组中特定位置删除掉一个元素,数组中原有元素向前移动; 如果插入位置超出原数组，则抛IllegalArgumentException异常
+	 * 数组中特定位置删除掉一个元素,数组中原有元素向前移动; 如果插入位置超出原数组，则抛IllegalArgumentException异常
 	 *
 	 * @param array
 	 * @param index
 	 * @return
 	 */
-	public static int[] remove(int[] array, int index) {
+	public static <T> T[] remove(T[] array, int index) {
 		if (isEmpty(array)) {
 			throw new IllegalArgumentException();
 		}
 		if (index > array.length || index <= 0) {
 			throw new IllegalArgumentException();
 		}
-		int[] dest = new int[array.length - 1];
+        T[] dest = newArray(array.getClass().getComponentType(), array.length - 1);
 		System.arraycopy(array, 0, dest, 0, index - 1);
 		System.arraycopy(array, index, dest, index - 1, array.length - index);
 		return dest;
 	}
 
-	/**
-	 * 整形数组中特定位置删除掉一个元素,数组中原有元素向前移动; 如果插入位置超出原数组，则抛IllegalArgumentException异常
-	 *
-	 * @param array
-	 * @param index
-	 * @return
-	 */
-	public static double[] remove(double[] array, int index) {
-		if (isEmpty(array)) {
-			throw new IllegalArgumentException();
-		}
-		if (index > array.length || index <= 0) {
-			throw new IllegalArgumentException();
-		}
-		double[] dest = new double[array.length - 1];
-		System.arraycopy(array, 0, dest, 0, index - 1);
-		System.arraycopy(array, index, dest, index - 1, array.length - index);
-		return dest;
-	}
+    /**
+     * 去除{@code null} 元素
+     * @param array 数组
+     * @return 处理后的数组
+     * @since 3.2.2
+     */
+    public static <T> T[] removeNull(T[] array) {
+        ArrayList<T> list = new ArrayList<T>(array.length);
+        for (T t : array) {
+            if (t != null) {
+                list.add(t);
+            }
+        }
+        return list.toArray(Arrays.copyOf(array, list.size()));
+    }
 
-	/**
+    /**
+     * 去除{@code null}或者"" 元素
+     * @param array 数组
+     * @return 处理后的数组
+     * @since 3.2.2
+     */
+    public static <T extends CharSequence> T[] removeEmpty(T[] array) {
+        ArrayList<T> list = new ArrayList<T>(array.length);
+        for (T t : array) {
+            if (t != null && t.length() > 0) {
+                list.add(t);
+            }
+        }
+        return list.toArray(Arrays.copyOf(array, list.size()));
+    }
+
+    /**
+     * 数组元素中的null转换为""
+     *
+     * @param array 数组
+     * @return 新数组
+     * @since 3.2.1
+     */
+    public static String[] nullToEmpty(String[] array){
+        ArrayList<String> list = new ArrayList<String>(array.length);
+        String modified;
+        for (String t : array) {
+            modified = null == t ? "" : t;
+            if (null != modified) {
+                list.add(modified);
+            }
+        }
+        return list.toArray(Arrays.copyOf(array, list.size()));
+    }
+
+    /**
 	 * 2个数组合并，形成一个新的数组
 	 *
 	 * @param array1
 	 * @param array2
 	 * @return
 	 */
-	public static int[] merge(int[] array1, int[] array2) {
-		int[] dest = new int[array1.length + array2.length];
+	public static <T> T[] merge(T[] array1, T[] array2) {
+        T[] dest = newArray(array1.getClass().getComponentType(), array1.length + array2.length);
 		System.arraycopy(array1, 0, dest, 0, array1.length);
 		System.arraycopy(array2, 0, dest, array1.length, array2.length);
 		return dest;
 	}
 
-	/**
-	 * 2个数组合并，形成一个新的数组
-	 *
-	 * @param array1
-	 * @param array2
-	 * @return
-	 */
-	public static double[] merge(double[] array1, int[] array2) {
-		double[] dest = new double[array1.length + array2.length];
-		System.arraycopy(array1, 0, dest, 0, array1.length);
-		System.arraycopy(array2, 0, dest, array1.length, array2.length);
-		return dest;
-	}
+    /**
+     * 将多个数组合并在一起<br>
+     * 忽略null的数组
+     *
+     * @param <T> 数组元素类型
+     * @param arrays 数组集合
+     * @return 合并后的数组
+     */
+    @SafeVarargs
+    public static <T> T[] addAll(T[]... arrays) {
+        if (arrays.length == 1) {
+            return arrays[0];
+        }
+
+        int length = 0;
+        for (T[] array : arrays) {
+            if (array == null) {
+                continue;
+            }
+            length += array.length;
+        }
+        T[] result = newArray(arrays.getClass().getComponentType().getComponentType(), length);
+
+        length = 0;
+        for (T[] array : arrays) {
+            if (array == null) {
+                continue;
+            }
+            System.arraycopy(array, 0, result, length, array.length);
+            length += array.length;
+        }
+        return result;
+    }
+
+    /**
+     * 包装 {@link System#arraycopy(Object, int, Object, int, int)}<br>
+     * 数组复制
+     *
+     * @param src 源数组
+     * @param srcPos 源数组开始位置
+     * @param dest 目标数组
+     * @param destPos 目标数组开始位置
+     * @param length 拷贝数组长度
+     * @return 目标数组
+     * @since 3.0.6
+     */
+    public static Object copy(Object src, int srcPos, Object dest, int destPos, int length) {
+        System.arraycopy(src, srcPos, dest, destPos, length);
+        return dest;
+    }
+
+    /**
+     * 包装 {@link System#arraycopy(Object, int, Object, int, int)}<br>
+     * 数组复制，缘数组和目标数组都是从位置0开始复制
+     *
+     * @param src 源数组
+     * @param dest 目标数组
+     * @param length 拷贝数组长度
+     * @return 目标数组
+     * @since 3.0.6
+     */
+    public static Object copy(Object src, Object dest, int length) {
+        System.arraycopy(src, 0, dest, 0, length);
+        return dest;
+    }
+
+    /**
+     * 克隆数组
+     *
+     * @param <T> 数组元素类型
+     * @param array 被克隆的数组
+     * @return 新数组
+     */
+    public static <T> T[] clone(T[] array) {
+        if (array == null) {
+            return null;
+        }
+        return array.clone();
+    }
+
+    /**
+     * 克隆数组，如果非数组返回<code>null</code>
+     *
+     * @param <T> 数组元素类型
+     * @param obj 数组对象
+     * @return 克隆后的数组对象
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T clone(final T obj) {
+        if (null == obj) {
+            return null;
+        }
+        if (isArray(obj)) {
+            final Object result;
+            final Class<?> componentType = obj.getClass().getComponentType();
+            if (componentType.isPrimitive()) {// 原始类型
+                int length = Array.getLength(obj);
+                result = Array.newInstance(componentType, length);
+                while (length-- > 0) {
+                    Array.set(result, length, Array.get(obj, length));
+                }
+            } else {
+                result = ((Object[]) obj).clone();
+            }
+            return (T) result;
+        }
+        return null;
+    }
+
+    /**
+     * 生成一个从0开始的数字列表<br>
+     *
+     * @param excludedEnd 结束的数字（不包含）
+     * @return 数字列表
+     */
+    public static int[] range(int excludedEnd) {
+        return range(0, excludedEnd, 1);
+    }
+
+    /**
+     * 生成一个数字列表<br>
+     * 自动判定正序反序
+     *
+     * @param includedStart 开始的数字（包含）
+     * @param excludedEnd 结束的数字（不包含）
+     * @return 数字列表
+     */
+    public static int[] range(int includedStart, int excludedEnd) {
+        return range(includedStart, excludedEnd, 1);
+    }
+
+    /**
+     * 生成一个数字列表<br>
+     * 自动判定正序反序
+     *
+     * @param includedStart 开始的数字（包含）
+     * @param excludedEnd 结束的数字（不包含）
+     * @param step 步进
+     * @return 数字列表
+     */
+    public static int[] range(int includedStart, int excludedEnd, int step) {
+        if (includedStart > excludedEnd) {
+            int tmp = includedStart;
+            includedStart = excludedEnd;
+            excludedEnd = tmp;
+        }
+
+        if (step <= 0) {
+            step = 1;
+        }
+
+        int deviation = excludedEnd - includedStart;
+        int length = deviation / step;
+        if (deviation % step != 0) {
+            length += 1;
+        }
+        int[] range = new int[length];
+        for (int i = 0; i < length; i++) {
+            range[i] = includedStart;
+            includedStart += step;
+        }
+        return range;
+    }
+
+    /**
+     * 拆分byte数组为几个等份（最后一份可能小于len）
+     *
+     * @param array 数组
+     * @param len 每个小节的长度
+     * @return 拆分后的数组
+     */
+    public static byte[][] split(byte[] array, int len) {
+        int x = array.length / len;
+        int y = array.length % len;
+        int z = 0;
+        if (y != 0) {
+            z = 1;
+        }
+        byte[][] arrays = new byte[x + z][];
+        byte[] arr;
+        for (int i = 0; i < x + z; i++) {
+            arr = new byte[len];
+            if (i == x + z - 1 && y != 0) {
+                System.arraycopy(array, i * len, arr, 0, y);
+            } else {
+                System.arraycopy(array, i * len, arr, 0, len);
+            }
+            arrays[i] = arr;
+        }
+        return arrays;
+    }
+
+    /**
+     * 映射键值（参考Python的zip()函数）<br>
+     * 例如：<br>
+     * keys = [a,b,c,d]<br>
+     * values = [1,2,3,4]<br>
+     * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
+     * 如果两个数组长度不同，则只对应最短部分
+     *
+     * @param <K> Key类型
+     * @param <V> Value类型
+     * @param keys 键列表
+     * @param values 值列表
+     * @param isOrder 是否有序
+     * @return Map
+     * @since 3.0.4
+     */
+    public static <K, V> Map<K, V> zip(K[] keys, V[] values, boolean isOrder) {
+        if (isEmpty(keys) || isEmpty(values)) {
+            return null;
+        }
+
+        final int size = Math.min(keys.length, values.length);
+
+        int initialCapacity = (int) (size / 0.75f);
+        final Map<K, V> map = isOrder ? new LinkedHashMap<K, V>(initialCapacity) : new HashMap<K, V>(initialCapacity);
+
+        for (int i = 0; i < size; i++) {
+            map.put(keys[i], values[i]);
+        }
+
+        return map;
+    }
+
+    /**
+     * 映射键值（参考Python的zip()函数），返回Map无序<br>
+     * 例如：<br>
+     * keys = [a,b,c,d]<br>
+     * values = [1,2,3,4]<br>
+     * 则得到的Map是 {a=1, b=2, c=3, d=4}<br>
+     * 如果两个数组长度不同，则只对应最短部分
+     *
+     * @param <K> Key类型
+     * @param <V> Value类型
+     * @param keys 键列表
+     * @param values 值列表
+     * @return Map
+     */
+    public static <K, V> Map<K, V> zip(K[] keys, V[] values) {
+        return zip(keys, values, false);
+    }
+
+
 
 	/**
 	 * 对两个有序集合进行合并,并将重复的数字将其去掉
 	 *
-	 * @param a
-	 *            ：已排好序的数组a
-	 * @param b
-	 *            ：已排好序的数组b
+	 * @param a ：已排好序的数组a
+	 * @param b ：已排好序的数组b
 	 * @return 合并后的排序数组
 	 */
 	public static List<Integer> mergeByList(int[] a, int[] b) {
@@ -2802,10 +4160,8 @@ public class ArrayUtil {
 	/**
 	 * 对两个有序集合进行合并,并将重复的数字将其去掉
 	 *
-	 * @param a
-	 *            ：已排好序的数组a
-	 * @param b
-	 *            ：已排好序的数组b
+	 * @param a ：已排好序的数组a
+	 * @param b ：已排好序的数组b
 	 * @return 合并后的排序数组
 	 */
 	public static List<Double> mergeByList(double[] a, double[] b) {
@@ -2852,10 +4208,8 @@ public class ArrayUtil {
 	/**
 	 * 对两个有序数组进行合并,并将重复的数字将其去掉
 	 *
-	 * @param a
-	 *            :已排好序的数组a
-	 * @param b
-	 *            :已排好序的数组b
+	 * @param a :已排好序的数组a
+	 * @param b :已排好序的数组b
 	 * @return合并后的排序数组,返回数组的长度=a.length + b.length,不足部分补0
 	 */
 	public static int[] mergeByArray(int[] a, int[] b) {
@@ -2894,10 +4248,8 @@ public class ArrayUtil {
 	/**
 	 * 对两个有序数组进行合并,并将重复的数字将其去掉
 	 *
-	 * @param a
-	 *            :已排好序的数组a
-	 * @param b
-	 *            :已排好序的数组b
+	 * @param a :已排好序的数组a
+	 * @param b :已排好序的数组b
 	 * @return合并后的排序数组,返回数组的长度=a.length + b.length,不足部分补0
 	 */
 	public static double[] mergeByArray(double[] a, double[] b) {
@@ -2936,10 +4288,8 @@ public class ArrayUtil {
 	/**
 	 * 对两个有序数组进行合并,并将重复的数字将其去掉
 	 *
-	 * @param a
-	 *            ：可以是没有排序的数组
-	 * @param b
-	 *            ：可以是没有排序的数组
+	 * @param a ：可以是没有排序的数组
+	 * @param b ：可以是没有排序的数组
 	 * @return合并后的排序数组 打印时可以这样： Map<Integer,Integer> map=sortByTreeMap(a,b);
 	 *                 Iterator iterator = map.entrySet().iterator(); while
 	 *                 (iterator.hasNext()) { Map.Entry mapentry =
@@ -2960,10 +4310,8 @@ public class ArrayUtil {
 	/**
 	 * 对两个有序数组进行合并,并将重复的数字将其去掉
 	 *
-	 * @param a
-	 *            ：可以是没有排序的数组
-	 * @param b
-	 *            ：可以是没有排序的数组
+	 * @param a ：可以是没有排序的数组
+	 * @param b ：可以是没有排序的数组
 	 * @return合并后的排序数组 打印时可以这样： Map<Integer,Integer> map=sortByTreeMap(a,b);
 	 *                 Iterator iterator = map.entrySet().iterator(); while
 	 *                 (iterator.hasNext()) { Map.Entry mapentry =
@@ -2989,27 +4337,10 @@ public class ArrayUtil {
 	 * @param offset
 	 * @return
 	 */
-	public static int[] offsetArray(int[] array, int offset) {
+	public static <T> T[] offsetArray(T[] array, int offset) {
 		int length = array.length;
 		int moveLength = length - offset;
-		int[] temp = Arrays.copyOfRange(array, moveLength, length);
-		System.arraycopy(array, 0, array, offset, moveLength);
-		System.arraycopy(temp, 0, array, 0, offset);
-		return array;
-	}
-
-	/**
-	 * 数组中有n个数据，要将它们顺序循环向后移动k位， 即前面的元素向后移动k位，后面的元素则循环向前移k位，
-	 * 例如，0、1、2、3、4循环移动3位后为2、3、4、0、1。
-	 *
-	 * @param array
-	 * @param offset
-	 * @return
-	 */
-	public static double[] offsetArray(double[] array, int offset) {
-		int length = array.length;
-		int moveLength = (length - offset);
-		double[] temp = Arrays.copyOfRange(array, moveLength, length);
+		T[] temp = Arrays.copyOfRange(array, moveLength, length);
 		System.arraycopy(array, 0, array, offset, moveLength);
 		System.arraycopy(temp, 0, array, 0, offset);
 		return array;
@@ -3021,26 +4352,10 @@ public class ArrayUtil {
 	 * @param array
 	 * @return
 	 */
-	public int[] shuffle(int[] array) {
+	public <T> T[] shuffle(T[] array) {
 		Random random = new Random();
 		for (int index = array.length - 1; index >= 0; index--) {
 			// 从0到index处之间随机取一个值，跟index处的元素交换
-			swap(array, random.nextInt(index + 1), index);
-		}
-		return array;
-	}
-
-	/**
-	 * 随机打乱一个数组
-	 *
-	 * @param array
-	 * @return
-	 */
-	public double[] shuffle(double[] array) {
-		Random random = new Random();
-		for (int index = array.length - 1; index >= 0; index--) {
-			// 从0到index处之间随机取一个值，跟index处的元素交换
-
 			swap(array, random.nextInt(index + 1), index);
 		}
 		return array;
@@ -3115,25 +4430,427 @@ public class ArrayUtil {
 		return new LinkedHashSet<T>(Arrays.asList(array));
 	}
 
-	/**
-	 * 改变数组的大小
-	 *
-	 * @author hezhao
-	 * @Time 2017年8月1日 上午11:53:14
-	 * @param oldArray
-	 * @param newSize
-	 * @return
-	 */
-	public static Object resizeArray(Object oldArray, int newSize) {
-		int oldSize = java.lang.reflect.Array.getLength(oldArray);
-		Class elementType = oldArray.getClass().getComponentType();
-		Object newArray = java.lang.reflect.Array.newInstance(elementType,
-				newSize);
-		int preserveLength = Math.min(oldSize, newSize);
-		if (preserveLength > 0)
-			System.arraycopy(oldArray, 0, newArray, 0, preserveLength);
-		return newArray;
-	}
+    /**
+     * 将集合转为数组
+     *
+     * @param <T> 数组元素类型
+     * @param iterator {@link Iterator}
+     * @param componentType 集合元素类型
+     * @return 数组
+     * @since 3.0.9
+     */
+    public static <T> T[] toArray(Iterator<T> iterator, Class<T> componentType) {
+        return toArray(newArrayList(iterator), componentType);
+    }
+
+    /**
+     * 将集合转为数组
+     *
+     * @param <T> 数组元素类型
+     * @param iterable {@link Iterable}
+     * @param componentType 集合元素类型
+     * @return 数组
+     * @since 3.0.9
+     */
+    public static <T> T[] toArray(Iterable<T> iterable, Class<T> componentType) {
+        return toArray(toCollection(iterable), componentType);
+    }
+
+    /**
+     * 将集合转为数组
+     *
+     * @param <T> 数组元素类型
+     * @param collection 集合
+     * @param componentType 集合元素类型
+     * @return 数组
+     * @since 3.0.9
+     */
+    public static <T> T[] toArray(Collection<T> collection, Class<T> componentType) {
+        final T[] array = newArray(componentType, collection.size());
+        return collection.toArray(array);
+    }
+
+    /**
+     * {@link Iterable}转为{@link Collection}<br>
+     * 首先尝试强转，强转失败则构建一个新的{@link ArrayList}
+     *
+     * @param <E> 集合元素类型
+     * @param iterable {@link Iterable}
+     * @return {@link Collection} 或者 {@link ArrayList}
+     * @since 3.0.9
+     */
+    private static <E> Collection<E> toCollection(Iterable<E> iterable) {
+        return (iterable instanceof Collection) ? (Collection<E>) iterable : newArrayList(iterable.iterator());
+    }
+
+    /**
+     * 新建一个ArrayList<br>
+     * 提供的参数为null时返回空{@link ArrayList}
+     *
+     * @param <T> 集合元素类型
+     * @param iter {@link Iterator}
+     * @return ArrayList对象
+     * @since 3.0.8
+     */
+    private static <T> ArrayList<T> newArrayList(Iterator<T> iter) {
+        final ArrayList<T> list = new ArrayList<>();
+        if (null == iter) {
+            return list;
+        }
+        while (iter.hasNext()) {
+            list.add(iter.next());
+        }
+        return list;
+    }
+
+    /**
+     * 数组或集合转String
+     *
+     * @param obj 集合或数组对象
+     * @return 数组字符串，与集合转字符串格式相同
+     */
+    public static String toString(Object obj) {
+        if (null == obj) {
+            return null;
+        }
+        if (ArrayUtil.isArray(obj)) {
+            try {
+                return Arrays.deepToString((Object[]) obj);
+            } catch (Exception e) {
+                final String className = obj.getClass().getComponentType().getName();
+                switch (className) {
+                    case "long":
+                        return Arrays.toString((long[]) obj);
+                    case "int":
+                        return Arrays.toString((int[]) obj);
+                    case "short":
+                        return Arrays.toString((short[]) obj);
+                    case "char":
+                        return Arrays.toString((char[]) obj);
+                    case "byte":
+                        return Arrays.toString((byte[]) obj);
+                    case "boolean":
+                        return Arrays.toString((boolean[]) obj);
+                    case "float":
+                        return Arrays.toString((float[]) obj);
+                    case "double":
+                        return Arrays.toString((double[]) obj);
+                    default:
+                        throw new RuntimeException(e);
+                }
+            }
+        }
+        return obj.toString();
+    }
+
+    /**
+     * 获取数组长度<br>
+     * 如果参数为{@code null}，返回0
+     *
+     * <pre>
+     * ArrayUtil.length(null)            = 0
+     * ArrayUtil.length([])              = 0
+     * ArrayUtil.length([null])          = 1
+     * ArrayUtil.length([true, false])   = 2
+     * ArrayUtil.length([1, 2, 3])       = 3
+     * ArrayUtil.length(["a", "b", "c"]) = 3
+     * </pre>
+     *
+     * @param array 数组对象
+     * @return 数组长度
+     * @throws IllegalArgumentException 如果参数不为数组，抛出此异常
+     * @since 3.0.8
+     * @see Array#getLength(Object)
+     */
+    public static int length(Object array) throws IllegalArgumentException {
+        if (null == array) {
+            return 0;
+        }
+        return Array.getLength(array);
+    }
+
+    //------------------------------------------------------------------------------------------------------------ min and max
+    /**
+     * 取最小值
+     *
+     * @param <T> 元素类型
+     * @param numberArray 数字数组
+     * @return 最小值
+     * @since 3.0.9
+     */
+    public static <T extends Comparable<? super T>> T min(T[] numberArray) {
+        T min = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(compare(min, numberArray[i], false) > 0) {
+                min = numberArray[i];
+            }
+        }
+        return min;
+    }
+
+    /**
+     * 取最小值
+     * @param numberArray 数字数组
+     * @return 最小值
+     * @since 3.0.9
+     */
+    public static long min(long[] numberArray) {
+        long min = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(min > numberArray[i]) {
+                min = numberArray[i];
+            }
+        }
+        return min;
+    }
+
+    /**
+     * 取最小值
+     * @param numberArray 数字数组
+     * @return 最小值
+     * @since 3.0.9
+     */
+    public static int min(int[] numberArray) {
+        int min = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(min > numberArray[i]) {
+                min = numberArray[i];
+            }
+        }
+        return min;
+    }
+
+    /**
+     * 取最小值
+     * @param numberArray 数字数组
+     * @return 最小值
+     * @since 3.0.9
+     */
+    public static short min(short[] numberArray) {
+        short min = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(min > numberArray[i]) {
+                min = numberArray[i];
+            }
+        }
+        return min;
+    }
+
+    /**
+     * 取最小值
+     * @param numberArray 数字数组
+     * @return 最小值
+     * @since 3.0.9
+     */
+    public static char min(char[] numberArray) {
+        char min = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(min > numberArray[i]) {
+                min = numberArray[i];
+            }
+        }
+        return min;
+    }
+
+    /**
+     * 取最小值
+     * @param numberArray 数字数组
+     * @return 最小值
+     * @since 3.0.9
+     */
+    public static byte min(byte[] numberArray) {
+        byte min = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(min > numberArray[i]) {
+                min = numberArray[i];
+            }
+        }
+        return min;
+    }
+
+    /**
+     * 取最小值
+     * @param numberArray 数字数组
+     * @return 最小值
+     * @since 3.0.9
+     */
+    public static double min(double[] numberArray) {
+        double min = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(min > numberArray[i]) {
+                min = numberArray[i];
+            }
+        }
+        return min;
+    }
+
+    /**
+     * 取最小值
+     * @param numberArray 数字数组
+     * @return 最小值
+     * @since 3.0.9
+     */
+    public static float min(float[] numberArray) {
+        float min = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(min > numberArray[i]) {
+                min = numberArray[i];
+            }
+        }
+        return min;
+    }
+
+    /**
+     * {@code null}安全的对象比较
+     *
+     * @param <T> 被比较对象类型
+     * @param c1 对象1，可以为{@code null}
+     * @param c2 对象2，可以为{@code null}
+     * @param nullGreater 当被比较对象为null时是否排在前面
+     * @return 比较结果，如果c1 &lt; c2，返回数小于0，c1==c2返回0，c1 &gt; c2 大于0
+     * @since 3.0.7
+     * @see java.util.Comparator#compare(Object, Object)
+     */
+    private static <T extends Comparable<? super T>> int compare(T c1, T c2, boolean nullGreater) {
+        if (c1 == c2) {
+            return 0;
+        } else if (c1 == null) {
+            return nullGreater ? 1 : -1;
+        } else if (c2 == null) {
+            return nullGreater ? -1 : 1;
+        }
+        return c1.compareTo(c2);
+    }
+
+    /**
+     * 取最大值
+     *
+     * @param <T> 元素类型
+     * @param numberArray 数字数组
+     * @return 最大值
+     * @since 3.0.9
+     */
+    public static <T extends Comparable<? super T>> T max(T[] numberArray) {
+        T max = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(compare(max, numberArray[i], false) < 0) {
+                max = numberArray[i];
+            }
+        }
+        return max;
+    }
+
+    /**
+     * 取最大值
+     * @param numberArray 数字数组
+     * @return 最大值
+     * @since 3.0.9
+     */
+    public static long max(long[] numberArray) {
+        long max = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(max < numberArray[i]) {
+                max = numberArray[i];
+            }
+        }
+        return max;
+    }
+
+    /**
+     * 取最大值
+     * @param numberArray 数字数组
+     * @return 最大值
+     * @since 3.0.9
+     */
+    public static int max(int[] numberArray) {
+        int max = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(max < numberArray[i]) {
+                max = numberArray[i];
+            }
+        }
+        return max;
+    }
+
+    /**
+     * 取最大值
+     * @param numberArray 数字数组
+     * @return 最大值
+     * @since 3.0.9
+     */
+    public static short max(short[] numberArray) {
+        short max = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(max < numberArray[i]) {
+                max = numberArray[i];
+            }
+        }
+        return max;
+    }
+
+    /**
+     * 取最大值
+     * @param numberArray 数字数组
+     * @return 最大值
+     * @since 3.0.9
+     */
+    public static char max(char[] numberArray) {
+        char max = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(max < numberArray[i]) {
+                max = numberArray[i];
+            }
+        }
+        return max;
+    }
+
+    /**
+     * 取最大值
+     * @param numberArray 数字数组
+     * @return 最大值
+     * @since 3.0.9
+     */
+    public static byte max(byte[] numberArray) {
+        byte max = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(max < numberArray[i]) {
+                max = numberArray[i];
+            }
+        }
+        return max;
+    }
+
+    /**
+     * 取最大值
+     * @param numberArray 数字数组
+     * @return 最大值
+     * @since 3.0.9
+     */
+    public static double max(double[] numberArray) {
+        double max = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(max < numberArray[i]) {
+                max = numberArray[i];
+            }
+        }
+        return max;
+    }
+
+    /**
+     * 取最大值
+     * @param numberArray 数字数组
+     * @return 最大值
+     * @since 3.0.9
+     */
+    public static float max(float[] numberArray) {
+        float max = numberArray[0];
+        for(int i = 0; i < numberArray.length; i++) {
+            if(max < numberArray[i]) {
+                max = numberArray[i];
+            }
+        }
+        return max;
+    }
 
 	public static void main(String[] args) {
 //		int[] array1 = { 21, 24, 13, 46, 35, 26, 14, 43, 11,41,46,45,98,45,49,61,94,72};
