@@ -20,7 +20,7 @@ public class ExpressCompanyUtil {
     }
 
     /**
-     * 初始化国家信息键值对
+     * 初始化物流公司信息键值对
      */
     private static void initialCountryMap() {
         COMPANY.put("SF", "顺丰速运");

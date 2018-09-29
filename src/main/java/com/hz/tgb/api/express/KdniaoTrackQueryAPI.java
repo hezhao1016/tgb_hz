@@ -32,34 +32,38 @@ public class KdniaoTrackQueryAPI {
 
     private static Logger logger = LoggerFactory.getLogger(KdniaoTrackQueryAPI.class);
 
-    //DEMO
+    // DEMO
     public static void main(String[] args) {
         try {
             ExpressInfo expressInfo = KdniaoTrackQueryAPI.getOrderTracesByJson("YTO", "800338386116870005");
-            System.out.println("用户ID: ["+expressInfo.getBusinessId()+"]");
-            System.out.println("订单编号: ["+expressInfo.getOrderCode()+"]");
-            System.out.println("快递公司: ["+expressInfo.getShipperName()+"]");
-            System.out.println("物流运单号: ["+expressInfo.getLogisticCode()+"]");
-            System.out.println("成功与否: ["+expressInfo.getSuccess()+"]");
-            System.out.println("失败原因: ["+expressInfo.getReason()+"]");
-            System.out.println("物流状态: ["+expressInfo.getStateStr()+"]");
 
-            expressInfo.getExpressTraceList().forEach(e -> {
-                System.out.println("--------------------------------");
-                System.out.println("时间: ["+e.getAcceptTime()+"]");
-                System.out.println("描述: ["+e.getAcceptStation()+"]");
-                System.out.println("备注: ["+e.getRemark()+"]");
-            });
+            if (expressInfo != null) {
+                System.out.println("用户ID: ["+expressInfo.getBusinessId()+"]");
+                System.out.println("订单编号: ["+expressInfo.getOrderCode()+"]");
+                System.out.println("快递公司: ["+expressInfo.getShipperName()+"]");
+                System.out.println("物流运单号: ["+expressInfo.getLogisticCode()+"]");
+                System.out.println("成功与否: ["+expressInfo.getSuccess()+"]");
+                System.out.println("失败原因: ["+expressInfo.getReason()+"]");
+                System.out.println("物流状态: ["+expressInfo.getStateStr()+"]");
+
+                expressInfo.getExpressTraceList().forEach(e -> {
+                    System.out.println("--------------------------------");
+                    System.out.println("时间: ["+e.getAcceptTime()+"]");
+                    System.out.println("描述: ["+e.getAcceptStation()+"]");
+                    System.out.println("备注: ["+e.getRemark()+"]");
+                });
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    //电商ID
-    private static final String EBusinessID = "1288731";
-    //电商加密私钥，快递鸟提供，注意保管，不要泄漏
-    private static final String AppKey = "2ba52c76-ff75-4ad1-a2e8-35ae42da55e3";
-    //请求url
+    // 电商ID
+    private static final String EBusinessID = "请到快递鸟官网申请http://www.kdniao.com/ServiceApply.aspx";
+    // 电商加密私钥，快递鸟提供，注意保管，不要泄漏
+    private static final String AppKey = "请到快递鸟官网申请http://www.kdniao.com/ServiceApply.aspx";
+    // 请求url
     private static final String ReqURL = "http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx";
 
     /**
@@ -73,13 +77,18 @@ public class KdniaoTrackQueryAPI {
     public static ExpressInfo getOrderTracesByJson(String expCode, String expNo) throws Exception{
         logger.info("expCode:{}, expNo:{}", expCode, expNo);
 
+        if (StringUtils.isAnyBlank(expCode, expNo)) {
+            logger.info("必填参数不能为空 expCode:{}, expNo:{}", expCode, expNo);
+            return null;
+        }
+
         String requestData= "{'OrderCode':'','ShipperCode':'" + expCode + "','LogisticCode':'" + expNo + "'}";
 
         Map<String, String> params = new HashMap<String, String>();
         params.put("RequestData", urlEncoder(requestData, "UTF-8"));
         params.put("EBusinessID", EBusinessID);
         params.put("RequestType", "1002");
-        String dataSign=encrypt(requestData, AppKey, "UTF-8");
+        String dataSign = encrypt(requestData, AppKey, "UTF-8");
         params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
         params.put("DataType", "2");
 

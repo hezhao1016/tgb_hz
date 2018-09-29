@@ -1,33 +1,30 @@
-/**
- * 
- */
 package com.hz.tgb.common;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-/** 表情符工具类
+/**
+ * 表情符工具类
  * @author hezhao
  */
 public class EmojiUtil {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(EmojiUtil.class);
-    
+
     public static String filter(String str){
-        
+
         // 若为空则直接返回
         if (StringUtils.isBlank(str)) {
             return str;
         }
-        
+
         // 判断是否包含表情符
         if(!containsEmoji(str)){
             logger.info("str:{} contain emoji:{}", str, containsEmoji(str));
             return str;
         }
-        
+
         // 获取
         StringBuffer buf = new StringBuffer(str.length());
         int len = str.length();
@@ -38,15 +35,15 @@ public class EmojiUtil {
                 buf.append(codePoint);
             }
         }
-       
+
         logger.info("str:{} filter emoji:{}", str, buf);
         return buf.toString();
     }
-    
+
     private static boolean isNotEmojiChar(char codePoint) {
         return (codePoint == 0x0) || (codePoint == 0x9) || (codePoint == 0xA) || (codePoint == 0xD) || ((codePoint >= 0x20) && (codePoint <= 0xD7FF))|| ((codePoint >= 0xE000) && (codePoint <= 0xFFFD))|| ((codePoint >= 0x10000) && (codePoint <= 0x10FFFF));
     }
-    
+
     public static boolean containsEmoji(String source) {
         int len = source.length();
         boolean isEmoji = false;
@@ -85,13 +82,13 @@ public class EmojiUtil {
         }
         return isEmoji;
     }
-    
+
     public static void main(String[] args){
         String str = "\\xF0\\x9F\\x98\\x82";
         for (int i = 0; i < str.length(); i++) {
             System.err.println(i+ "--------->" + isNotEmojiChar(str.charAt(i)));
         }
-        
+
         System.out.println(str);
         System.out.println(containsEmoji(str));
     }
