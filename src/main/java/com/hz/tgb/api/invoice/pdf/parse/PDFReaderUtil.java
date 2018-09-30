@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author 
+ * @author
  * @d2018-3-23
  * <h1>解析PDF电子发票</h1>
  * <h2>待强化：</h2>
@@ -72,7 +72,7 @@ public class PDFReaderUtil {
 	private static final String MMQ = "密码区";
 	private static final String BZ = "备注";
 	private static final String MMQ_BZ = "密码区备注";
-	
+
 	// 参照关键字
 	/**
 	 * 机器编号
@@ -163,7 +163,7 @@ public class PDFReaderUtil {
 	 * 销货清单-税额
 	 */
 	private static ReceiptPosition se$R = null;
-	
+
 	/**
 	 * 去除
 	 * @param str
@@ -186,10 +186,11 @@ public class PDFReaderUtil {
 		PDDocument document = null;
 		try {
 			document = PDDocument.load(new File(pdfFileName));
-			
+
 			PDPageTree pages = document.getPages();
 			int pageCount = pages.getCount();
-			
+
+			// 只有一页
 			if(pageCount == 1){
 				MyPDFTextStripper stripper = new MyPDFTextStripper();
 				stripper.setStartPage(1);
@@ -198,13 +199,14 @@ public class PDFReaderUtil {
 				stripper.getText(document);
 				mainList = stripper.getPosList();
 			}else if(pageCount > 1){
+				// 超过一页，只解析前两页
 				MyPDFTextStripper stripperMain = new MyPDFTextStripper();
 				stripperMain.setStartPage(1);
 				stripperMain.setEndPage(1);
 				stripperMain.setSortByPosition(true);
 				stripperMain.getText(document);
 				mainList = stripperMain.getPosList();
-				
+
 				MyPDFTextStripper stripperAddendum = new MyPDFTextStripper();
 				stripperAddendum.setStartPage(2);
 				stripperAddendum.setEndPage(2);
@@ -218,12 +220,15 @@ public class PDFReaderUtil {
 			}
 		}
 
+		// 记录特殊关键字起始坐标
 		specificDW(mainList);
+
 		if(null != addendumList){
 			JSONObject json = reorganizationRegulation(mainList);
-			
+
 			try {
 				JSONObject xhqdJson = reorganizationRegulationSA(addendumList);
+				// 第二页销货清单
 				json.put("qdxxs", xhqdJson);
 			} catch (Exception e) {
 				return json;
@@ -239,40 +244,39 @@ public class PDFReaderUtil {
 	 * @param addendumList
 	 * @return
 	 */
-	private static JSONObject reorganizationRegulationSA(
-			List<ReceiptPosition> addendumList) {
-		
+	private static JSONObject reorganizationRegulationSA(List<ReceiptPosition> addendumList) {
+
 		JSONObject json = new JSONObject();
-		
+
 		// y排序
 		PDFSortUtil.sort(addendumList, "posY");
-		
+
 		List<ReceiptPosition> indexList = new ArrayList<ReceiptPosition>();
 		//行处理
 		List<ReceiptPosition>  lineStrList = new ArrayList<ReceiptPosition>();
-		
+
 		for (int i = 0; i < addendumList.size(); i++) {
-			
+
 			ReceiptPosition rp = addendumList.get(i);
-			
+
 			if(i+1 < addendumList.size()){
 				ReceiptPosition rp2 = addendumList.get(i+1);
 				if(Math.abs(rp.getPosY() - rp2.getPosY()) < 2){
 					indexList.add(rp);
 				}else{
 					indexList.add(rp);
-					
+
 					PDFSortUtil.sort(indexList, "posX");
-					
+
 					ReceiptPosition receiptPosition = new ReceiptPosition();
-					
+
 					for (ReceiptPosition r : indexList) {
 						String text = receiptPosition.getText();
 						if(null == text){
 							text = "";
 						}
 						text += r.getText();
-						
+
 						receiptPosition.setPosEndX(r.getPosEndX());
 						receiptPosition.setPosEndY(r.getPosEndY());
 						receiptPosition.setPosLastX(r.getPosLastX());
@@ -281,25 +285,25 @@ public class PDFReaderUtil {
 						receiptPosition.setPosY(r.getPosY());
 						receiptPosition.setText(text);
 					}
-					
+
 					lineStrList.add(receiptPosition);
 					indexList = new ArrayList<ReceiptPosition>();
 				}
-			
+
 			}else if(i+1 == addendumList.size()){
 				PDFSortUtil.sort(indexList, "posX");
 				//补全最后一个字
 				indexList.add(rp);
-				
+
 				ReceiptPosition receiptPosition = new ReceiptPosition();
-				
+
 				for (ReceiptPosition r : indexList) {
 					String text = receiptPosition.getText();
 					if(null == text){
 						text = "";
 					}
 					text += r.getText();
-					
+
 					receiptPosition.setPosEndX(r.getPosEndX());
 					receiptPosition.setPosEndY(r.getPosEndY());
 					receiptPosition.setPosLastX(r.getPosLastX());
@@ -308,11 +312,11 @@ public class PDFReaderUtil {
 					receiptPosition.setPosY(r.getPosY());
 					receiptPosition.setText(text);
 				}
-				
+
 				lineStrList.add(receiptPosition);
 			}
 		}
-		
+
 		if("销售货物或者提供应税劳务清单".equals(lineStrList.get(lineStrList.size() - 1).getText())){
 			//记录（关键字）对应Y轴----$代表销货清单
 			//销售方(章)
@@ -323,7 +327,7 @@ public class PDFReaderUtil {
 			float zjY$ = 0f;
 			//小计
 			float xjY$ = 0f;
-			//序号 货物(劳务)名称 
+			//序号 货物(劳务)名称
 			float xhY$ = 0f;
 			//所属增值税电子普通发票代码---号码---页码
 			float fpdmY$ = 0f;
@@ -331,21 +335,21 @@ public class PDFReaderUtil {
 			float xsfmcY$ = 0f;
 			//购买方名称
 			float gmfmcY$ = 0f;
-			
+
 			for (int j = 0; j < lineStrList.size(); j++) {
 				ReceiptPosition receiptPosition = lineStrList.get(j);
 				String text = receiptPosition.getText()
-					.trim()
-					.replaceAll(" ", "")
-					.replaceAll("：", ":");
+						.trim()
+						.replaceAll(" ", "")
+						.replaceAll("：", ":");
 				//填开日期
 				if(text.indexOf("销售方") > -1 && text.indexOf("填开日期") > -1){
 					int lastIndex = text.lastIndexOf(":");
 					text = text.substring(lastIndex+1, text.length())
-						.replace("年", "-")
-						.replace("月", "-")
-						.replace("日", "");
-					
+							.replace("年", "-")
+							.replace("月", "-")
+							.replace("日", "");
+
 					json.put("xhqd_tkrq", text);
 					if(xsfY$ == 0f){
 						xsfY$ = receiptPosition.getPosY();
@@ -394,7 +398,7 @@ public class PDFReaderUtil {
 				}
 			}
 			PDFSortUtil.sort(beanList, "posX");
-			
+
 			if(null == xh$R){
 				for (ReceiptPosition rp : beanList) {
 					String text = rp.getText().trim();
@@ -461,19 +465,19 @@ public class PDFReaderUtil {
 			ArrayList<ReceiptPosition> se$List = new ArrayList<ReceiptPosition>();
 			//备注
 			ArrayList<ReceiptPosition> bz$List = new ArrayList<ReceiptPosition>();
-			
+
 			for (int i = addendumList.size()-1; i >= 0; i--) {
-				
+
 				ReceiptPosition rp = addendumList.get(i);
-				
+
 				String text = rp.getText().trim().replaceAll(" ", "");
 				//备注
-				if(rp.getPosY() < (zjY$ - 2f) 
+				if(rp.getPosY() < (zjY$ - 2f)
 						&& rp.getPosY() > (bzY$ - 5f)
 						&& rp.getPosLastX() > (xh$R.getPosLastX() + 2f)){
 					bz$List.add(rp);
 				}
-				
+
 				if(rp.getPosY() < (xjY$ + 2f) && rp.getPosY() > (zjY$ - 2f)){
 					//小计金额，总计金额
 					if(rp.getPosLastX() < sl$R.getPosX() && rp.getPosX() > je$R.getPosX() - 10f){
@@ -491,7 +495,7 @@ public class PDFReaderUtil {
 							zjse = text.replace("¥", "").replace("￥", "");
 						}
 					}
-					
+
 				}
 				if(rp.getPosY() < (xhY$ - 2f) && rp.getPosY() > (xjY$ + 2f)){
 					rp.setText(text);
@@ -516,27 +520,27 @@ public class PDFReaderUtil {
 					}
 				}
 			}
-			
+
 			//备注未做过多处理，存在问题（后续根据需求再开发）
 			PDFSortUtil.sort(bz$List, "posX");
 			for (ReceiptPosition bzRp : bz$List) {
 				bzText.append(bzRp.getText());
 			}
-			
+
 			json.put("xhqd_bz", bzText.toString());
 			json.put("xhqd_xjje", xjje);
 			json.put("xhqd_xjse", xjse);
 			json.put("xhqd_zjje", zjje);
 			json.put("xhqd_zjse", zjse);
-			
+
 			if(xh$List.size() > 0){
 				JSONArray jsonArray = new JSONArray();
 				JSONObject jsonObject = new JSONObject();
-				
+
 				for (int i = 0; i < xh$List.size(); i++) {
-					
+
 					ReceiptPosition xhRp = xh$List.get(i);
-					
+
 					String xh = xhRp.getText();
 					StringBuilder hwmc = new StringBuilder();
 					String ggxh = "";
@@ -546,7 +550,7 @@ public class PDFReaderUtil {
 					String je = "";
 					String slv = "";
 					String se = "";
-					
+
 					for (ReceiptPosition ggxhRp : ggxh$List) {
 						if(Math.abs(xhRp.getPosY() - ggxhRp.getPosY()) < 2){
 							ggxh = ggxhRp.getText();
@@ -582,33 +586,41 @@ public class PDFReaderUtil {
 							se = seRp.getText();
 						}
 					}
-					
+
 					if(i + 1 < xh$List.size()){
 						ReceiptPosition xhRp2 = xh$List.get(i+1);
 						for (ReceiptPosition hwmcRp : hwmc$List) {
 							if(hwmcRp.getPosY() > (xhRp2.getPosY() + 2f)
 									&& hwmcRp.getPosY() < (xhRp.getPosY() + 2f)){
-								hwmc.append(hwmcRp.getText()); 
+								hwmc.append(hwmcRp.getText());
 							}
 						}
 					}else{
 						for (ReceiptPosition hwmcRp : hwmc$List) {
 							if(hwmcRp.getPosY() < (xhRp.getPosY() + 2f)){
-								hwmc.append(hwmcRp.getText()); 
+								hwmc.append(hwmcRp.getText());
 							}
 						}
 					}
-					
+					// 序号
 					jsonObject.put("xh", xh);
+					// 货物名称
 					jsonObject.put("hwmc", hwmc.toString());
+					// 规格型号
 					jsonObject.put("ggxh", ggxh);
+					// 单位
 					jsonObject.put("dw", dw);
-					jsonObject.put("sl", sl);
-					jsonObject.put("dj", dj);
-					jsonObject.put("je", je);
-					jsonObject.put("slv", slv.replace("%", ""));
-					jsonObject.put("se", se);
-					
+					// 数量
+					jsonObject.put("sl", PDFStringUtil.parseInt(sl));
+					// 单价
+					jsonObject.put("dj", parseDouble(dj));
+					// 金额
+					jsonObject.put("je", parseDouble(je));
+					// 税率
+					jsonObject.put("slv", PDFStringUtil.parseInt(slv.replace("%", "")));
+					// 税额
+					jsonObject.put("se", parseDouble(se));
+
 					jsonArray.add(jsonObject);
 					//System.out.println("xhqd_je:"+je+"\t\t-xhqd_hwmc:"+hwmc.toString());
 					jsonObject = new JSONObject();
@@ -625,17 +637,17 @@ public class PDFReaderUtil {
 //		System.out.println(je$R);
 //		System.out.println(slv$R);
 //		System.out.println(se$R);
-		
+
 		return json;
 	}
-	
+
 
 	/**
 	 * <h3>记录特殊关键字起始坐标</h3>
 	 * @param list
 	 */
 	private static void specificDW(List<ReceiptPosition> list) {
-		
+
 		jqbhR = new ReceiptPosition();
 		hjR = new ReceiptPosition();
 		jshjR = new ReceiptPosition();
@@ -649,7 +661,7 @@ public class PDFReaderUtil {
 		shuieR = new ReceiptPosition();
 		mmqR = new ReceiptPosition();
 		bzR = new ReceiptPosition();
-		
+
 		// listT 合计
 		List<ReceiptPosition> hjList = new ArrayList<ReceiptPosition>();
 		// listT 价税合计
@@ -797,7 +809,7 @@ public class PDFReaderUtil {
 				shuieList.add(rp);
 			}
 		}
-		
+
 		//抽出货物或应税劳务、服务名称（以Y坐标作为参考依据）
 		if(hwmcList.size() > 0){
 			hwmcR = hwmcList.get(hwmcList.size() -1);
@@ -815,7 +827,7 @@ public class PDFReaderUtil {
 				danweiR = dw;
 			}
 		}
-		
+
 		// 数量
 		reInspection(shuliangList, list, SL, SL_S, SL_L);
 		for (ReceiptPosition sl : shuliangList) {
@@ -823,7 +835,7 @@ public class PDFReaderUtil {
 				shuliangR = sl;
 			}
 		}
-		
+
 		// 单价
 		reInspection(danjiaList, list, DJ, DJ_D, DJ_J);
 		for (ReceiptPosition dj : danjiaList) {
@@ -831,7 +843,7 @@ public class PDFReaderUtil {
 				danjiaR = dj;
 			}
 		}
-		
+
 		// 金额
 		reInspection(jineList, list, JE, JE_J, JE_E);
 		for (ReceiptPosition x : jineList) {
@@ -839,7 +851,7 @@ public class PDFReaderUtil {
 				jineR = x;
 			}
 		}
-		
+
 		// 税率
 		reInspection(shuilvList, list, SLV, SLV_S, SLV_LV);
 		for (ReceiptPosition x : shuilvList) {
@@ -908,21 +920,21 @@ public class PDFReaderUtil {
 	 * @param cj_j
 	 */
 	private static void reInspection(List<ReceiptPosition> cjList,
-			List<ReceiptPosition> list, String cj, String cj_c, String cj_j) {
+									 List<ReceiptPosition> list, String cj, String cj_c, String cj_j) {
 		if(cjList.size() < 1){
 			PDFSortUtil.sort(list, "posY");
 			for (int i = 0; i < list.size(); i++) {
 				if(trim(list.get(i).getText()).length() == 1
-						&& list.get(i).getText().startsWith(cj_c) 
+						&& list.get(i).getText().startsWith(cj_c)
 						&& i - 1 >= 0
 						&& trim(list.get(i - 1).getText()).length() == 1
-						&& list.get(i - 1).getText().startsWith(cj_j) 
-						|| 
+						&& list.get(i - 1).getText().startsWith(cj_j)
+						||
 						trim(list.get(i).getText()).length() == 1
-						&& list.get(i).getText().startsWith(cj_c) 
-						&& i + 1 < list.size()
-						&& trim(list.get(i + 1).getText()).length() == 1
-						&& list.get(i + 1).getText().startsWith(cj_j)){
+								&& list.get(i).getText().startsWith(cj_c)
+								&& i + 1 < list.size()
+								&& trim(list.get(i + 1).getText()).length() == 1
+								&& list.get(i + 1).getText().startsWith(cj_j)){
 					list.get(i).setText(cj);
 					cjList.add(list.get(i));
 				}
@@ -935,8 +947,7 @@ public class PDFReaderUtil {
 	 * @param list
 	 * @return
 	 */
-	private static JSONObject reorganizationRegulation(
-			List<ReceiptPosition> list) {
+	private static JSONObject reorganizationRegulation(List<ReceiptPosition> list) {
 
 		JSONObject jsonObject = new JSONObject();
 
@@ -990,10 +1001,10 @@ public class PDFReaderUtil {
 		String kpr = "";
 		// xsf：销售方String
 		String xsf = "";
-		
+
 		//存储收款人，复核，开票人
 		List<ReceiptPosition> sfkList = new ArrayList<ReceiptPosition>();
-		
+
 		// 备份同行所有字符集合
 		List<List<ReceiptPosition>> baseList = new ArrayList<List<ReceiptPosition>>();
 
@@ -1002,7 +1013,7 @@ public class PDFReaderUtil {
 
 		// y排序
 		PDFSortUtil.sort(list, "posY");
-		
+
 		// 备份集合
 		List<ReceiptPosition> indexList = new ArrayList<ReceiptPosition>();
 		for (int i = list.size() - 1; i > 0; i--) {
@@ -1031,7 +1042,7 @@ public class PDFReaderUtil {
 		for (ReceiptPosition sfk : sfkList) {
 			sfkText += sfk.getText();
 		}
-		
+
 		String regex = "收款人|复核|开票人|销售方:(章)";
 		Pattern pattern = Pattern.compile(regex);
 		String[] splitStrs = pattern.split(sfkText.trim());
@@ -1300,17 +1311,17 @@ public class PDFReaderUtil {
 			}
 			// 价税合计
 			if (Math.abs(rec.getPosY() - jshjR.getPosY()) < 2) {
-                // 价税合计(大写)捌拾捌圆壹角(小写)¥88.10
+				// 价税合计(大写)捌拾捌圆壹角(小写)¥88.10
 
 				kpje = text.split("小写")[1]
-                        .replace("¥", "")
-                        .replace("￥", "");
+						.replace("¥", "")
+						.replace("￥", "");
 				kpje = kpje.substring(1, kpje.length());
 
-                kpjecn = text.substring(text.indexOf("大写") + 3, text.lastIndexOf("小写") - 1);
-                kpjecn = kpjecn.replace("ⓧ", "");
-                // System.out.println(kpjecn);
-            }
+				kpjecn = text.substring(text.indexOf("大写") + 3, text.lastIndexOf("小写") - 1);
+				kpjecn = kpjecn.replace("ⓧ", "");
+				// System.out.println(kpjecn);
+			}
 		}
 
 		// 判断价税合计是否跳行
@@ -1323,7 +1334,7 @@ public class PDFReaderUtil {
 		}
 		// 若价税合计金额数字跳行，则抽取价税合计中的金额数字
 		if (!PDFNumberValidationUtils.isRealNumber(kpje)) {
-            // 肆拾伍圆整45.00价税合计(大写)(小写)
+			// 肆拾伍圆整45.00价税合计(大写)(小写)
 			kpje = extractM(kpje);
 		}
 
@@ -1376,7 +1387,7 @@ public class PDFReaderUtil {
 		jsonObject.put("kpr", trim(kpr));
 		// xsf：销售方String
 		jsonObject.put("xsf", trim(xsf));
-		
+
 		// 逆序：
 		Collections.reverse(hwmcL);
 		Collections.reverse(slL);
@@ -1397,34 +1408,33 @@ public class PDFReaderUtil {
 //		jsonObject.put("slvList", slvL);
 //		// dxseList： 单项税额集合List<String>
 //		jsonObject.put("dxseList", dxseL);
-		
+
 		JSONArray goodsArray = new JSONArray();
 		for (int i = 0; i < hwmcL.size(); i++) {
 			int hh = i+1;
 			JSONObject goodsObject = new JSONObject();
-			//	hh：		行号			Integer	
+			//	hh：		行号			Integer
 			goodsObject.put("hh", hh);
-			//	hwmc：	货物或应税劳务名称	String	
+			//	hwmc：	货物或应税劳务名称	String
 			goodsObject.put("hwmc", hwmcL.get(i));
-			//	ggxh：	规格型号		String	
+			//	ggxh：	规格型号		String
 			goodsObject.put("ggxh", "");
-			//	dw：		单位			String	
+			//	dw：		单位			String
 			goodsObject.put("dw", "");
-			//	sl：		数量			Double	
+			//	sl：		数量			Double
 			goodsObject.put("sl", i > (slL.size()-1) ? "" : PDFStringUtil.parseInt(slL.get(i)));
-			//	dj：		单价			BigDecimal	
+			//	dj：		单价			BigDecimal
 			goodsObject.put("dj", i > (djL.size()-1) ? "" : parseDouble(djL.get(i)));
-			//	je：		金额			BigDecimal	
+			//	je：		金额			BigDecimal
 			goodsObject.put("je", i > (dxjeL.size()-1) ? "" : parseDouble(dxjeL.get(i)));
-			//	slv：	税率			Double	
+			//	slv：	税率			Double
 			goodsObject.put("slv", i > (slvL.size()-1) ? "" : PDFStringUtil.parseInt(slvL.get(i).replace("%", "")));
-			//	se：		税额			BigDecimal	
+			//	se：		税额			BigDecimal
 			goodsObject.put("se", i > (dxseL.size()-1) ? "" : parseDouble(dxseL.get(i)));
 			goodsArray.add(goodsObject);
-			
 		}
 		jsonObject.put("hwmxs", goodsArray);
-		
+
 //		System.out.println(jsonObject.toJSONString());
 //		System.out.println(jsonObject.get("hwmcList"));
 //		System.out.println(jsonObject.get("slvList"));
@@ -1450,17 +1460,16 @@ public class PDFReaderUtil {
 		return str;
 	}
 
-
 	private static Double parseDouble(String text) {
-        try {
-            String num = extractM(text);
-            if (StringUtils.isNotBlank(num)) {
-                return Double.parseDouble(num);
-            }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        return 0.0D;
-    }
+		try {
+			String num = extractM(text);
+			if (StringUtils.isNotBlank(num)) {
+				return Double.parseDouble(num);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		return 0.0D;
+	}
 
 }

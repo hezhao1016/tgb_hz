@@ -68,6 +68,7 @@ public class TestRecognition {
         }
 
         for (int i = 0; i < imagePaths.length; i++) {
+            System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             long s = System.currentTimeMillis();
             recognizeVatInvoice(imagePaths[i]);
             long e = System.currentTimeMillis();
@@ -198,7 +199,7 @@ public class TestRecognition {
                             for (String key : map.keySet()) {
                                 System.out.println(key + " - " + map.get(key));
                             }
-                            System.out.println("\n\n");
+                            System.out.println("\n");
                             for (String key : map.keySet()) {
                                 System.out.println("String "+ StrUtil.toCamelCase(key)+" = CommonUtil.toString(map.get(\""+key+"\"));");
                             }

@@ -84,6 +84,7 @@ public class TestTrueTruth {
         }
 
         for (int i = 0; i < postMaps.length; i++) {
+            System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             long s = System.currentTimeMillis();
             verifyVatV2(postMaps[i]);
             long e = System.currentTimeMillis();
@@ -232,7 +233,7 @@ public class TestTrueTruth {
                 for (String key : map.keySet()) {
                     System.out.println(key + " - " + map.get(key));
                 }
-                System.out.println("\n\n");
+                System.out.println("\n");
                 for (String key : map.keySet()) {
                     System.out.println("String " + StrUtil.toCamelCase(key)+" = CommonUtil.toString(map.get(\""+key+"\"));");
                 }

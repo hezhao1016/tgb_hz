@@ -50,6 +50,7 @@ public class Test1 {
         }
 
         for (int i = 0; i < imagePaths.length; i++) {
+            System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             long s = System.currentTimeMillis();
             baiduAIOCR(imagePaths[i], "1", "");
             long e = System.currentTimeMillis();

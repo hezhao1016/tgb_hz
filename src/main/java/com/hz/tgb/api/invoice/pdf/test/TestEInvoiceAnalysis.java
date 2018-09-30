@@ -50,6 +50,7 @@ public class TestEInvoiceAnalysis {
         }
 
         for (int i = 0; i < pdfPaths.length; i++) {
+            System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             long s = System.currentTimeMillis();
             recognizeVatInvoice(pdfPaths[i]);
             long e = System.currentTimeMillis();
@@ -153,14 +154,15 @@ public class TestEInvoiceAnalysis {
                     ocrVatInvoiceItem.setTaxAmount(item.getDouble("se") / 100.0);
                     ocrVatInvoiceItem.setLineNumber(item.getInteger("hh"));
 
-                    System.out.println("=================================================");
-                    System.out.println(ocrVatInvoiceItem);
-
                     ocrVatInvoice.addItem(ocrVatInvoiceItem);
                 }
             }
 
             System.out.println(ocrVatInvoice);
+            for (OcrVatInvoiceItem ocrVatInvoiceItem : ocrVatInvoice.getItems()) {
+                System.out.println("=================================================");
+                System.out.println(ocrVatInvoiceItem);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
