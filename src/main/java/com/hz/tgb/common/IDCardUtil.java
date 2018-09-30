@@ -1,14 +1,14 @@
 package com.hz.tgb.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 身份证工具类
@@ -410,115 +410,13 @@ public class IDCardUtil {
     }
 
     /**
-     * 将字符数组转换成数字数组
-     *
-     * @param ca
-     *            字符数组
-     * @return 数字数组
-     */
-    private static int[] converCharToInt(char[] ca) {
-        int len = ca.length;
-        int[] iArr = new int[len];
-        try {
-            for (int i = 0; i < len; i++) {
-                iArr[i] = Integer.parseInt(String.valueOf(ca[i]));
-            }
-        } catch (NumberFormatException e) {
-            logger.error(e.toString(),e);
-        }
-        return iArr;
-    }
-
-    /**
-     * 数字验证
-     *
-     * @param val
-     * @return 提取的数字。
-     */
-    private static boolean isNum(String val) {
-        return val == null || "".equals(val) ? false : val
-                .matches("^[0-9]*{1}");
-    }
-
-    /**
-     * 验证小于当前日期 是否有效
-     *
-     * @param iYear
-     *            待验证日期(年)
-     * @param iMonth
-     *            待验证日期(月 1-12)
-     * @param iDate
-     *            待验证日期(日)
-     * @return 是否有效
-     */
-    private static boolean valiDate(int iYear, int iMonth, int iDate) {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int datePerMonth;
-        if (iYear < MIN || iYear >= year) {
-            return false;
-        }
-        if (iMonth < 1 || iMonth > 12) {
-            return false;
-        }
-        switch (iMonth) {
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                datePerMonth = 30;
-                break;
-            case 2:
-                boolean dm = ((iYear % 4 == 0 && iYear % 100 != 0) || (iYear % 400 == 0))
-                        && (iYear > MIN && iYear < year);
-                datePerMonth = dm ? 29 : 28;
-                break;
-            default:
-                datePerMonth = 31;
-        }
-        return (iDate >= 1) && (iDate <= datePerMonth);
-    }
-
-    /**
-     * 将身份证的每位和对应位的加权因子相乘之后，再得到和值
-     *
-     * @param iArr
-     * @return 身份证编码。
-     */
-    private static int getPowerSum(int[] iArr) {
-        int iSum = 0;
-        if (power.length == iArr.length) {
-            for (int i = 0; i < iArr.length; i++) {
-                for (int j = 0; j < power.length; j++) {
-                    if (i == j) {
-                        iSum = iSum + iArr[i] * power[j];
-                    }
-                }
-            }
-        }
-        return iSum;
-    }
-
-    /**
-     * 将power和值与11取模获得余数进行校验码判断
-     *
-     * @param iSum
-     * @return 校验位
-     */
-    private static String getCheckCode18(int iSum) {
-        int modValue = iSum % 11;
-        String sCode = verifyCode[modValue];
-        return sCode;
-    }
-
-    /**
      * 根据身份编号获取年龄
      *
      * @param idNo 身份编号
      *
      * @return 年龄
      */
-    public static int getAgeByIdCard(String idNo) {
+    public static int getAgeByIdCard(String idNo) throws Exception{
         try {
             Calendar currentDate = Calendar.getInstance();
 
@@ -539,7 +437,7 @@ public class IDCardUtil {
         } catch (Throwable e) {
             String errMsg = String.format("年龄计算失败, idNo:%s", idNo);
             logger.error(errMsg);
-            throw new RuntimeException(errMsg, e);
+            throw new Exception(errMsg, e);
         }
 
     }
@@ -636,12 +534,20 @@ public class IDCardUtil {
      *            身份编号
      * @return 性别(M-男，F-女，N-未知)
      */
-    public static String getGenderByIdCard(String idCard) {
+    public static String getGenderByIdCard(String idCard) throws Exception{
         String sGender = "N";
         if (idCard.length() == CHINA_ID_MIN_LENGTH) {
             idCard = conver15CardTo18(idCard);
         }
         String sCardNum = idCard.substring(16, 17);
+
+        // 出错，不是整数
+        if (!isNum(sCardNum)) {
+            String errMsg = String.format("性别计算失败, idNo:%s", idCard);
+            logger.error(errMsg);
+            throw new Exception(errMsg);
+        }
+
         if (Integer.parseInt(sCardNum) % 2 != 0) {
             sGender = "M";
         } else {
@@ -759,8 +665,109 @@ public class IDCardUtil {
         return retValue;
     }
 
+    /**
+     * 将字符数组转换成数字数组
+     *
+     * @param ca
+     *            字符数组
+     * @return 数字数组
+     */
+    private static int[] converCharToInt(char[] ca) {
+        int len = ca.length;
+        int[] iArr = new int[len];
+        try {
+            for (int i = 0; i < len; i++) {
+                iArr[i] = Integer.parseInt(String.valueOf(ca[i]));
+            }
+        } catch (NumberFormatException e) {
+            logger.error(e.toString(),e);
+        }
+        return iArr;
+    }
 
-    public static void main(String[] args) {
+    /**
+     * 数字验证
+     *
+     * @param val
+     * @return 提取的数字。
+     */
+    private static boolean isNum(String val) {
+        return val == null || "".equals(val) ? false : val
+                .matches("^[0-9]*{1}");
+    }
+
+    /**
+     * 验证小于当前日期 是否有效
+     *
+     * @param iYear
+     *            待验证日期(年)
+     * @param iMonth
+     *            待验证日期(月 1-12)
+     * @param iDate
+     *            待验证日期(日)
+     * @return 是否有效
+     */
+    private static boolean valiDate(int iYear, int iMonth, int iDate) {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int datePerMonth;
+        if (iYear < MIN || iYear >= year) {
+            return false;
+        }
+        if (iMonth < 1 || iMonth > 12) {
+            return false;
+        }
+        switch (iMonth) {
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                datePerMonth = 30;
+                break;
+            case 2:
+                boolean dm = ((iYear % 4 == 0 && iYear % 100 != 0) || (iYear % 400 == 0))
+                        && (iYear > MIN && iYear < year);
+                datePerMonth = dm ? 29 : 28;
+                break;
+            default:
+                datePerMonth = 31;
+        }
+        return (iDate >= 1) && (iDate <= datePerMonth);
+    }
+
+    /**
+     * 将身份证的每位和对应位的加权因子相乘之后，再得到和值
+     *
+     * @param iArr
+     * @return 身份证编码。
+     */
+    private static int getPowerSum(int[] iArr) {
+        int iSum = 0;
+        if (power.length == iArr.length) {
+            for (int i = 0; i < iArr.length; i++) {
+                for (int j = 0; j < power.length; j++) {
+                    if (i == j) {
+                        iSum = iSum + iArr[i] * power[j];
+                    }
+                }
+            }
+        }
+        return iSum;
+    }
+
+    /**
+     * 将power和值与11取模获得余数进行校验码判断
+     *
+     * @param iSum
+     * @return 校验位
+     */
+    private static String getCheckCode18(int iSum) {
+        int modValue = iSum % 11;
+        String sCode = verifyCode[modValue];
+        return sCode;
+    }
+
+    public static void main(String[] args) throws Exception {
         String idCard = "xxxxxxxxxxxxxxxxxx";
         System.out.println(IDCardUtil.validateIdCard(idCard));
         System.out.println(IDCardUtil.getGenderByIdCard(idCard));

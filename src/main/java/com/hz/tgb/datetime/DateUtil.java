@@ -21,7 +21,11 @@ import java.util.GregorianCalendar;
 public class DateUtil {
 
 	public static void main(String[] args) {
+
 		Date now = new Date();
+		int month = getIntMonthByDate(now);
+		System.out.println(month);
+
 		System.out.println(format(now, "yyyyMMdd"));
 		System.out.println(format(now, "yyyy-MM-dd"));
 		System.out.println(format(now, "yyyyMMddHHmmss"));
@@ -438,7 +442,7 @@ public class DateUtil {
 	 * @return yyyy-MM-dd HH:mm:ss
 	 */
 	public static String timeStampToDateTime(long timeStamp) {
-		String date = datetimeFormat.format(timeStamp * 1000);
+		String date = datetimeFormat.format(timeStamp);
 		return date;
 	}
 
@@ -970,6 +974,31 @@ public class DateUtil {
 		int month = c.get(Calendar.MONTH) + 1;
 		return month;
 	}
+
+	/**
+	 * 取得Integer型的指定时间的年份
+	 *
+	 * @return
+	 */
+	public static Integer getIntYearByDate(Date date) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		int year = c.get(Calendar.YEAR);
+		return year;
+	}
+
+	/**
+	 * 取得Integer型的指定时间的月份
+	 *
+	 * @return
+	 */
+	public static Integer getIntMonthByDate(Date date) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		int month = c.get(Calendar.MONTH) + 1;
+		return month;
+	}
+
 
 	public static String getStringToday() {
 		return getIntDate(getNow()) + "";

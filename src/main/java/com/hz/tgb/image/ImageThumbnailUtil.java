@@ -25,7 +25,7 @@ public class ImageThumbnailUtil {
         System.out.println(uploadPath+fileName);
         System.out.println(uploadThumbPath+fileName);
         try {
-            createThumbnail(uploadPath+"/"+fileName, 390, 225, 100, uploadThumbPath+fileName);
+            createThumbnail(uploadPath+"/"+fileName, uploadThumbPath+fileName, 390, 225, 100);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -35,7 +35,18 @@ public class ImageThumbnailUtil {
         }
     }
 
-    private static void createThumbnail(String filename, int thumbWidth,int thumbHeight, int quality, String outFilename)
+    /**
+     * 创建缩略图
+     * @param filename 图片路径
+     * @param outFilename 缩略图存放路径
+     * @param thumbWidth 宽
+     * @param thumbHeight 高
+     * @param quality 图片质量, 0-100
+     * @throws InterruptedException
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public static void createThumbnail(String filename, String outFilename, int thumbWidth,int thumbHeight, int quality)
             throws InterruptedException,FileNotFoundException, IOException {
 
         // 加载图片文件
@@ -83,7 +94,7 @@ public class ImageThumbnailUtil {
         String filename = "E:/img.png";
         String outFilename = "E:/img_thumb.png";
         try {
-            ImageThumbnailUtil.createThumbnail(filename, 600, 960, 100, outFilename);
+            ImageThumbnailUtil.createThumbnail(filename, outFilename, 600, 960, 100);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

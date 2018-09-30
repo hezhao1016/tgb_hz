@@ -46,7 +46,7 @@ public class ImageUtil {
      * @author hezhao
      * @Time   2017年8月1日 下午7:42:07
      * @param fileName
-     * @throws Exception
+     * @throws IOException
      */
     public static void captureScreen(String fileName) throws Exception {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -63,7 +63,7 @@ public class ImageUtil {
      *            a {@link String} object.
      * @return [width, height]
      */
-    public static int[] getSizeInfo(String filePath) throws Exception {
+    public static int[] getSizeInfo(String filePath) throws IOException {
         File file = new File(filePath);
         return getSizeInfo(file);
     }
@@ -75,14 +75,14 @@ public class ImageUtil {
      *            a {@link URL} object.
      * @return [width,height]
      */
-    public static int[] getSizeInfo(URL url) throws Exception {
+    public static int[] getSizeInfo(URL url) throws IOException {
         InputStream input = null;
         try {
             input = url.openStream();
             return getSizeInfo(input);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new Exception(e);
+            throw new IOException(e);
         } finally {
             IOUtils.closeQuietly(input);
         }
@@ -95,9 +95,9 @@ public class ImageUtil {
      *            a {@link File} object.
      * @return [width,height]
      */
-    public static int[] getSizeInfo(File file) throws Exception {
+    public static int[] getSizeInfo(File file) throws IOException {
         if (!file.exists()) {
-            throw new Exception("file " + file.getAbsolutePath() + " doesn't exist.");
+            throw new IOException("file " + file.getAbsolutePath() + " doesn't exist.");
         }
         BufferedInputStream input = null;
         try {
@@ -105,7 +105,7 @@ public class ImageUtil {
             return getSizeInfo(input);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            throw new Exception(e);
+            throw new IOException(e);
         } finally {
             IOUtils.closeQuietly(input);
         }
@@ -118,7 +118,7 @@ public class ImageUtil {
      *            a {@link InputStream} object.
      * @return [width,height]
      */
-    public static int[] getSizeInfo(InputStream input) throws Exception {
+    public static int[] getSizeInfo(InputStream input) throws IOException {
         try {
             BufferedImage img = ImageIO.read(input);
             int w = img.getWidth(null);
@@ -126,7 +126,7 @@ public class ImageUtil {
             return new int[] { w, h };
         } catch (IOException e) {
             e.printStackTrace();
-            throw new Exception(e);
+            throw new IOException(e);
         }
     }
 
@@ -142,7 +142,7 @@ public class ImageUtil {
      * @param height
      *            新的高度，小于1则忽略，按原图比例缩放
      */
-    public static void resize(String srcFilePath, String destFile, int width, int height) throws Exception {
+    public static void resize(String srcFilePath, String destFile, int width, int height) throws IOException {
         resize(srcFilePath, destFile, width, height, -1, -1);
     }
 
@@ -158,7 +158,7 @@ public class ImageUtil {
      * @param height
      *            a int.
      */
-    public static void resize(InputStream input, OutputStream output, int width, int height) throws Exception {
+    public static void resize(InputStream input, OutputStream output, int width, int height) throws IOException {
         resize(input, output, width, height, -1, -1);
     }
 
@@ -179,13 +179,13 @@ public class ImageUtil {
      *            a int.
      */
     public static void resize(InputStream input, OutputStream output,
-                              int width, int height, int maxWidth, int maxHeight) throws Exception {
+                              int width, int height, int maxWidth, int maxHeight) throws IOException {
 
         if (width < 1 && height < 1 && maxWidth < 1 && maxHeight < 1) {
             try {
                 IOUtils.copy(input, output);
             } catch (IOException e) {
-                throw new Exception("resize error: ", e);
+                throw new IOException("resize error: ", e);
             }
         }
         try {
@@ -228,7 +228,7 @@ public class ImageUtil {
             ImageIO.write(tag, hasNotAlpha ? "jpg" : "png", output);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception(e);
+            throw new IOException(e);
         } finally {
             IOUtils.closeQuietly(input);
             IOUtils.closeQuietly(output);
@@ -253,7 +253,7 @@ public class ImageUtil {
      *            最大高度，限制目标图片高度，小于1则忽略此设置
      */
     public static void resize(String srcFile, String destFile, int width,
-                              int height, int maxWidth, int maxHeight) throws Exception {
+                              int height, int maxWidth, int maxHeight) throws IOException {
         resize(new File(srcFile), new File(destFile), width, height, maxWidth, maxHeight);
     }
 
@@ -269,7 +269,7 @@ public class ImageUtil {
      * @param height
      *            新的高度，小于1则忽略，按原图比例缩放
      */
-    public static void resize(File srcFile, File destFile, int width, int height) throws Exception {
+    public static void resize(File srcFile, File destFile, int width, int height) throws IOException {
         resize(srcFile, destFile, width, height, -1, -1);
     }
 
@@ -290,7 +290,7 @@ public class ImageUtil {
      *            最大高度，限制目标图片高度，小于1则忽略此设置
      */
     public static void resize(File srcFile, File destFile, int width,
-                              int height, int maxWidth, int maxHeight) throws Exception {
+                              int height, int maxWidth, int maxHeight) throws IOException {
         if (destFile.exists()) {
             destFile.delete();
         } else {
@@ -304,7 +304,7 @@ public class ImageUtil {
             resize(input, output, width, height, maxWidth, maxHeight);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            throw new Exception(e);
+            throw new IOException(e);
         } finally {
             IOUtils.closeQuietly(input);
             IOUtils.closeQuietly(output);
@@ -327,7 +327,7 @@ public class ImageUtil {
      * @param h
      *            a int.
      */
-    public static void crop(String source, String target, int x, int y, int w, int h) throws Exception {
+    public static void crop(String source, String target, int x, int y, int w, int h) throws IOException {
         crop(new File(source), new File(target), x, y, w, h);
     }
 
@@ -347,7 +347,7 @@ public class ImageUtil {
      * @param h
      *            a int.
      */
-    public static void crop(File source, File target, int x, int y, int w, int h) throws Exception {
+    public static void crop(File source, File target, int x, int y, int w, int h) throws IOException {
         OutputStream output = null;
         InputStream input = null;
         String ext = FilenameUtils.getExtension(target.getName());
@@ -360,7 +360,7 @@ public class ImageUtil {
             }
             output = new BufferedOutputStream(new FileOutputStream(target));
         } catch (IOException e) {
-            throw new Exception(e);
+            throw new IOException(e);
         }
         crop(input, output, x, y, w, h, StringUtils.equalsIgnoreCase("png", ext));
     }
@@ -384,7 +384,7 @@ public class ImageUtil {
      *            a boolean.
      */
     public static void crop(InputStream input, OutputStream output, int x,
-                            int y, int w, int h, boolean isPNG) throws Exception {
+                            int y, int w, int h, boolean isPNG) throws IOException {
         try {
             BufferedImage srcImg = ImageIO.read(input);
             int tmpWidth = srcImg.getWidth();
@@ -409,7 +409,7 @@ public class ImageUtil {
             ImageIO.write(tag, isPNG ? "png" : "jpg", output);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception(e);
+            throw new IOException(e);
         } finally {
             IOUtils.closeQuietly(input);
             IOUtils.closeQuietly(output);
@@ -426,7 +426,7 @@ public class ImageUtil {
      * @param quality
      *            图片质量0-1之间
      */
-    public static final void optimize(InputStream input, OutputStream output, float quality) throws Exception {
+    public static final void optimize(InputStream input, OutputStream output, float quality) throws IOException {
 
         // create a BufferedImage as the result of decoding the supplied
         // InputStream
@@ -458,14 +458,14 @@ public class ImageUtil {
             writer.write(null, new IIOImage(image, null, null), param);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new Exception(e);
+            throw new IOException(e);
         } finally {
             if (ios != null) {
                 try {
                     ios.close();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    throw new Exception(e);
+                    throw new IOException(e);
                 }
             }
             writer.dispose();
@@ -482,7 +482,7 @@ public class ImageUtil {
      * @param quality
      *            a float.
      */
-    public static final void optimize(String source, String target, float quality) throws Exception {
+    public static final void optimize(String source, String target, float quality) throws IOException {
         File fromFile = new File(source);
         File toFile = new File(target);
         optimize(fromFile, toFile, quality);
@@ -498,7 +498,7 @@ public class ImageUtil {
      * @param quality
      *            图片质量0-1之间
      */
-    public static final void optimize(File source, File target, float quality) throws Exception {
+    public static final void optimize(File source, File target, float quality) throws IOException {
         if (target.exists()) {
             target.delete();
         } else {
@@ -511,7 +511,7 @@ public class ImageUtil {
             os = new BufferedOutputStream(new FileOutputStream(target));
             optimize(is, os, quality);
         } catch (FileNotFoundException e) {
-            throw new Exception(e);
+            throw new IOException(e);
         } finally {
             IOUtils.closeQuietly(is);
             IOUtils.closeQuietly(os);
@@ -528,7 +528,7 @@ public class ImageUtil {
      * @param cornerRadius
      *            角度
      */
-    public static void makeRoundedCorner(File srcFile, File destFile, int cornerRadius) throws Exception {
+    public static void makeRoundedCorner(File srcFile, File destFile, int cornerRadius) throws IOException {
         InputStream in = null;
         OutputStream out = null;
 
@@ -539,7 +539,7 @@ public class ImageUtil {
             makeRoundedCorner(in, out, cornerRadius);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new Exception(e);
+            throw new IOException(e);
         } finally {
             IOUtils.closeQuietly(out);
             IOUtils.closeQuietly(in);
@@ -557,7 +557,7 @@ public class ImageUtil {
      * @param cornerRadius
      *            角度
      */
-    public static void makeRoundedCorner(String srcFile, String destFile, int cornerRadius) throws Exception {
+    public static void makeRoundedCorner(String srcFile, String destFile, int cornerRadius) throws IOException {
         makeRoundedCorner(new File(srcFile), new File(destFile), cornerRadius);
     }
 
@@ -572,7 +572,7 @@ public class ImageUtil {
      *            角度
      */
     public static void makeRoundedCorner(final InputStream inputStream,
-                                         final OutputStream outputStream, final int radius) throws Exception {
+                                         final OutputStream outputStream, final int radius) throws IOException {
         BufferedImage sourceImage = null;
         BufferedImage targetImage = null;
         try {
@@ -607,13 +607,14 @@ public class ImageUtil {
             ImageIO.write(targetImage, "png", outputStream);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new Exception(e);
+            throw new IOException(e);
         }
     }
 
     public static void main(String[] args) {
         try {
-            ImageUtil.captureScreen("E:/img.png");
+            ImageUtil.captureScreen("D:/img.png");
+            ImageUtil.resize("D:/a.png", "D:/b.png", 1178, 761);
         } catch (Exception e) {
             e.printStackTrace();
         }

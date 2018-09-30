@@ -19,7 +19,7 @@ import java.io.InputStream;
  * @author hezhao
  * 
  */
-public class ImageTools {
+public class Im4Tools {
 	public static final String graphicsMagickPath = "C:/Program Files/GraphicsMagick-1.3.21-Q8";
 
 	/**

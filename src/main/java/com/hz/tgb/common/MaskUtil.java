@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hz.tgb.common;
 
 /** 打码工具类

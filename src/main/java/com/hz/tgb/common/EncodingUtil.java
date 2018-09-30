@@ -12,8 +12,7 @@ import java.io.UnsupportedEncodingException;
  */
 public class EncodingUtil {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(EncodingUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(EncodingUtil.class);
 
 	private EncodingUtil(){
 		// 私有类构造方法

@@ -38,11 +38,10 @@ public class MapUtil {
 	 *            第二点的经度
 	 * @param lat2
 	 *            第二点的纬度
-	 * @return 返回的距离，单位km
+	 * @return 返回的距离，单位:千米(km)
 	 * */
-	public static double distance_km(double lon1, double lat1, double lon2,
-			double lat2) {
-		return MapUtil.distance(lon1,lat1,lon2,lat2) / 1000;
+	public static double distanceKm(double lon1, double lat1, double lon2, double lat2) {
+		return MapUtil.distanceM(lon1,lat1,lon2,lat2) / 1000;
 	}
 
 	/**
@@ -56,10 +55,9 @@ public class MapUtil {
 	 *            第二点的经度
 	 * @param lat2
 	 *            第二点的纬度
-	 * @return 返回的距离，单位m
+	 * @return 返回的距离，单位:米(m)
 	 * */
-	public static double distance(double lon1, double lat1, double lon2,
-			double lat2) {
+	public static double distanceM(double lon1, double lat1, double lon2, double lat2) {
 		double radLat1 = rad(lat1);
 		double radLat2 = rad(lat2);
 		double a = radLat1 - radLat2;
@@ -160,10 +158,8 @@ public class MapUtil {
 	public static void main(String[] args) {
 		// 济南国际会展中心经纬度：117.11811 36.68484
 		// 趵突泉：117.00999000000002 36.66123
-		System.out.println(distance(117.11811, 36.68484, 117.00999000000002,
-				36.66123));
-		System.out.println(distance_km(117.11811, 36.68484, 117.00999000000002,
-				36.66123));
+		System.out.println(distanceM(117.11811, 36.68484, 117.00999000000002, 36.66123));
+		System.out.println(distanceKm(117.11811, 36.68484, 117.00999000000002, 36.66123));
 		System.out.println(findLatLng("上海"));
 	}
 }
