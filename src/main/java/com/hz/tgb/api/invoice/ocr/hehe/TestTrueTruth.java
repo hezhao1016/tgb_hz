@@ -17,41 +17,6 @@ import java.util.Map;
  */
 public class TestTrueTruth {
 
-    /*
-        {
-        "type":"增值税发票",
-        "vat_invoice_daima":"044001633111",
-        "vat_invoice_haoma":"15874692",
-        "vat_invoice_issue_date":"2018年09月16日",
-        "vat_invoice_correct_code":"46869547952233124630",
-        "vat_invoice_type":"电子普通发票",
-        "vat_invoice_total":"¥75.95",
-        "vat_invoice_total_note":"号:77918406300",
-        "vat_invoice_tax_list":"12.15",
-        "vat_invoice_tax_rate_list":"1%",
-        "vat_invoice_tax_rate":"1%",
-        "vat_invoice_price_list":"75.95",
-        "vat_invoice_goods_list":"*果类加工品*百草味坚果大礼包喜
-            团圆1480g/盒中秋礼盒9袋装零食干
-            果组合夏威夷果碧根果
-            *果类加工品*百草味坚果大礼包喜
-            团圆1480g/盒中秋礼盒9袋装零食干
-            果组合夏威夷果碧根果",
-        "vat_invoice_tax_total":"¥12.15",
-        "vat_invoice_seller_id":"91441203MA51UJEM11",
-        "vat_invoice_seller_addr_tell":"肇庆市始湖区桂城新城北八区肇庆新区投资发展有限公司厂房(B幢)138室020-66215500万注",
-        "vat_invoice_seller_bank_account":"中国银行股份有限公司肇庆鼎湖支行695170410217",
-        "vat_invoice_seller_name":"肇庆京东盛甲贸易有限公司订",
-        "vat_invoice_payer_name":"个人密",
-        "vat_invoice_total_cover_tax_digits":"¥88.10",
-        "vat_invoice_total_cover_tax":"捌拾捌圆壹角整",
-        "vat_invoice_jida_haoma":"15874692",
-        "vat_invoice_zhuan_yong_flag":"普票",
-        "error_code":0,
-        "error_msg":"OK"
-        }
-        */
-
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
 
@@ -244,7 +209,5 @@ public class TestTrueTruth {
             e.printStackTrace();
         }
     }
-
-
 
 }

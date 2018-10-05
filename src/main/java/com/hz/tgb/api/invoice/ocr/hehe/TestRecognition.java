@@ -14,11 +14,11 @@ import java.util.Map;
  *
  * 旧
  * https://imgs-sandbox.intsig.net/icr/demo/test_vat_invoice.htm
- * 账号：ky-express
- * 密码：66Y1QOH2zd
+ * https://imgs-sandbox.intsig.net/icr/demo/test_vehicle_invoice.htm
  *
  * 新
  * https://sh-imgs-sandbox.intsig.net/icr/demo/test_vat_invoice.htm
+ * https://sh-imgs-sandbox.intsig.net/icr/demo/test_vehicle_invoice.htm
  *
  * Created by hezhao on 2018/9/25 15:43
  */
