@@ -3,7 +3,11 @@ package com.hz.tgb.image;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
+import org.apache.commons.io.IOUtils;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -46,8 +50,8 @@ public class ImageThumbnailUtil {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public static void createThumbnail(String filename, String outFilename, int thumbWidth,int thumbHeight, int quality)
-            throws InterruptedException,FileNotFoundException, IOException {
+    public static void createThumbnail(String filename, String outFilename, int thumbWidth, int thumbHeight, int quality)
+            throws InterruptedException, IOException {
 
         // 加载图片文件
         Image image = Toolkit.getDefaultToolkit().getImage(filename);
@@ -90,13 +94,109 @@ public class ImageThumbnailUtil {
         out.close();
     }
 
+    /**
+     * 按长宽进行缩放图片,不需要裁剪的情况使用<br>
+     *
+     * @param bufferedImage 文件流
+     * @param width 宽度
+     * @param height 高度
+     * @throws IOException
+     */
+    private static BufferedImage scalePic(final BufferedImage bufferedImage, final int width, final int height) {
+        try {
+            final BufferedImage bi = Thumbnails.of(bufferedImage).size(width, height).keepAspectRatio(true).asBufferedImage();
+            return bi;
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 裁剪的情况使用，以左下角的位置进行裁剪<br>
+     *
+     * @param bufferedImage 文件流
+     * @param width 宽度
+     * @param height 高度
+     * @throws IOException
+     */
+    private static BufferedImage cutPic(final BufferedImage bufferedImage, final int width, final int height) {
+        try {
+            final BufferedImage bi = Thumbnails.of(bufferedImage).sourceRegion(Positions.BOTTOM_LEFT, width, height)
+                    .size(width, height).keepAspectRatio(true).asBufferedImage();
+            return bi;
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 按长宽进行缩放图片,不需要裁剪的情况使用<br>
+     *
+     * @author hezhao<br>
+     *         2018年10月6日17:04:19
+     * @param filename 图片路径
+     * @param outFilename 缩略图存放路径
+     * @param width 宽度
+     * @param height 高度
+     * @throws IOException
+     */
+    public static void scalePic(String filename, String outFilename, int width, int height) {
+        InputStream input = null;
+        OutputStream output = null;
+        try {
+            input = new BufferedInputStream(new FileInputStream(new File(filename)));
+            output = new FileOutputStream(new File(outFilename));
+            BufferedImage img = ImageIO.read(input);
+            BufferedImage bufferedImage = scalePic(img, width, height);
+            boolean hasNotAlpha = !img.getColorModel().hasAlpha();
+            ImageIO.write(bufferedImage, hasNotAlpha ? "jpg" : "png", output);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(input);
+            IOUtils.closeQuietly(output);
+        }
+    }
+
+    /**
+     * 裁剪的情况使用，以左下角的位置进行裁剪<br>
+     *
+     * @author hezhao<br>
+     *         2018年10月6日17:04:19
+     * @param filename 图片路径
+     * @param outFilename 裁剪后的图存放路径
+     * @param width 宽度
+     * @param height 高度
+     * @throws IOException
+     */
+    public static void cutPic(String filename, String outFilename, int width, int height) {
+        InputStream input = null;
+        OutputStream output = null;
+        try {
+            input = new BufferedInputStream(new FileInputStream(new File(filename)));
+            output = new FileOutputStream(new File(outFilename));
+            BufferedImage img = ImageIO.read(input);
+            BufferedImage bufferedImage = cutPic(img, width, height);
+            boolean hasNotAlpha = !img.getColorModel().hasAlpha();
+            ImageIO.write(bufferedImage, hasNotAlpha ? "jpg" : "png", output);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(input);
+            IOUtils.closeQuietly(output);
+        }
+    }
+
     public static void main(String[] args) {
-        String filename = "E:/img.png";
-        String outFilename = "E:/img_thumb.png";
+        String filename = "D:/img.png";
+        String outFilename = "D:/img_thumb.png";
         try {
             ImageThumbnailUtil.createThumbnail(filename, outFilename, 600, 960, 100);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            ImageThumbnailUtil.scalePic("C:/Users/Administrator/Pictures/TIM图片20180925144712.png", "D:/fapiao_s.png", 913, 591);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (IOException e) {
