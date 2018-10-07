@@ -3,12 +3,12 @@ package com.hz.tgb.api.invoice.pdf.test;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.hz.tgb.datetime.DateUtil;
 import org.apache.commons.lang3.StringUtils;
 import com.hz.tgb.api.invoice.pdf.constants.ReceiptTaxFlg;
 import com.hz.tgb.api.invoice.pdf.parse.PDFReaderUtil;
 import com.hz.tgb.api.invoice.pdf.test.model.OcrVatInvoice;
 import com.hz.tgb.api.invoice.pdf.test.model.OcrVatInvoiceItem;
-import com.hz.tgb.api.invoice.pdf.test.util.DateUtil;
 
 import java.util.Date;
 import java.util.Random;
