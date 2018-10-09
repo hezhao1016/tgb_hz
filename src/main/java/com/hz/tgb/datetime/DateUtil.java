@@ -761,6 +761,9 @@ public class DateUtil {
 	 * @return 任意格式[DateStyle] 只要有一个转换成功就返回转换结果，否则返回null
 	 */
 	public static Date parse(String dateString) {
+		if (isEmpty(dateString))
+			return null;
+
 		for (DateEnums.DateStyle style : DateEnums.DateStyle.values()) {
 			Date date = null;
 			SimpleDateFormat sdf = new SimpleDateFormat(style.getValue());
@@ -792,7 +795,7 @@ public class DateUtil {
 			return parse(dateString);
 
 		Date date = null;
-		SimpleDateFormat sdf = getFormatInstance(pattern);
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 		try {
 			date = (Date) sdf.parse(dateString);
 			if (date == null || !dateString.equals(sdf.format(date))) {
