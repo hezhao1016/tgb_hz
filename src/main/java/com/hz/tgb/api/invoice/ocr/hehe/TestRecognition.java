@@ -132,8 +132,8 @@ public class TestRecognition {
                         System.out.println("map为空");
                     } else {
                         // 错误码
-                        Integer errorCode = CommonUtil.toInteger(map.get("error_code"));
-                        if (errorCode != 0) {
+                        String errorCode = CommonUtil.toString(map.get("error_code"));
+                        if (!"0".equals(errorCode)) {
                             // 错误描述
                             String errorMsg = CommonUtil.toString(map.get("error_msg"));
                             System.out.println("Error: " + errorCode + " - " + errorMsg);

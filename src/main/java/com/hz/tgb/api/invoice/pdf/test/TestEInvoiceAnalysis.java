@@ -150,8 +150,8 @@ public class TestEInvoiceAnalysis {
                     ocrVatInvoiceItem.setQuantity(item.getInteger("sl"));
                     ocrVatInvoiceItem.setUnitPrice(item.getDouble("dj"));
                     ocrVatInvoiceItem.setAmount(item.getDouble("je"));
-                    ocrVatInvoiceItem.setTaxRate(item.getDouble("slv"));
-                    ocrVatInvoiceItem.setTaxAmount(item.getDouble("se") / 100.0);
+                    ocrVatInvoiceItem.setTaxRate(item.getDouble("slv") / 100.0);
+                    ocrVatInvoiceItem.setTaxAmount(item.getDouble("se"));
                     ocrVatInvoiceItem.setLineNumber(item.getInteger("hh"));
 
                     ocrVatInvoice.addItem(ocrVatInvoiceItem);

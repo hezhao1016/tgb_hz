@@ -108,8 +108,8 @@ public class Test1 {
         // 解析内容
         Map<String, String> respData = new HashMap<>();
 
-        int errorCode = res.getInt("error_code");
-        if (errorCode != 0) {
+        String errorCode = res.getString("error_code");
+        if (!"0".equals(errorCode)) {
             String errorMsg = res.getString("error_msg");
             System.out.println("Error: " + errorCode + " - " + errorMsg);
 

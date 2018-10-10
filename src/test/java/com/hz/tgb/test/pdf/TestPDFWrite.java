@@ -1,5 +1,8 @@
 package com.hz.tgb.test.pdf;
 
+import com.google.common.collect.Lists;
+import com.hz.tgb.file.FileUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
@@ -7,10 +10,10 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  * PDF 生成
@@ -31,7 +34,9 @@ public class TestPDFWrite {
 
 //        saveManyLineDocument();
 
-        mergeDocument();
+//        mergeDocument();
+
+        mergeDocumentBytes();
 
     }
 
@@ -236,11 +241,8 @@ public class TestPDFWrite {
     public static void mergeDocument() throws IOException {
 
         // 1、加载现有文件
-        File file1 = new File("D:/new-doc-text.pdf");
-        PDDocument doc1 = PDDocument.load(file1);
-
-        File file2 = new File("D:/new-doc-image.pdf");
-        PDDocument doc2 = PDDocument.load(file2);
+        File file1 = new File("D:/360极速浏览器下载/财务平台-发票资源及示例代码/示例发票/pdf发票/京东个人电子发票.pdf");
+        File file2 = new File("D:/360极速浏览器下载/财务平台-发票资源及示例代码/示例发票/pdf发票/网易严选电子发票.pdf");
 
         // 实例化PDFMergerUtility类
         PDFMergerUtility PDFmerger = new PDFMergerUtility();
@@ -253,13 +255,57 @@ public class TestPDFWrite {
         PDFmerger.addSource(file2);
 
         // 合并文档
-        PDFmerger.mergeDocuments();
+        PDFmerger.mergeDocuments(null);
 
         System.out.println("Documents merged");
+    }
 
-        // 关闭文档
-        doc1.close();
-        doc2.close();
+    /**
+     * 合并多个PDF文档 - bytes
+     * @throws IOException
+     */
+    public static void mergeDocumentBytes() throws IOException {
+
+        List<byte[]> pdfBytes = Lists.newArrayList(
+                FileUtil.readFileByBytes("D:/360极速浏览器下载/财务平台-发票资源及示例代码/示例发票/pdf发票/京东个人电子发票.pdf"),
+                FileUtil.readFileByBytes("D:/360极速浏览器下载/财务平台-发票资源及示例代码/示例发票/pdf发票/网易严选电子发票.pdf")
+        );
+
+        byte[] mergedBytes = null;
+
+        // 如果有PDF文件，先合并PDF
+        if (CollectionUtils.isNotEmpty(pdfBytes)) {
+            try {
+                // 实例化PDFMergerUtility类
+                PDFMergerUtility PDFmerger = new PDFMergerUtility();
+                // 输出流
+                ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
+                // 设置目标文件，即合并后的文件
+                PDFmerger.setDestinationStream(bos);
+
+                for (byte[] pdfByte : pdfBytes) {
+                    // 输入流
+                    ByteArrayInputStream bis = new ByteArrayInputStream(pdfByte);
+                    // 设置源文件
+                    PDFmerger.addSource(bis);
+                }
+
+                // 合并文档
+                PDFmerger.mergeDocuments(null);
+                System.out.println("Documents merged");
+
+                // 得到最终合并后的字节数组
+                mergedBytes = bos.toByteArray();
+            } catch (IOException e) {
+                System.out.println("发票附件生成接口 -> PDF合并出现异常" + e.toString() );
+            }
+        }
+
+        // 写入文件 看看效果
+        FileOutputStream fos = new FileOutputStream("D:/merged_byte.pdf");
+        fos.write(mergedBytes);
+        fos.flush();
+        fos.close();
     }
 
 }
