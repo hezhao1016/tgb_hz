@@ -152,26 +152,24 @@ public class TestTrueTruth {
                             String comment = CommonUtil.toString(vatInvoiceData.get("comment"));
 
                             // 货物明细信息
-                            Map<String, Object> goods = CommonUtil.toMap(map.get("goods"));
-                            // 货物详情列表
-                            List<Map<String, Object>> details = CommonUtil.toList(goods.get("detail"));
-                            for (Map<String, Object> detail : details) {
+                            List<Map<String, Object>> goods = CommonUtil.toList(map.get("goods"));
+                            for (Map<String, Object> good : goods) {
                                 // 货物或应税劳务、服务名称
-                                String unitName = CommonUtil.toString(detail.get("unit_name"));
+                                String unitName = CommonUtil.toString(good.get("unit_name"));
                                 // 数量
-                                String quantity = CommonUtil.toString(detail.get("quantity"));
+                                String quantity = CommonUtil.toString(good.get("quantity"));
                                 // 金额
-                                String unitSum = CommonUtil.toString(detail.get("unit_sum"));
+                                String unitSum = CommonUtil.toString(good.get("unit_sum"));
                                 // 税额
-                                String unitTax = CommonUtil.toString(detail.get("unit_tax"));
+                                String unitTax = CommonUtil.toString(good.get("unit_tax"));
                                 // 税率
-                                String taxRate = CommonUtil.toString(detail.get("tax_rate"));
+                                String taxRate = CommonUtil.toString(good.get("tax_rate"));
                                 // 规格型号
-                                String type = CommonUtil.toString(detail.get("type"));
+                                String type = CommonUtil.toString(good.get("type"));
                                 // 单位
-                                String unit = CommonUtil.toString(detail.get("unit"));
+                                String unit = CommonUtil.toString(good.get("unit"));
                                 // 单价
-                                String unitPrice = CommonUtil.toString(detail.get("unit_price"));
+                                String unitPrice = CommonUtil.toString(good.get("unit_price"));
 
 
                             }
