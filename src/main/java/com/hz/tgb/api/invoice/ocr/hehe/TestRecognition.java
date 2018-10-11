@@ -179,13 +179,13 @@ public class TestRecognition {
                             String vatInvoicePayerBankAccount = CommonUtil.toString(map.get("vat_invoice_payer_bank_account"));
 
                             // 销售方名称
-                            String vatInvoiceSellerId = CommonUtil.toString(map.get("vat_invoice_seller_id"));
-                            // 销售方纳税识别号
-                            String vatInvoiceSellerAddrTell = CommonUtil.toString(map.get("vat_invoice_seller_addr_tell"));
-                            // 销售方地址、电话
-                            String vatInvoiceSellerBankAccount = CommonUtil.toString(map.get("vat_invoice_seller_bank_account"));
-                            // 销售方开户行及账号
                             String vatInvoiceSellerName = CommonUtil.toString(map.get("vat_invoice_seller_name"));
+                            // 销售方纳税识别号
+                            String vatInvoiceSellerId = CommonUtil.toString(map.get("vat_invoice_seller_id"));
+                            // 销售方地址、电话
+                            String vatInvoiceSellerAddrTell = CommonUtil.toString(map.get("vat_invoice_seller_addr_tell"));
+                            // 销售方开户行及账号
+                            String vatInvoiceSellerBankAccount = CommonUtil.toString(map.get("vat_invoice_seller_bank_account"));
 
                             // 货物或服务名称
                             String vatInvoiceGoodsList = CommonUtil.toString(map.get("vat_invoice_goods_list"));
