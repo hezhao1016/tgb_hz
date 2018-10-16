@@ -109,6 +109,11 @@ public class DateUtil {
 		double hour = time / 1000.0 / 60 / 60;
 		System.out.println(hour);
 
+		// 开票日期
+		String date = DateUtil.changeFormat("20181009", DateEnums.DateStyle.yyyyMMdd.getValue(), DateEnums.DateStyle.yyyy_MM_dd.getValue());
+		String date2 = DateUtil.changeFormat("2018年10月09日", DateEnums.DateStyle.yyyy_MM_dd.getValue());
+		System.out.println(date);
+		System.out.println(date2);
 	}
 
 	private static Logger logger = LoggerFactory.getLogger(DateUtil.class);
@@ -679,7 +684,10 @@ public class DateUtil {
 	 * @return 新日期字符串
 	 */
 	public static String changeFormat(String date, String pattern) {
-		return changeFormat(date, null, pattern);
+		String dateString = null;
+		Date myDate = parse(date);
+		dateString = format(myDate, pattern);
+		return dateString;
 	}
 
 	/**
