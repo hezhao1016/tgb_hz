@@ -153,29 +153,13 @@ public class DateEnums {
 		yyyy_MM_dd_E_HH_mm_ss_S_CN("yyyy年MM月dd日 E HH:mm:ss:S"),
 
 		/**
-		 * yy 例如 17
+		 * yyyyMMdd 例如 20170727
 		 */
-		yy("yy"),
-		/**
-		 * yyyy 例如 2017
-		 */
-		yyyy("yyyy"),
-		/**
-		 * MM 例如 07
-		 */
-		MM("MM"),
-		/**
-		 * dd 例如 27
-		 */
-		dd("dd"),
+		yyyyMMdd("yyyyMMdd"),
 		/**
 		 * yyyyMM 例如 201707
 		 */
 		yyyyMM("yyyyMM"),
-		/**
-		 * yyyyMMdd 例如 20170727
-		 */
-		yyyyMMdd("yyyyMMdd"),
 		/**
 		 * yyyyMMddHH 例如 2017072713
 		 */
@@ -192,15 +176,42 @@ public class DateEnums {
 		 * yyMMddHHmmss 例如 170727133253
 		 */
 		yyMMddHHmmss("yyMMddHHmmss"),
-
+		/**
+		 * yyyy 例如 2017
+		 */
+		yyyy("yyyy"),
+		/**
+		 * yy 例如 17
+		 */
+		yy("yy"),
+		/**
+		 * MM 例如 07
+		 */
+		MM("MM"),
+		/**
+		 * dd 例如 27
+		 */
+		dd("dd"),
+		/**
+		 * MMdd 例如 1017
+		 */
+		MMdd("MMdd"),
 		/**
 		 * HH:mm 例如 32:45
 		 */
 		HH_mm("HH:mm"),
 		/**
+		 * HHmm 例如 2008
+		 */
+		HHmm("HHmm"),
+		/**
 		 * HH:mm:ss 例如 13:32:45
 		 */
-		HH_mm_ss("HH:mm:ss");
+		HH_mm_ss("HH:mm:ss"),
+		/**
+		 * HHmmss 例如 200840
+		 */
+		HHmmss("HHmmss");
 
 		private String value;
 

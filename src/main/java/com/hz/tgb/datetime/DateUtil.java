@@ -104,16 +104,13 @@ public class DateUtil {
 			e.printStackTrace();
 		}
 
-		System.out.println(changeFormat("2018/09/06", "yyyy-MM-dd"));
+		System.out.println(changeFormat("20181009", "yyyy-MM-dd"));
+		System.out.println(changeFormat("2018年10月09日", DateEnums.DateStyle.yyyy_MM_dd.getValue()));
+		System.out.println(changeFormat("2018-10-09", DateEnums.DateStyle.yyyyMMdd.getValue()));
+
 		long time = DateUtil.dateDiffer("2018-09-18 23:45:11", "2018-09-19 02:45:12", DateEnums.DateStyle.yyyy_MM_dd_HH_mm_ss.getValue());
 		double hour = time / 1000.0 / 60 / 60;
 		System.out.println(hour);
-
-		// 开票日期
-		String date = DateUtil.changeFormat("20181009", DateEnums.DateStyle.yyyyMMdd.getValue(), DateEnums.DateStyle.yyyy_MM_dd.getValue());
-		String date2 = DateUtil.changeFormat("2018年10月09日", DateEnums.DateStyle.yyyy_MM_dd.getValue());
-		System.out.println(date);
-		System.out.println(date2);
 	}
 
 	private static Logger logger = LoggerFactory.getLogger(DateUtil.class);
