@@ -1,40 +1,46 @@
 package com.hz.tgb.common.pojo;
 
-import java.math.BigDecimal;
-
 /**
  * 经纬度坐标。
- * 
+ *
  * @author hezhao
  * @date 2016年5月20日
  */
 public class Point {
-	private BigDecimal lat; // 纬度
-	private BigDecimal lon; // 经度
+	/** 经度 */
+	private double longitude;
+	/** 纬度 */
+	private double latitude;
 
-	public Point(BigDecimal lat, BigDecimal lon) {
-		this.lat = lat;
-		this.lon = lon;
+	public Point() {
 	}
 
-	public BigDecimal getLat() {
-		return lat;
+	public Point(double longitude, double latitude) {
+		this.longitude = longitude;
+		this.longitude = latitude;
 	}
 
-	public void setLat(BigDecimal lat) {
-		this.lat = lat;
+	public double getLongitude() {
+		return longitude;
 	}
 
-	public BigDecimal getLon() {
-		return lon;
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
 
-	public void setLon(BigDecimal lon) {
-		this.lon = lon;
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
 
 	@Override
 	public String toString() {
-		return "lon:" + lon + ",lat:" + lat;
+		return "Point{" +
+				"longitude=" + longitude +
+				", latitude=" + latitude +
+				'}';
 	}
 }

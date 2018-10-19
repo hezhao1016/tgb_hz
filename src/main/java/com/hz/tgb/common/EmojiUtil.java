@@ -12,6 +12,11 @@ public class EmojiUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(EmojiUtil.class);
 
+    /**
+     * 过滤字符串
+     * @param str
+     * @return
+     */
     public static String filter(String str){
 
         // 若为空则直接返回
@@ -40,10 +45,20 @@ public class EmojiUtil {
         return buf.toString();
     }
 
+    /**
+     * 若当前字符不为表情符，返回true
+     * @param codePoint
+     * @return
+     */
     private static boolean isNotEmojiChar(char codePoint) {
         return (codePoint == 0x0) || (codePoint == 0x9) || (codePoint == 0xA) || (codePoint == 0xD) || ((codePoint >= 0x20) && (codePoint <= 0xD7FF))|| ((codePoint >= 0xE000) && (codePoint <= 0xFFFD))|| ((codePoint >= 0x10000) && (codePoint <= 0x10FFFF));
     }
 
+    /**
+     * 判断字符是否包含表情符
+     * @param source
+     * @return
+     */
     public static boolean containsEmoji(String source) {
         int len = source.length();
         boolean isEmoji = false;

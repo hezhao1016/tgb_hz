@@ -6,9 +6,9 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * MD5加密工具类
- * 
+ *
  * @author hezhao
- * @version v01.00.00 $Revision$
+ * @version v01.00.00
  * @date 2015年4月17日
  * @time 下午5:15:50
  */
@@ -18,7 +18,7 @@ public class MD5Util {
 
 	/**此字符串相当于加密用的串，数据校验时结果不会被猜测。*/
 	private static final String default_key = "dAA%D#V*2a9r4I!V";
-	
+
 	private MD5Util(){
 		// 私有类构造方法
 	}
@@ -52,7 +52,7 @@ public class MD5Util {
 
 	/**
 	 * 对字符串自行2次MD5加密MD5(MD5(s))
-	 * 
+	 *
 	 * @author hezhao
 	 * @param s
 	 * @return
@@ -63,7 +63,7 @@ public class MD5Util {
 
 	/**
 	 * 使用MD5 对两端加密后的密文进行比较
-	 * 
+	 *
 	 * @author hezhao
 	 * @Time 2017年7月31日 下午4:30:11
 	 * @param strOne
@@ -124,8 +124,7 @@ public class MD5Util {
 		}
 	}
 
-	public static void main(String[] args) throws UnsupportedEncodingException,
-			NoSuchAlgorithmException {
+	public static void main(String[] args) {
 		System.out.println(MD5Util.md5("admin"));
 		System.out.println(MD5Util.md5("加密"));
 		System.out.println(MD5Util.md5("20121lkkfaoisdfO$^#@!221"));

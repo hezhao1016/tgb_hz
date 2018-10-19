@@ -11,25 +11,28 @@ import java.net.URLEncoder;
 
 /**
  * 地图工具类
- * 
+ *
  * @author hezhao
  * @Time 2017年7月31日 下午8:38:50
  */
 public class MapUtil {
 
-	private static final double EARTH_RADIUS = 6378137;// 赤道半径(单位m)
+	/** 赤道半径(单位m) */
+	private static final double EARTH_RADIUS = 6378137;
 	private static final double x_pi = 3.14159265358979324 * 3000.0 / 180.0;
 
 	/**
 	 * 转化为弧度(rad)
-	 * */
+	 * @param d 经度或纬度
+	 * @return
+	 */
 	private static double rad(double d) {
 		return d * Math.PI / 180.0;
 	}
 
 	/**
 	 * 基于googleMap中的算法得到两经纬度之间的距离,计算经度与谷歌地图的距离经度差不多，相差范围在0.2米以下
-	 * 
+	 *
 	 * @param lon1
 	 *            第一点的经度
 	 * @param lat1
@@ -46,7 +49,7 @@ public class MapUtil {
 
 	/**
 	 * 基于googleMap中的算法得到两经纬度之间的距离,计算经度与谷歌地图的距离经度差不多，相差范围在0.2米以下
-	 * 
+	 *
 	 * @param lon1
 	 *            第一点的经度
 	 * @param lat1
@@ -72,43 +75,43 @@ public class MapUtil {
 
 	/**
 	 * 坐标转换，腾讯地图转换成百度地图坐标
-	 * 
+	 *
 	 * @param lat
 	 *            腾讯纬度
 	 * @param lon
 	 *            腾讯经度
 	 * @return 返回结果：经度,纬度
 	 */
-	public static Point map_tx2bd(BigDecimal lat, BigDecimal lon) {
+	public static Point map_tx2bd(double lon, double lat) {
 		double bd_lat;
 		double bd_lon;
-		double x = lon.doubleValue(), y = lat.doubleValue();
+		double x = lon, y = lat;
 		double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
 		double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
 		bd_lon = z * Math.cos(theta) + 0.0065;
 		bd_lat = z * Math.sin(theta) + 0.006;
 
-		return new Point(BigDecimal.valueOf(bd_lat), BigDecimal.valueOf(bd_lon));
+		return new Point(bd_lon, bd_lat);
 	}
 
 	/**
 	 * 坐标转换，百度地图坐标转换成腾讯地图坐标
-	 * 
+	 *
 	 * @param lat
 	 *            百度坐标纬度
 	 * @param lon
 	 *            百度坐标经度
 	 * @return 返回结果：纬度,经度
 	 */
-	public static Point map_bd2tx(BigDecimal lat, BigDecimal lon) {
+	public static Point map_bd2tx(double lon, double lat) {
 		double tx_lat;
 		double tx_lon;
-		double x = lon.doubleValue() - 0.0065, y = lat.doubleValue() - 0.006;
+		double x = lon - 0.0065, y = lat - 0.006;
 		double z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_pi);
 		double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_pi);
 		tx_lon = z * Math.cos(theta);
 		tx_lat = z * Math.sin(theta);
-		return new Point(BigDecimal.valueOf(tx_lat), BigDecimal.valueOf(tx_lon));
+		return new Point(tx_lon, tx_lat);
 	}
 
 	/**

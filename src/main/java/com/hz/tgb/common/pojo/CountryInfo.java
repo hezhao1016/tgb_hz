@@ -1,6 +1,6 @@
 package com.hz.tgb.common.pojo;
 
- /**
+/**
  * 国家信息
  * Created by hezhao on 2018/7/3 15:36.
  */
@@ -25,17 +25,6 @@ public class CountryInfo {
         this.shortName = shortName;
         this.phoneCode = phoneCode;
         this.timeDifference = timeDifference;
-    }
-
-    @Override
-    public String toString() {
-        return "CountryInfo{" +
-                "englishName='" + englishName + '\'' +
-                ", chineseName='" + chineseName + '\'' +
-                ", shortName='" + shortName + '\'' +
-                ", phoneCode='" + phoneCode + '\'' +
-                ", timeDifference=" + timeDifference +
-                '}';
     }
 
     public String getEnglishName() {
@@ -76,5 +65,16 @@ public class CountryInfo {
 
     public void setTimeDifference(String timeDifference) {
         this.timeDifference = timeDifference;
+    }
+
+    @Override
+    public String toString() {
+        return "CountryInfo{" +
+                "englishName='" + englishName + '\'' +
+                ", chineseName='" + chineseName + '\'' +
+                ", shortName='" + shortName + '\'' +
+                ", phoneCode='" + phoneCode + '\'' +
+                ", timeDifference=" + timeDifference +
+                '}';
     }
 }
