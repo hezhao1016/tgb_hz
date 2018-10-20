@@ -89,6 +89,10 @@ public class StringUtil {
 		System.out.println(toSymbolCase("userNameAndPassword", '-'));
 		System.out.println(toCamelCase("user_name_and_password"));
 		System.out.println(toCamelCase("user-name-and-password", '-'));
+
+		String urlEncode = StringUtil.urlEncode("好好学习");
+		System.out.println(urlEncode);
+		System.out.println(StringUtil.urlEncode(urlEncode));
 	}
 
 	/**
@@ -1739,13 +1743,20 @@ public class StringUtil {
 	/**
 	 * 对给定字符进行 URL 编码
 	 */
-	public static String encode(String value) {
+	public static String urlEncode(String value) {
+		return urlEncode(value, "UTF-8");
+	}
+
+	/**
+	 * 对给定字符进行 URL 编码
+	 */
+	public static String urlEncode(String value, String encoding) {
 		if (isBlank(value)) {
 			return EMPTY;
 		}
 
 		try {
-			value = java.net.URLEncoder.encode(value, "GB2312");
+			value = java.net.URLEncoder.encode(value, encoding);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -1760,13 +1771,24 @@ public class StringUtil {
 	 *            解码前的字符串
 	 * @return 解码后的字符串
 	 */
-	public static String decode(String value) {
+	public static String urlDecode(String value) {
+		return urlDecode(value, "UTF-8");
+	}
+
+	/**
+	 * 对给定字符进行 URL 解码
+	 *
+	 * @param value
+	 *            解码前的字符串
+	 * @return 解码后的字符串
+	 */
+	public static String urlDecode(String value, String encoding) {
 		if (isBlank(value)) {
 			return EMPTY;
 		}
 
 		try {
-			return java.net.URLDecoder.decode(value, "GB2312");
+			return java.net.URLDecoder.decode(value, encoding);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

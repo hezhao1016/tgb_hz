@@ -182,6 +182,9 @@ public class Base64Util {
 
 
 	public static void main(String[] args) {
+		System.out.println(Base64Util.encode("ABC123".getBytes()));
+		System.out.println(Base64Util.decodeStr("QUJDMTIz"));
+
 		System.out.println(Base64Util.md5("admin"));
 		System.out.println(Base64Util.check("admin","ISMvKXpXpadDiUoOSoAfww=="));
 
