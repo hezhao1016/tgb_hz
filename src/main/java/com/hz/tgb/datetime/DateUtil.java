@@ -927,7 +927,7 @@ public class DateUtil {
 	 *
 	 * @return
 	 */
-	public String getCurrentDate() {
+	public static String getCurrentDate() {
 		return dateFormat.format(new Date());
 	}
 
@@ -938,7 +938,7 @@ public class DateUtil {
 	 *            输出显示的时间格式
 	 * @return
 	 */
-	public String getCurrentDate(String pattern) {
+	public static String getCurrentDate(String pattern) {
 		SimpleDateFormat sdf = getFormatInstance(pattern);
 		return sdf.format(new Date());
 	}
