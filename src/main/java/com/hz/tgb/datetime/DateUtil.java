@@ -1025,6 +1025,137 @@ public class DateUtil {
 	}
 
 	/**
+	 * 根据Calendar获取整型年份
+	 *
+	 * @param c
+	 * @return
+	 */
+	public static Integer getIntYear(Calendar c) {
+		int year = c.get(Calendar.YEAR);
+		return year;
+	}
+
+	/**
+	 * 根据Calendar获取整型日期
+	 *
+	 * @param c
+	 * @return
+	 */
+	public static Integer getIntDate(Calendar c) {
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH) + 1;
+		int day = c.get(Calendar.DAY_OF_MONTH);
+		return year * 10000 + month * 100 + day;
+	}
+
+	/**
+	 * 根据Date获取整型年份
+	 *
+	 * @param d
+	 * @return
+	 */
+	public static Integer getIntYear(Date d) {
+		if (d == null) {
+			return null;
+		}
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		return getIntYear(c);
+	}
+
+	/**
+	 * 根据Date获取整型日期
+	 *
+	 * @param d
+	 * @return
+	 */
+	public static Integer getIntDate(Date d) {
+		if (d == null) {
+			return null;
+		}
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		return getIntDate(c);
+	}
+
+	/**
+	 * 根据Integer获取Date日期
+	 *
+	 * @param n
+	 * @return
+	 */
+	public static Date getDate(Integer n) {
+		if (n == null) {
+			return null;
+		}
+		// Calendar c = Calendar.getInstance();
+		// c.set(n / 10000, n / 100 % 100 - 1, n % 100);
+		// return c.getTime();
+		return parse(String.valueOf(n));
+	}
+
+	/**
+	 * 根据年月日生成Calendar
+	 *
+	 * @param year
+	 * @param month
+	 * @param day
+	 * @return
+	 */
+	public static Calendar newCalendar(int year, int month, int day) {
+		Calendar ret = Calendar.getInstance();
+		if (year < 100) {
+			year = 2000 + year;
+		}
+		ret.set(year, month - 1, day);
+		return ret;
+	}
+
+	/**
+	 * 根据整型日期生成Calendar
+	 *
+	 * @param date
+	 * @return
+	 */
+	public static Calendar newCalendar(int date) {
+		int year = date / 10000;
+		int month = (date % 10000) / 100;
+		int day = date % 100;
+
+		Calendar ret = Calendar.getInstance();
+		ret.set(year, month - 1, day);
+		return ret;
+	}
+
+	/**
+	 * 整数型日期的加法
+	 *
+	 * @param date
+	 * @param days
+	 * @return
+	 */
+	public static Integer intDateAdd(int date, int days) {
+		int year = date / 10000;
+		int month = (date % 10000) / 100;
+		int day = date % 100;
+
+		day += days;
+
+		return getIntDate(year, month, day);
+	}
+
+	/**
+	 * 整数型日期的减法
+	 *
+	 * @param date
+	 * @param days
+	 * @return
+	 */
+	public static Integer intDateSub(int date, int days) {
+		return intDateAdd(date, -days);
+	}
+
+	/**
 	 * 获取某年第一天
 	 *
 	 * @param year
@@ -1282,137 +1413,6 @@ public class DateUtil {
 		return cal.getTime();
 	}
 
-	/**
-	 * 根据Calendar获取整型年份
-	 *
-	 * @param c
-	 * @return
-	 */
-	public static Integer getIntYear(Calendar c) {
-		int year = c.get(Calendar.YEAR);
-		return year;
-	}
-
-	/**
-	 * 根据Calendar获取整型日期
-	 *
-	 * @param c
-	 * @return
-	 */
-	public static Integer getIntDate(Calendar c) {
-		int year = c.get(Calendar.YEAR);
-		int month = c.get(Calendar.MONTH) + 1;
-		int day = c.get(Calendar.DAY_OF_MONTH);
-		return year * 10000 + month * 100 + day;
-	}
-
-	/**
-	 * 根据Date获取整型年份
-	 *
-	 * @param d
-	 * @return
-	 */
-	public static Integer getIntYear(Date d) {
-		if (d == null) {
-			return null;
-		}
-		Calendar c = Calendar.getInstance();
-		c.setTime(d);
-		return getIntYear(c);
-	}
-
-	/**
-	 * 根据Date获取整型日期
-	 *
-	 * @param d
-	 * @return
-	 */
-	public static Integer getIntDate(Date d) {
-		if (d == null) {
-			return null;
-		}
-		Calendar c = Calendar.getInstance();
-		c.setTime(d);
-		return getIntDate(c);
-	}
-
-	/**
-	 * 根据Integer获取Date日期
-	 *
-	 * @param n
-	 * @return
-	 */
-	public static Date getDate(Integer n) {
-		if (n == null) {
-			return null;
-		}
-		// Calendar c = Calendar.getInstance();
-		// c.set(n / 10000, n / 100 % 100 - 1, n % 100);
-		// return c.getTime();
-		return parse(String.valueOf(n));
-	}
-
-	/**
-	 * 根据年月日生成Calendar
-	 *
-	 * @param year
-	 * @param month
-	 * @param day
-	 * @return
-	 */
-	public static Calendar newCalendar(int year, int month, int day) {
-		Calendar ret = Calendar.getInstance();
-		if (year < 100) {
-			year = 2000 + year;
-		}
-		ret.set(year, month - 1, day);
-		return ret;
-	}
-
-	/**
-	 * 根据整型日期生成Calendar
-	 *
-	 * @param date
-	 * @return
-	 */
-	public static Calendar newCalendar(int date) {
-		int year = date / 10000;
-		int month = (date % 10000) / 100;
-		int day = date % 100;
-
-		Calendar ret = Calendar.getInstance();
-		ret.set(year, month - 1, day);
-		return ret;
-	}
-
-	/**
-	 * 整数型日期的加法
-	 *
-	 * @param date
-	 * @param days
-	 * @return
-	 */
-	public static Integer intDateAdd(int date, int days) {
-		int year = date / 10000;
-		int month = (date % 10000) / 100;
-		int day = date % 100;
-
-		day += days;
-
-		return getIntDate(year, month, day);
-	}
-
-	/**
-	 * 整数型日期的减法
-	 *
-	 * @param date
-	 * @param days
-	 * @return
-	 */
-	public static Integer intDateSub(int date, int days) {
-		return intDateAdd(date, -days);
-	}
-
 	// /**
 	// * 国际化。
 	// */
@@ -1572,12 +1572,12 @@ public class DateUtil {
 	 *
 	 * @param date
 	 *            日期
-	 * @param yearAmount
+	 * @param monthAmount
 	 *            增加数量。可为负数
 	 * @return 增加月份后的日期字符串
 	 */
-	public static String addMonth(String date, int yearAmount) {
-		return addInteger(date, Calendar.MONTH, yearAmount);
+	public static String addMonth(String date, int monthAmount) {
+		return addInteger(date, Calendar.MONTH, monthAmount);
 	}
 
 	/**
@@ -1585,12 +1585,12 @@ public class DateUtil {
 	 *
 	 * @param date
 	 *            日期
-	 * @param yearAmount
+	 * @param monthAmount
 	 *            增加数量。可为负数
 	 * @return 增加月份后的日期
 	 */
-	public static Date addMonth(Date date, int yearAmount) {
-		return addInteger(date, Calendar.MONTH, yearAmount);
+	public static Date addMonth(Date date, int monthAmount) {
+		return addInteger(date, Calendar.MONTH, monthAmount);
 	}
 
 	/**
