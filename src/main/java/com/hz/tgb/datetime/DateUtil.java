@@ -28,7 +28,7 @@ public class DateUtil {
 
 		System.out.println(format(now, "yyyyMMdd"));
 		System.out.println(format(now, "yyyy-MM-dd"));
-		System.out.println(format(now, "yyyyMMddHHmmss"));
+		System.out.println(format(now, DateEnums.DateStyle.yyyyMMddHHmmss));
 		System.out.println(format(now, "yyyy-MM-dd HH:mm:ss"));
 		System.out.println(format(now, "yyyy/MM/dd E HH:mm:ss:S"));
 		System.out.println(format(now, "yyMMddHHmmss"));
@@ -42,8 +42,10 @@ public class DateUtil {
 
 		System.out.println(formatDateTime(getNow()));
 
-		System.out.println(format(parse(formatDateTime(getNow())),
-				"yyyy-MM-dd HH:mm:ss"));
+		System.out.println(format(parse(formatDateTime(getNow())), "yyyy-MM-dd HH:mm:ss"));
+		System.out.println(format(parse("2018-10-10 22:22:22:333"), "yyyy-MM-dd HH:mm:ss:S"));
+		System.out.println(format(parse("2017年07月27日 星期四"), "yyyy年MM月dd日 E"));
+		System.out.println(format(parse("20170727133253356"), "yyyyMMddHHmmssS"));
 
 		System.out.println(getDateStyle("06:45").getValue());
 		System.out.println(addYear("2017", 5));
@@ -98,8 +100,7 @@ public class DateUtil {
 		System.out.println("==========================6==========================");
 
 		try {
-			System.out.println("calculateTime is : "
-					+ calculateTime(new Date(),"D",-1));
+			System.out.println("calculateTime is : " + calculateTime(new Date(),"D",-1));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

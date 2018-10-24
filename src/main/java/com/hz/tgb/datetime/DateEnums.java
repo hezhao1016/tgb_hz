@@ -50,17 +50,21 @@ public class DateEnums {
 		 */
 		yyyy_MM_dd_HH_mm_ss("yyyy-MM-dd HH:mm:ss"),
 		/**
-		 * yyyy-MM-dd E HH:mm:ss 例如 2017-03-13 星期一 15:16:47
-		 */
-		yyyy_MM_dd_E_HH_mm_ss("yyyy-MM-dd E HH:mm:ss"),
-		/**
 		 * yyyy-MM-dd HH:mm:ss:S 例如 2017-03-13 15:16:47:356
 		 */
 		yyyy_MM_dd_HH_mm_ss_S("yyyy-MM-dd HH:mm:ss:S"),
 		/**
+		 * yyyy-MM-dd E HH:mm:ss 例如 2017-03-13 星期一 15:16:47
+		 */
+		yyyy_MM_dd_E_HH_mm_ss("yyyy-MM-dd E HH:mm:ss"),
+		/**
 		 * yyyy-MM-dd E HH:mm:ss:S 例如 2017-03-13 星期一 15:16:47:356
 		 */
 		yyyy_MM_dd_E_HH_mm_ss_S("yyyy-MM-dd E HH:mm:ss:S"),
+		/**
+		 * yyyy-MM-dd E 例如 2017-03-13 星期一
+		 */
+		yyyy_MM_dd_E("yyyy-MM-dd E"),
 
 		/**
 		 * MM/dd 例如 03/13
@@ -95,17 +99,21 @@ public class DateEnums {
 		 */
 		yyyy_MM_dd_HH_mm_ss_EN("yyyy/MM/dd HH:mm:ss"),
 		/**
-		 * yyyy/MM/dd E HH:mm:ss:S 例如 2017/03/13 星期一 15:16:47
-		 */
-		yyyy_MM_dd_E_HH_mm_ss_EN("yyyy/MM/dd E HH:mm:ss"),
-		/**
 		 * yyyy/MM/dd HH:mm:ss:S 例如 2017/03/13 15:16:47:356
 		 */
 		yyyy_MM_dd_HH_mm_ss_S_EN("yyyy/MM/dd HH:mm:ss:S"),
 		/**
+		 * yyyy/MM/dd E HH:mm:ss:S 例如 2017/03/13 星期一 15:16:47
+		 */
+		yyyy_MM_dd_E_HH_mm_ss_EN("yyyy/MM/dd E HH:mm:ss"),
+		/**
 		 * yyyy/MM/dd E HH:mm:ss:S 例如 2017/03/13 星期一 15:16:47:356
 		 */
 		yyyy_MM_dd_E_HH_mm_ss_S_EN("yyyy/MM/dd E HH:mm:ss:S"),
+		/**
+		 * yyyy/MM/dd E HH:mm:ss:S 例如 2017/03/13 星期一
+		 */
+		yyyy_MM_dd_E_EN("yyyy/MM/dd E"),
 
 		/**
 		 * MM月dd日 例如 07月27日
@@ -140,17 +148,21 @@ public class DateEnums {
 		 */
 		yyyy_MM_dd_HH_mm_ss_CN("yyyy年MM月dd日 HH:mm:ss"),
 		/**
-		 * yyyy年MM月dd日 HH:mm:ss:S 例如 2017年07月27日 星期四 13:32:53
-		 */
-		yyyy_MM_dd_E_HH_mm_ss_CN("yyyy年MM月dd日 E HH:mm:ss"),
-		/**
 		 * yyyy年MM月dd日 HH:mm:ss:S 例如 2017年07月27日 13:32:53:356
 		 */
 		yyyy_MM_dd_HH_mm_ss_S_CN("yyyy年MM月dd日 HH:mm:ss:S"),
 		/**
+		 * yyyy年MM月dd日 HH:mm:ss:S 例如 2017年07月27日 星期四 13:32:53
+		 */
+		yyyy_MM_dd_E_HH_mm_ss_CN("yyyy年MM月dd日 E HH:mm:ss"),
+		/**
 		 * yyyy年MM月dd日 HH:mm:ss:S 例如 2017年07月27日 星期四 13:32:53:356
 		 */
 		yyyy_MM_dd_E_HH_mm_ss_S_CN("yyyy年MM月dd日 E HH:mm:ss:S"),
+		/**
+		 * yyyy年MM月dd日 HH:mm:ss:S 例如 2017年07月27日 星期四
+		 */
+		yyyy_MM_dd_E_CN("yyyy年MM月dd日 E"),
 
 		/**
 		 * yyyyMMdd 例如 20170727
@@ -172,6 +184,10 @@ public class DateEnums {
 		 * yyyyMMddHHmmss 例如 20170727133253
 		 */
 		yyyyMMddHHmmss("yyyyMMddHHmmss"),
+		/**
+		 * yyyyMMddHHmmss 例如 20170727133253356
+		 */
+		yyyyMMddHHmmssS("yyyyMMddHHmmssS"),
 		/**
 		 * yyMMddHHmmss 例如 170727133253
 		 */
