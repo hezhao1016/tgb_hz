@@ -24,29 +24,18 @@ public class Test1 {
 
         int size = 15;
         String[] imagePaths = new String[size];
+
+        String[] sources = {
+                "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163849.jpg",
+                "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163741.jpg",
+                "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163901.jpg",
+                "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163942.jpg",
+                "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163821.jpg",
+        };
+        Random rd = new Random(System.nanoTime());
+
         for (int i = 0; i < size; i++) {
-
-            Random rd = new Random(System.nanoTime());
-            int temp = rd.nextInt(5);
-
-            switch (temp) {
-                case 0:
-                    imagePaths[i] = "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163849.jpg";
-                    break;
-                case 1:
-                    imagePaths[i] = "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163741.jpg";
-                    break;
-                case 2:
-                    imagePaths[i] = "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163901.jpg";
-                    break;
-                case 3:
-                    imagePaths[i] = "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163942.jpg";
-                    break;
-                case 4:
-                    imagePaths[i] = "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163821.jpg";
-                    break;
-            }
-
+            imagePaths[i] = sources[rd.nextInt(sources.length)];
         }
 
         for (int i = 0; i < imagePaths.length; i++) {
@@ -104,7 +93,6 @@ public class Test1 {
 //            e.printStackTrace();
 //        }
 
-
         // 解析内容
         Map<String, String> respData = new HashMap<>();
 
@@ -112,36 +100,6 @@ public class Test1 {
         if (0 != errorCode) {
             String errorMsg = res.getString("error_msg");
             System.out.println("Error: " + errorCode + " - " + errorMsg);
-
-            // SDK本地检测参数返回的错误码
-//            SDK100	image size error	图片大小超限
-//            SDK101	image length error	图片边长不符合要求
-//            SDK102	read image file error	读取图片文件错误
-//            SDK108	connection or read data time out	连接超时或读取数据超时
-//            SDK109	unsupported image format	不支持的图片格式
-
-            // 服务端返回的错误码
-//            14	IAM Certification failed	IAM鉴权失败，建议用户参照文档自查生成sign的方式是否正确，或换用控制台中ak sk的方式调用
-//            17	Open api daily request limit reached	每天流量超限额
-//            18	Open api qps request limit reached	QPS超限额
-//            19	Open api total request limit reached	请求总量超限额
-//            100	Invalid parameter	无效参数
-//            110	Access token invalid or no longer valid	Access Token失效
-//            111	Access token expired	Access token过期
-
-//            216100	invalid param	请求中包含非法参数，请检查后重新尝试
-//            216101	not enough param	缺少必须的参数，请检查参数是否有遗漏
-//            216110	appid not exist	appid不存在，请重新核对信息是否为后台应用列表中的appid
-//            216200	empty image	图片为空，请检查后重新尝试
-//            216201	image format error	上传的图片格式错误，现阶段我们支持的图片格式为：PNG、JPG、JPEG、BMP，请进行转码或更换图片
-//            216202	image size error	上传的图片大小错误，现阶段我们支持的图片大小为：base64编码后小于4M，分辨率不高于4096*4096，请重新上传图片
-//            272000	structure failed	未能匹配模板，请检查参照字段的设置是否符合规范，并重新选取或增加更多的参照字段
-//            272001	classify failed	未能成功分类
-//            282003	missing parameters: {参数名}	请求参数缺失
-//            282004	invalid parameter, appId doesn't own this template nor not launch	您指定的模板暂未发布，请先保存发布该模板，再调用
-//            282005	batch  processing error	处理批量任务时发生部分或全部错误，请根据具体错误码排查
-//            282006	batch task  limit reached	批量任务处理数量超出限制，请将任务数量减少到10或10以下
-
         } else {
             // success
             JSONObject data = res.getJSONObject("data");
@@ -171,5 +129,36 @@ public class Test1 {
             System.out.println(key + " - " + respData.get(key));
         }
     }
+
+    /*
+    SDK本地检测参数返回的错误码
+    SDK100	image size error	                图片大小超限
+    SDK101	image length error	                图片边长不符合要求
+    SDK102	read image file error	            读取图片文件错误
+    SDK108	connection or read data time out	连接超时或读取数据超时
+    SDK109	unsupported image format	        不支持的图片格式
+
+    服务端返回的错误码
+    14	IAM Certification failed	I           AM鉴权失败，建议用户参照文档自查生成sign的方式是否正确，或换用控制台中ak sk的方式调用
+    17	Open api daily request limit reached	每天流量超限额
+    18	Open api qps request limit reached	    QPS超限额
+    19	Open api total request limit reached	请求总量超限额
+    100	Invalid parameter	                    无效参数
+    110	Access token invalid or no longer valid	Access Token失效
+    111	Access token expired	                Access token过期
+
+    216100	invalid param	    请求中包含非法参数，请检查后重新尝试
+    216101	not enough param	缺少必须的参数，请检查参数是否有遗漏
+    216110	appid not exist	    appid不存在，请重新核对信息是否为后台应用列表中的appid
+    216200	empty image	        图片为空，请检查后重新尝试
+    216201	image format error	上传的图片格式错误，现阶段我们支持的图片格式为：PNG、JPG、JPEG、BMP，请进行转码或更换图片
+    216202	image size error	上传的图片大小错误，现阶段我们支持的图片大小为：base64编码后小于4M，分辨率不高于4096*4096，请重新上传图片
+    272000	structure failed	未能匹配模板，请检查参照字段的设置是否符合规范，并重新选取或增加更多的参照字段
+    272001	classify failed	    未能成功分类
+    282003	missing parameters: {参数名}	请求参数缺失
+    282004	invalid parameter, appId doesn't own this template nor not launch	您指定的模板暂未发布，请先保存发布该模板，再调用
+    282005	batch  processing error	    处理批量任务时发生部分或全部错误，请根据具体错误码排查
+    282006	batch task  limit reached	批量任务处理数量超出限制，请将任务数量减少到10或10以下
+    */
 
 }

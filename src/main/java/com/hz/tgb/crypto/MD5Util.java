@@ -1,8 +1,6 @@
 package com.hz.tgb.crypto;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * MD5加密工具类

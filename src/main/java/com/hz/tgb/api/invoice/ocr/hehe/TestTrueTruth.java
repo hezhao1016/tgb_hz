@@ -17,14 +17,6 @@ import java.util.Map;
  */
 public class TestTrueTruth {
 
-    /*
-
-    {"error_message":"","error_no":"0","invoice_type":"10","invoice_valid":true,"invoice_verify_result":true,"vat_invoice_data":{"goods":[{"quantity":"1","tax_rate":"16","type":"无","unit":"盒","unit_name":"*果类加工品*百草味 坚果大礼包喜团圆1480g\/盒 中秋礼盒9袋装零食干果组合夏威夷果碧根果","unit_price":"186.207","unit_sum":"186.21","unit_tax":"29.79"},{"quantity":"0","tax_rate":"16","type":"","unit":"","unit_name":"*果类加工品*百草味 坚果大礼包喜团圆1480g\/盒 中秋礼盒9袋装零食干果组合夏威夷果碧根果","unit_price":"0","unit_sum":"-110.26","unit_tax":"-17.64"}],"invoice_code":"044001633111","invoice_date":"20180916","invoice_no":"15874692","invoice_sum_with_tax":"88.1","invoice_sum_without_tax":"75.95","invoice_tax":"12.15","payer":{"account_info":"","address":"","name":"个人"},"seller":{"account_info":"中国银行股份有限公司肇庆鼎湖支行 695170410217","address":"肇庆市鼎湖区桂城新城北八区肇庆新区投资发展有限公司厂房（B幢）138室 020-66215500","name":"肇庆京东盛甲贸易有限公司","tax_number":"91441203MA51UJEM11"},"verify_code":"46869547952233124630"}}
-
-    {"error_message":"","error_no":"0","invoice_type":"04","invoice_valid":true,"invoice_verify_result":true,"vat_invoice_data":{"goods":[{"quantity":"40.37433155080214","tax_rate":"16","type":"92#","unit":"升","unit_name":"*汽油*车用汽油（V）","unit_price":"6.448","unit_sum":"260.34","unit_tax":"41.66"}],"invoice_code":"044031800104","invoice_date":"20180922","invoice_no":"04124339","invoice_sum_with_tax":"302","invoice_sum_without_tax":"260.34","invoice_tax":"41.66","machine_no":"661701415389","payer":{"account_info":"","address":"","name":"跨越速运集团有限公司","tax_number":"91440300665859389F"},"seller":{"account_info":"中行深圳坑梓支行762757953107","address":"深圳市坪山区坑梓街道坪山大道6414号 0755-84127078","name":"深圳市南山石油有限公司沙田加油站","tax_number":"91440300892413870L"},"verify_code":"73061489073796572511"}}
-
-    */
-
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
 
@@ -76,22 +68,6 @@ public class TestTrueTruth {
             System.out.println("参数Map为空");
             return;
         }
-
-        /*
-        Invoice_type 发票类型返回说明
-            01 增值税专用发票
-            02 货物运输业增值税专用发票
-            03 机动车销售统一发票
-            04 增值税普通发票
-            10 增值税电子普通发票
-            11 增值税普通发票（卷票）
-
-        Error_no 错误码返回说明
-            0 验真成功
-            40110 超过本日查验次数
-            40120 国税接口维护中，暂未获取数据
-            40130 其他错误， 请联系技术支持
-        */
 
         try {
             String urlString = "https://imgs-sandbox.intsig.net/icr/verify_vat_v2";
@@ -215,5 +191,29 @@ public class TestTrueTruth {
             e.printStackTrace();
         }
     }
+
+    /*
+    Invoice_type 发票类型返回说明
+    01      增值税专用发票
+    02      货物运输业增值税专用发票
+    03      机动车销售统一发票
+    04      增值税普通发票
+    10      增值税电子普通发票
+    11      增值税普通发票（卷票）
+
+    Error_no 错误码返回说明
+    0       验真成功
+    40110   超过本日查验次数
+    40120   国税接口维护中，暂未获取数据
+    40130   其他错误， 请联系技术支持
+    */
+
+    /*
+
+    {"error_message":"","error_no":"0","invoice_type":"10","invoice_valid":true,"invoice_verify_result":true,"vat_invoice_data":{"goods":[{"quantity":"1","tax_rate":"16","type":"无","unit":"盒","unit_name":"*果类加工品*百草味 坚果大礼包喜团圆1480g\/盒 中秋礼盒9袋装零食干果组合夏威夷果碧根果","unit_price":"186.207","unit_sum":"186.21","unit_tax":"29.79"},{"quantity":"0","tax_rate":"16","type":"","unit":"","unit_name":"*果类加工品*百草味 坚果大礼包喜团圆1480g\/盒 中秋礼盒9袋装零食干果组合夏威夷果碧根果","unit_price":"0","unit_sum":"-110.26","unit_tax":"-17.64"}],"invoice_code":"044001633111","invoice_date":"20180916","invoice_no":"15874692","invoice_sum_with_tax":"88.1","invoice_sum_without_tax":"75.95","invoice_tax":"12.15","payer":{"account_info":"","address":"","name":"个人"},"seller":{"account_info":"中国银行股份有限公司肇庆鼎湖支行 695170410217","address":"肇庆市鼎湖区桂城新城北八区肇庆新区投资发展有限公司厂房（B幢）138室 020-66215500","name":"肇庆京东盛甲贸易有限公司","tax_number":"91441203MA51UJEM11"},"verify_code":"46869547952233124630"}}
+
+    {"error_message":"","error_no":"0","invoice_type":"04","invoice_valid":true,"invoice_verify_result":true,"vat_invoice_data":{"goods":[{"quantity":"40.37433155080214","tax_rate":"16","type":"92#","unit":"升","unit_name":"*汽油*车用汽油（V）","unit_price":"6.448","unit_sum":"260.34","unit_tax":"41.66"}],"invoice_code":"044031800104","invoice_date":"20180922","invoice_no":"04124339","invoice_sum_with_tax":"302","invoice_sum_without_tax":"260.34","invoice_tax":"41.66","machine_no":"661701415389","payer":{"account_info":"","address":"","name":"跨越速运集团有限公司","tax_number":"91440300665859389F"},"seller":{"account_info":"中行深圳坑梓支行762757953107","address":"深圳市坪山区坑梓街道坪山大道6414号 0755-84127078","name":"深圳市南山石油有限公司沙田加油站","tax_number":"91440300892413870L"},"verify_code":"73061489073796572511"}}
+
+    */
 
 }
