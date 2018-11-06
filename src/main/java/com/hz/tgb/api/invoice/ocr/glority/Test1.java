@@ -6,12 +6,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.hz.tgb.crypto.Base64Utils;
 import com.hz.tgb.crypto.MD5Util;
 import com.hz.tgb.file.FileUtil;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import com.hz.tgb.http.util.HttpClientUtil;
+import com.hz.tgb.http.util.HttpConfig;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -23,8 +23,8 @@ import java.util.Random;
  */
 public class Test1 {
 
-    private static String appKey = "xxxxx"; // 这里输入提供的app_key
-    private static String appSecret = "xxxxx"; // 这里输入提供的app_secret
+    private static String appKey = "xxxxxx"; // 这里输入提供的app_key
+    private static String appSecret = "xxxxxx"; // 这里输入提供的app_secret
     private static String host = "http://fapiao.glority.cn/v1/item/get_item_info";
 
     public static void main(String[] args) throws Exception{
@@ -73,20 +73,15 @@ public class Test1 {
 
         String base64 = Base64Utils.encode(FileUtil.readFileByBytes(imagePath));
 
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(host)
-                .post(new FormBody.Builder()
-                        .add("app_key", appKey)
-                        .add("timestamp", String.valueOf(timestamp))
-                        .add("token", token)
-                        .add("image_data", base64)
-                        .build())
-                .build();
-
-        Response response = client.newCall(request).execute();
-
-        String json = response.body().string();
+        Map<String, String> map = new HashMap<>();
+        map.put("app_key", appKey);
+        map.put("timestamp", String.valueOf(timestamp));
+        map.put("token", token);
+        map.put("image_data", base64);
+        HttpConfig httpConfig = new HttpConfig();
+        httpConfig.setCharset("utf-8");
+        httpConfig.setContentType("application/x-www-form-urlencoded");
+        String json = HttpClientUtil.doPost(host, map, httpConfig);
         System.out.println(json);
 
         JSONObject jsonObject = JSON.parseObject(json);
