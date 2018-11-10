@@ -1,5 +1,7 @@
 package com.hz.tgb.number;
 
+import cn.hutool.core.lang.Assert;
+
 import java.math.BigDecimal;
 
 /**
@@ -242,6 +244,76 @@ public class BigDecimalUtil {
 		return b1.compareTo(b2);
 	}
 
+	/**
+	 * 比较大小，参数1 &gt; 参数2 返回true
+	 *
+	 * @param bigNum1 数字1
+	 * @param bigNum2 数字2
+	 * @return 是否大于
+	 * @since 3,0.9
+	 */
+	public static boolean isGreater(BigDecimal bigNum1, BigDecimal bigNum2) {
+		Assert.notNull(bigNum1);
+		Assert.notNull(bigNum2);
+		return bigNum1.compareTo(bigNum2) > 0;
+	}
+
+	/**
+	 * 比较大小，参数1 &gt;= 参数2 返回true
+	 *
+	 * @param bigNum1 数字1
+	 * @param bigNum2 数字2
+	 * @return 是否大于等于
+	 * @since 3,0.9
+	 */
+	public static boolean isGreaterOrEqual(BigDecimal bigNum1, BigDecimal bigNum2) {
+		Assert.notNull(bigNum1);
+		Assert.notNull(bigNum2);
+		return bigNum1.compareTo(bigNum2) >= 0;
+	}
+
+	/**
+	 * 比较大小，参数1 &lt; 参数2 返回true
+	 *
+	 * @param bigNum1 数字1
+	 * @param bigNum2 数字2
+	 * @return 是否小于
+	 * @since 3,0.9
+	 */
+	public static boolean isLess(BigDecimal bigNum1, BigDecimal bigNum2) {
+		Assert.notNull(bigNum1);
+		Assert.notNull(bigNum2);
+		return bigNum1.compareTo(bigNum2) < 0;
+	}
+
+	/**
+	 * 比较大小，参数1&lt;=参数2 返回true
+	 *
+	 * @param bigNum1 数字1
+	 * @param bigNum2 数字2
+	 * @return 是否小于等于
+	 * @since 3,0.9
+	 */
+	public static boolean isLessOrEqual(BigDecimal bigNum1, BigDecimal bigNum2) {
+		Assert.notNull(bigNum1);
+		Assert.notNull(bigNum2);
+		return bigNum1.compareTo(bigNum2) <= 0;
+	}
+
+	/**
+	 * 比较大小，值相等 返回true<br>
+	 * 此方法通过调用{@link BigDecimal#compareTo(BigDecimal)}方法来判断是否相等<br>
+	 * 此方法判断值相等时忽略精度的，既0.00 == 0
+	 *
+	 * @param bigNum1 数字1
+	 * @param bigNum2 数字2
+	 * @return 是否相等
+	 */
+	public static boolean equals(BigDecimal bigNum1, BigDecimal bigNum2) {
+		Assert.notNull(bigNum1);
+		Assert.notNull(bigNum2);
+		return 0 == bigNum1.compareTo(bigNum2);
+	}
 
 	public static void main(String[] args) {
 		double info = 0.000;

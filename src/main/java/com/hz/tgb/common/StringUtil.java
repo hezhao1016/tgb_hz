@@ -494,10 +494,10 @@ public class StringUtil {
 	}
 
 	/**
-	 * 将下划线方式命名的字符串转换为驼峰式。如果转换前的下划线大写方式命名的字符串为空，则返回空字符串。<br>
+	 * 将符号连接方式命名的字符串转换为驼峰式。如果转换前的符号连接大写方式命名的字符串为空，则返回空字符串。<br>
 	 * 例如：hello_world=》helloWorld
 	 *
-	 * @param name 转换前的下划线大写方式命名的字符串
+	 * @param name 转换前的符号连接方式大写方式命名的字符串
 	 * @return 转换后的驼峰式命名的字符串
 	 */
 	public static String toCamelCase(CharSequence name, char symbol) {

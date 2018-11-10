@@ -2,8 +2,8 @@ package com.hz.tgb.test;
 
 import com.hz.tgb.common.StringUtil;
 import com.hz.tgb.number.AmountUtil;
+import com.hz.tgb.number.BigNumberUtil;
 import com.hz.tgb.number.RMBUtil;
-import com.hz.tgb.number.NumberUtil;
 
 import java.math.BigDecimal;
 
@@ -65,7 +65,7 @@ public class Test3 {
 
         System.out.println(StringUtil.moneyUppercase(new BigDecimal(Double.valueOf(formatFloatNumber(amount))).doubleValue()));
 
-        System.out.println(NumberUtil.toChineseUpper(new BigDecimal(Double.valueOf(formatFloatNumber(amount))).doubleValue() + ""));
+        System.out.println(BigNumberUtil.toChineseUpper(new BigDecimal(Double.valueOf(formatFloatNumber(amount))).doubleValue() + ""));
 
         System.out.println(AmountUtil.changeY2F("0.45"));
 

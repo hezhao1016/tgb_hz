@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 货币，金融工具类
+ * 人民币，金融工具类
  * @author hezhao
  * @Time   2016年1月13日 上午10:18:52
  * @Description 无
@@ -50,6 +50,10 @@ public class RMBUtil {
      * @return 对应的汉语大写
      */
     public static String number2CNMontrayUnit(BigDecimal numberOfMoney) {
+        if (numberOfMoney == null) {
+            return "";
+        }
+
         StringBuffer sb = new StringBuffer();
         // -1, 0, or 1 as the value of this BigDecimal is negative, zero, or
         // positive.
