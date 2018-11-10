@@ -2,6 +2,7 @@ package com.hz.tgb.number;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -234,6 +235,191 @@ public class NumberUtil {
 		return (null == number) ? BigDecimal.ZERO : new BigDecimal(number);
 	}
 
+	// ------------------------------------------------------------------------------------------- range
+	/**
+	 * 从0开始给定范围内的整数列表，步进为1
+	 *
+	 * @param stop 结束（包含）
+	 * @return 整数列表
+	 * @since 3.3.1
+	 */
+	public static int[] range(int stop) {
+		return range(0, stop);
+	}
+
+	/**
+	 * 给定范围内的整数列表，步进为1
+	 *
+	 * @param start 开始（包含）
+	 * @param stop 结束（包含）
+	 * @return 整数列表
+	 */
+	public static int[] range(int start, int stop) {
+		return range(start, stop, 1);
+	}
+
+	/**
+	 * 给定范围内的整数列表
+	 *
+	 * @param start 开始（包含）
+	 * @param stop 结束（包含）
+	 * @param step 步进
+	 * @return 整数列表
+	 */
+	public static int[] range(int start, int stop, int step) {
+		if (start < stop) {
+			step = Math.abs(step);
+		} else if (start > stop) {
+			step = -Math.abs(step);
+		} else {// start == end
+			return new int[] { start };
+		}
+
+		int size = Math.abs((stop - start) / step) + 1;
+		int[] values = new int[size];
+		int index = 0;
+		for (int i = start; (step > 0) ? i <= stop : i >= stop; i += step) {
+			values[index] = i;
+			index++;
+		}
+		return values;
+	}
+
+	// ------------------------------------------------------------------------------------------- others
+	/**
+	 * 计算阶乘
+	 * <p>
+	 * n! = n * (n-1) * ... * end
+	 * </p>
+	 *
+	 * @param start 阶乘起始
+	 * @param end 阶乘结束
+	 * @return 结果
+	 * @since 4.1.0
+	 */
+	public static long factorial(long start, long end) {
+		if (start < end) {
+			return 0L;
+		}
+		if (start == end) {
+			return 1L;
+		}
+		return start * factorial(start - 1, end);
+	}
+
+	/**
+	 * 计算阶乘
+	 * <p>
+	 * n! = n * (n-1) * ... * 2 * 1
+	 * </p>
+	 *
+	 * @param n 阶乘起始
+	 * @return 结果
+	 */
+	public static long factorial(long n) {
+		return factorial(n, 1);
+	}
+
+	/**
+	 * 平方根算法<br>
+	 * 推荐使用 {@link Math#sqrt(double)}
+	 *
+	 * @param x 值
+	 * @return 平方根
+	 */
+	public static long sqrt(long x) {
+		long y = 0;
+		long b = (~Long.MAX_VALUE) >>> 1;
+		while (b > 0) {
+			if (x >= y + b) {
+				x -= y + b;
+				y >>= 1;
+				y += b;
+			} else {
+				y >>= 1;
+			}
+			b >>= 2;
+		}
+		return y;
+	}
+
+	/**
+	 * 可以用于计算双色球、大乐透注数的方法<br>
+	 * 比如大乐透35选5可以这样调用processMultiple(7,5); 就是数学中的：C75=7*6/2*1
+	 *
+	 * @param selectNum 选中小球个数
+	 * @param minNum 最少要选中多少个小球
+	 * @return 注数
+	 */
+	public static int processMultiple(int selectNum, int minNum) {
+		int result;
+		result = mathSubnode(selectNum, minNum) / mathNode(selectNum - minNum);
+		return result;
+	}
+
+	/**
+	 * 最大公约数
+	 *
+	 * @param m 第一个值
+	 * @param n 第二个值
+	 * @return 最大公约数
+	 */
+	public static int divisor(int m, int n) {
+		while (m % n != 0) {
+			int temp = m % n;
+			m = n;
+			n = temp;
+		}
+		return n;
+	}
+
+	/**
+	 * 最小公倍数
+	 *
+	 * @param m 第一个值
+	 * @param n 第二个值
+	 * @return 最小公倍数
+	 */
+	public static int multiple(int m, int n) {
+		return m * n / divisor(m, n);
+	}
+
+	/**
+	 * 获得数字对应的二进制字符串
+	 *
+	 * @param number 数字
+	 * @return 二进制字符串
+	 */
+	public static String getBinaryStr(Number number) {
+		if (number instanceof Long) {
+			return Long.toBinaryString((Long) number);
+		} else if (number instanceof Integer) {
+			return Integer.toBinaryString((Integer) number);
+		} else {
+			return Long.toBinaryString(number.longValue());
+		}
+	}
+
+	/**
+	 * 二进制转int
+	 *
+	 * @param binaryStr 二进制字符串
+	 * @return int
+	 */
+	public static int binaryToInt(String binaryStr) {
+		return Integer.parseInt(binaryStr, 2);
+	}
+
+	/**
+	 * 二进制转long
+	 *
+	 * @param binaryStr 二进制字符串
+	 * @return long
+	 */
+	public static long binaryToLong(String binaryStr) {
+		return Long.parseLong(binaryStr, 2);
+	}
+
 	/**
 	 * 判断一个字符串是否都为数字
 	 * @param strNum
@@ -459,8 +645,40 @@ public class NumberUtil {
 		return "";
 	}
 
+	// ------------------------------------------------------------------------------------------- Private method start
+	private static int mathSubnode(int selectNum, int minNum) {
+		if (selectNum == minNum) {
+			return 1;
+		} else {
+			return selectNum * mathSubnode(selectNum - 1, minNum);
+		}
+	}
+
+	private static int mathNode(int selectNum) {
+		if (selectNum == 0) {
+			return 1;
+		} else {
+			return selectNum * mathNode(selectNum - 1);
+		}
+	}
+	// ------------------------------------------------------------------------------------------- Private method end
+
 	public static void main(String[] args) {
 		BigDecimal round = round(324.2513, 2);
 		System.out.println(round);
+
+		int[] range = range(1, 10, 2);
+		System.out.println(ArrayUtils.toString(range));
+
+		String binaryStr = getBinaryStr(10);
+		System.out.println(binaryStr);
+
+		long factorial = factorial(5);
+		System.out.println(factorial);
+
+		double d = 465215654849894890346478.506756354;
+		System.out.println(d);
+		System.out.println(NumberUtil.formatFloatNumber(d));
 	}
+
 }
