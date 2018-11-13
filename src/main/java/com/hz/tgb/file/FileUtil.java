@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
@@ -699,6 +700,82 @@ public class FileUtil {
         File file = new File(filePath);
         return readFileByBytes(file);
     }
+
+	/**
+	 * 获取URL内容
+	 *
+	 * @param reqUrl 文件资源地址
+	 * @return
+	 * @throws IOException
+	 */
+	public static byte[] getUrlBytes(String reqUrl) throws Exception {
+		HttpURLConnection conn = null;
+		try {
+			URL url = new URL(reqUrl);
+			conn = (HttpURLConnection) url.openConnection(); // 新建连接实例
+			conn.setConnectTimeout(30000); // 设置连接超时时间，单位毫秒
+			conn.setReadTimeout(30000); // 设置读取数据超时时间，单位毫秒
+			// 设置通用的请求属性
+			conn.setRequestProperty("accept", "*/*;charset=UTF-8");
+			conn.setRequestProperty("connection", "Keep-Alive");
+			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
+			conn.setRequestProperty("content-type", "application/x-www-form-urlencoded");
+			conn.setRequestMethod("GET"); // 提交方法POST|GET
+			conn.setUseCaches(false); // 是否缓存true|false
+			conn.connect();// 打开连接端口
+
+			// 响应码
+			int code = conn.getResponseCode();
+			// System.out.println("code="+code+ " url="+url);
+
+			if (code == 200) {
+				// 获取响应数据
+				byte[] bytes = readBytes(conn.getInputStream());
+				return bytes;
+			}
+
+			throw new RuntimeException("响应码错误:" + code);
+		} finally {
+			if (conn != null) {
+				conn.disconnect();// 关闭连接
+			}
+		}
+	}
+
+	/**
+	 * 读取byte[] 数组
+	 */
+	public static byte[] readBytes(InputStream inputStream) throws IOException {
+		if (inputStream == null) {
+			throw new IOException("InputStream 为null");
+		}
+
+		short bufSize = 1024;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(bufSize);
+		BufferedInputStream in = null;
+
+		try {
+			in = new BufferedInputStream(inputStream);
+			byte[] buffer = new byte[bufSize];
+			int len1;
+			while (-1 != (len1 = in.read(buffer, 0, bufSize))) {
+				bos.write(buffer, 0, len1);
+			}
+
+			byte[] var7 = bos.toByteArray();
+			return var7;
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException var14) {
+				logger.error("出现异常", var14);
+			}
+
+			bos.close();
+		}
+	}
 
 	/**
 	 * 通过InputStream读取文件
