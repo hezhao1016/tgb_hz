@@ -3,55 +3,57 @@ package com.hz.tgb.api.invoice.ocr.glority;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.hz.tgb.crypto.Base64Utils;
 import com.hz.tgb.crypto.MD5Util;
-import com.hz.tgb.file.FileUtil;
 import com.hz.tgb.http.util.HttpClientUtil;
 import com.hz.tgb.http.util.HttpConfig;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
- * 睿琪票据识别 - http://fapiao.glority.cn/docs/apiInterface.html
- *
- * 票小秘
+ * 验真 - http://fapiao.glority.cn/docs/apiInterface.html
  *
  * Created by hezhao on 2018/11/6 17:14
  */
-public class Test1 {
+public class Test3 {
 
     private static String appKey = "xxxxxx"; // 这里输入提供的app_key
     private static String appSecret = "xxxxxx"; // 这里输入提供的app_secret
-    private static String host = "http://fapiao.glority.cn/v1/item/get_item_info";
+    private static String host = "http://fapiao.glority.cn/v1/item/fapiao_validation";
 
     public static void main(String[] args) throws Exception{
         long start = System.currentTimeMillis();
 
-        int size = 10;
-        String[] imagePaths = new String[size];
+        Map<String, String> postMapSpecial = new HashMap<>();
+        postMapSpecial.put("code","044031800104"); // 发票代码，非空
+        postMapSpecial.put("number","04124339"); // 发票号码，非空
+        postMapSpecial.put("date","2018年09月22日"); // 开票日期，非空
+        postMapSpecial.put("pretax_amount","260.34"); // 总金额(不含税)，专票不为空，普票可为空
+        postMapSpecial.put("check_code","73061489073796572511"); // 校验码，专票可为空，普票不为空
+        postMapSpecial.put("type","10101"); // 发票类型
 
-        String[] sources = {
-                "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163849.jpg",
-                "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163741.jpg",
-                "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163901.jpg",
-                "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163942.jpg",
-                "D:/qq聊天记录/1993721152/FileRecv/MobileFile/IMG_20180925_163821.jpg",
-                "C:/Users/Administrator/Pictures/TIM图片20180927182211.jpg",// 增值税普通发票
-                "C:/Users/Administrator/Pictures/TIM图片20180925144712.png",// 增值税电子普通发票
-        };
-        Random rd = new Random(System.nanoTime());
+        Map<String, String> postMapNormal = new HashMap<>();
+        postMapNormal.put("code","044001633111"); // 发票代码，非空
+        postMapNormal.put("number","15874692"); // 发票号码，非空
+        postMapNormal.put("date","2018年09月16日"); // 开票日期，非空
+        postMapNormal.put("pretax_amount","75.95"); // 总金额(不含税)，专票不为空，普票可为空
+        postMapNormal.put("check_code","46869547952233124630"); // 校验码，专票可为空，普票不为空
+        postMapNormal.put("type","10102"); // 发票类型
 
+        int size = 2;
+        Map<String, String>[] postMaps = new Map[size];
         for (int i = 0; i < size; i++) {
-            imagePaths[i] = sources[rd.nextInt(sources.length)];
+            if (i % 2 == 0){
+                postMaps[i] = postMapSpecial; // 专票
+                continue;
+            }
+            postMaps[i] = postMapNormal; // 普票
         }
 
-        for (int i = 0; i < imagePaths.length; i++) {
+        for (int i = 0; i < postMaps.length; i++) {
             System.out.println("\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
             long s = System.currentTimeMillis();
-            ocr(imagePaths[i]);
+            validation(postMaps[i]);
             long e = System.currentTimeMillis();
             System.out.println("Time["+i+"]: " + (e - s));
         }
@@ -61,24 +63,26 @@ public class Test1 {
 
     }
 
-    public static void ocr(String imagePath) throws Exception {
-        System.out.println(imagePath);
-        if (StringUtils.isBlank(imagePath)) {
-            System.out.println("图片路径为空");
+    public static void validation(Map<String, String> postMap) throws Exception {
+        System.out.println(postMap);
+        if (postMap == null || postMap.size() == 0) {
+            System.out.println("参数Map为空");
             return;
         }
 
         long timestamp = System.currentTimeMillis() / 1000;
         String token = MD5Util.md5(appKey + "+" + timestamp + "+" + appSecret).toLowerCase();
 
-        String base64 = Base64Utils.encode(FileUtil.readFileByBytes(imagePath));
-
         Map<String, String> map = new HashMap<>();
         map.put("app_key", appKey);
         map.put("timestamp", String.valueOf(timestamp));
         map.put("token", token);
-        map.put("image_data", base64);
-        map.put("type", "0"); // 要识别的发票类型: 0: 自动识别(默认值) 1: 增值税发票(大票) 2: 出租车,火车票, 机打发票, 增值税卷票(小票-自动识别)
+        map.put("code", postMap.get("code"));
+        map.put("number", postMap.get("number"));
+        map.put("check_code", postMap.get("check_code"));
+        map.put("pretax_amount", postMap.get("pretax_amount"));
+        map.put("date", postMap.get("date"));
+        map.put("type", postMap.get("type"));
         HttpConfig httpConfig = new HttpConfig();
         httpConfig.setCharset("utf-8");
         httpConfig.setContentType("application/x-www-form-urlencoded");
@@ -96,28 +100,13 @@ public class Test1 {
 
         JSONArray identifyResults = data.getJSONArray("identify_results");
         JSONObject identifyResult = identifyResults.getJSONObject(0);
-        String type = identifyResult.getString("type");
-        System.out.println(type);
 
-        // 发票信息
-        JSONObject details = identifyResult.getJSONObject("details");
-        System.out.println(details.toJSONString());
+        // 发票验真信息
+        JSONObject validation = identifyResult.getJSONObject("validation");
+        System.out.println(validation.toJSONString());
 
-        if ("10200".equals(type)) { // 定额发票
-            String code = details.getString("code"); // 发票代码
-            String number = details.getString("number"); // 号码
-            String total = details.getString("total"); // 总金额
-
-        } else if ("10507".equals(type)) { // 路桥费
-            String code = details.getString("code"); // 发票代码
-            String number = details.getString("number"); // 号码
-            String total = details.getString("total"); // 总金额
-            String date = details.getString("date"); // 日期
-            String time = details.getString("time"); // 时间
-            String entrance = details.getString("entrance"); // 入口
-            String exit = details.getString("exit"); // 出口
-
-        }
+        String code = validation.getString("code"); // 发票验真结果代码
+        String message = validation.getString("message"); // 发票查验结果详细信息
 
     }
 
@@ -153,6 +142,17 @@ public class Test1 {
     10900	可报销其他发票
     00000	其他
     20100	国际小票
+
+    发票验真结果代码
+    10000	查验成功
+    10001	查无此票
+    10002	查验信息不一致(一般是专票未税金额不正确)
+    10003	验真次数超过限制，同一张票一天最多可以查验5次
+    10004	不支持验真发票类型
+    10005	无效参数（发票代码，号码，开票日期等为空或者格式错误，普票验证码为空，专票税前金额为空等不合法参数错误）
+    10006	其他错误
+    说明：其中验真结果代码为 10000,10001,10002,10003时，视为一次有效查验，计算验真费用，其他值不计费
+
     */
 
 }

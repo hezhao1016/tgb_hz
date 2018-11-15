@@ -42,10 +42,10 @@ public class TestTrueTruth {
         Map<String, String>[] postMaps = new Map[size];
         for (int i = 0; i < size; i++) {
             if (i % 2 == 0){
-                postMaps[i] = postMapSpecial; // 专票
+                postMaps[i] = postMapSpecial; // 增值税普通发票
                 continue;
             }
-            postMaps[i] = postMapNormal; // 普票
+            postMaps[i] = postMapNormal; // 增值税电子普通发票
         }
 
         for (int i = 0; i < postMaps.length; i++) {

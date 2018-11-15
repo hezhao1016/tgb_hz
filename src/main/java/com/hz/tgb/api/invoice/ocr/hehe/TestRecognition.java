@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * 发票识别
@@ -28,14 +29,17 @@ public class TestRecognition {
     public static void main(String[] args) {
         long start = System.currentTimeMillis();
 
-        int size = 10;
+        int size = 2;
         String[] imagePaths = new String[size];
+
+        String[] sources = {
+                "C:/Users/Administrator/Pictures/TIM图片20180927182211.jpg",// 增值税普通发票
+                "C:/Users/Administrator/Pictures/TIM图片20180925144712.png",// 增值税电子普通发票
+        };
+        Random rd = new Random(System.nanoTime());
+
         for (int i = 0; i < size; i++) {
-            if (i % 2 == 0){
-                imagePaths[i] = "C:/Users/Administrator/Pictures/TIM图片20180927182211.jpg"; // 专票
-                continue;
-            }
-            imagePaths[i] = "C:/Users/Administrator/Pictures/TIM图片20180925144712.png"; // 普票
+            imagePaths[i] = sources[rd.nextInt(sources.length)];
         }
 
         for (int i = 0; i < imagePaths.length; i++) {
