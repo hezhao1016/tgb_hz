@@ -128,7 +128,7 @@ public class Test2 {
             System.out.println(validationCode + "," + validationMessage);
         } else {
             // 验真成功
-            JSONArray items = details.getJSONArray("items"); //
+            JSONArray items = details.getJSONArray("items"); // 货物列表
 
             // 增值税专用发票, 增值税普通发票, 增值税普通电子发票
             if ("10100".equals(type) || "10101".equals(type) || "10102".equals(type) ) {
@@ -146,14 +146,14 @@ public class Test2 {
                     for (int i = 0; i < items.size(); i++) {
                         JSONObject item = items.getJSONObject(i);
 
-                        String name = details.getString("name"); // 货物或应税劳务、服务名称
-                        String specification = details.getString("specification"); // 规格型号
-                        String unit = details.getString("unit"); // 单位
-                        String quantity = details.getString("quantity"); // 数量
-                        String price = details.getString("price"); // 单价
-                        String item_total = details.getString("total"); // 金额
-                        String tax_rate = details.getString("tax_rate"); // 税率，例如：16
-                        String Tax = details.getString("tax"); // 税额
+                        String name = item.getString("name"); // 货物或应税劳务、服务名称
+                        String specification = item.getString("specification"); // 规格型号
+                        String unit = item.getString("unit"); // 单位
+                        String quantity = item.getString("quantity"); // 数量
+                        String price = item.getString("price"); // 单价
+                        String item_total = item.getString("total"); // 金额
+                        String tax_rate = item.getString("tax_rate"); // 税率，例如：16
+                        String Tax = item.getString("tax"); // 税额
 
                     }
 
@@ -166,10 +166,10 @@ public class Test2 {
                     for (int i = 0; i < items.size(); i++) {
                         JSONObject item = items.getJSONObject(i);
 
-                        String item_name = details.getString("item"); // 项目
-                        String quantity = details.getString("quantity"); // 数量
-                        String price_with_tax = details.getString("price_with_tax"); // 含税单价
-                        String total_with_tax = details.getString("total_with_tax"); // 金额
+                        String item_name = item.getString("item"); // 项目
+                        String quantity = item.getString("quantity"); // 数量
+                        String price_with_tax = item.getString("price_with_tax"); // 含税单价
+                        String total_with_tax = item.getString("total_with_tax"); // 金额
 
                     }
 
