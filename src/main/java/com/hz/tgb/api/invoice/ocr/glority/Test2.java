@@ -8,6 +8,7 @@ import com.hz.tgb.crypto.MD5Util;
 import com.hz.tgb.file.FileUtil;
 import com.hz.tgb.http.util.HttpClientUtil;
 import com.hz.tgb.http.util.HttpConfig;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -95,29 +96,86 @@ public class Test2 {
         JSONObject details = identifyResult.getJSONObject("details");
         System.out.println(details.toJSONString());
 
-        if ("10100".equals(type)) { // 增值税
-            String code = details.getString("code"); // 发票代码
-            String number = details.getString("number"); // 号码
-            String date = details.getString("date"); // 开票日期
+        String code = details.getString("code"); // 发票代码
+        String number = details.getString("number"); // 号码
+        String date = details.getString("date"); // 开票日期
+        String total = details.getString("total"); // 价税合计
+        String check_code = details.getString("check_code"); // 校验码
+        String seller = details.getString("seller"); // 销售方名称
+        String seller_tax_id = details.getString("seller_tax_id"); // 销售方纳税人识别号
+        String buyer = details.getString("buyer"); // 购买方方名称
+        String buyer_tax_id = details.getString("buyer_tax_id"); // 购买方纳税人识别号
+
+        // 增值税专用发票, 增值税普通发票, 增值税普通电子发票
+        if ("10100".equals(type) || "10101".equals(type) || "10102".equals(type) ) {
             String pretax_amount = details.getString("pretax_amount"); // 税前金额
-            String total = details.getString("total"); // 价税合计
-            String check_code = details.getString("check_code"); // 校验码
-            String seller = details.getString("seller"); // 销售方名称
-            String seller_tax_id = details.getString("seller_tax_id"); // 销售方纳税人识别号
-            String buyer = details.getString("buyer"); // 购买方方名称
-            String buyer_tax_id = details.getString("buyer_tax_id"); // 购买方纳税人识别号
             String company_seal = details.getString("company_seal"); // 是否有公司印章（0：没有； 1： 有）
             String form_type = details.getString("form_type"); // 发票是第几联
 
-        }
+        } else if ("10103".equals(type)) {
+            // 增值税普通发票（卷式）
+            String category = details.getString("category"); // 种类，oil 表示是加油票
 
+        }
 
         // 发票验真信息
         JSONObject validation = identifyResult.getJSONObject("validation");
         System.out.println(validation.toJSONString());
 
-        String code = validation.getString("code"); // 发票验真结果代码
-        String message = validation.getString("message"); // 发票查验结果详细信息
+        String validationCode = validation.getString("code"); // 发票验真结果代码
+        if (!"10000".equals(validationCode)) {
+            String validationMessage = validation.getString("message"); // 发票查验结果详细信息
+            System.out.println(validationCode + "," + validationMessage);
+        } else {
+            // 验真成功
+            JSONArray items = details.getJSONArray("items"); //
+
+            // 增值税专用发票, 增值税普通发票, 增值税普通电子发票
+            if ("10100".equals(type) || "10101".equals(type) || "10102".equals(type) ) {
+                String tax = details.getString("tax"); // 税额
+                String seller_addr_tel = details.getString("seller_addr_tel"); // 销售方地址电话
+                String seller_bank_account = details.getString("seller_bank_account"); // 销售方开户行及帐号
+                String buyer_addr_tel = details.getString("buyer_addr_tel"); // 购买方地址电话
+                String buyer_bank_account = details.getString("buyer_bank_account"); // 购买方开户行及帐号
+                String remark = details.getString("remark"); // 备注
+                String machine_code = details.getString("machine_code"); // 机器编号
+                String invalid_mark = details.getString("invalid_mark"); // 作废标志（0：否； 1：是）
+                String oil_mark = details.getString("oil_mark"); // 成品油标志（0：否； 1：是）
+
+                if (CollectionUtils.isNotEmpty(items)) {
+                    for (int i = 0; i < items.size(); i++) {
+                        JSONObject item = items.getJSONObject(i);
+
+                        String name = details.getString("name"); // 货物或应税劳务、服务名称
+                        String specification = details.getString("specification"); // 规格型号
+                        String unit = details.getString("unit"); // 单位
+                        String quantity = details.getString("quantity"); // 数量
+                        String price = details.getString("price"); // 单价
+                        String item_total = details.getString("total"); // 金额
+                        String tax_rate = details.getString("tax_rate"); // 税率，例如：16
+                        String Tax = details.getString("tax"); // 税额
+
+                    }
+
+                }
+
+            } else if ("10103".equals(type)) { // 增值税普通发票（卷式）
+                String receiptor = details.getString("receiptor"); // 收货员，增值税普通发票（卷式）字段
+
+                if (CollectionUtils.isNotEmpty(items)) {
+                    for (int i = 0; i < items.size(); i++) {
+                        JSONObject item = items.getJSONObject(i);
+
+                        String item_name = details.getString("item"); // 项目
+                        String quantity = details.getString("quantity"); // 数量
+                        String price_with_tax = details.getString("price_with_tax"); // 含税单价
+                        String total_with_tax = details.getString("total_with_tax"); // 金额
+
+                    }
+
+                }
+            }
+        }
 
     }
 
