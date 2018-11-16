@@ -30,7 +30,7 @@ public class Test3 {
         postMapSpecial.put("number","04124339"); // 发票号码，非空
         postMapSpecial.put("date","2018年09月22日"); // 开票日期，非空
         postMapSpecial.put("pretax_amount","260.34"); // 总金额(不含税)，专票不为空，普票可为空
-        postMapSpecial.put("check_code","73061489073796572511"); // 校验码，专票可为空，普票不为空
+        postMapSpecial.put("check_code","572511"); // 校验码后6位，专票可为空，普票不为空
         postMapSpecial.put("type","10101"); // 发票类型
 
         Map<String, String> postMapNormal = new HashMap<>();
@@ -38,7 +38,7 @@ public class Test3 {
         postMapNormal.put("number","15874692"); // 发票号码，非空
         postMapNormal.put("date","2018年09月16日"); // 开票日期，非空
         postMapNormal.put("pretax_amount","75.95"); // 总金额(不含税)，专票不为空，普票可为空
-        postMapNormal.put("check_code","46869547952233124630"); // 校验码，专票可为空，普票不为空
+        postMapNormal.put("check_code","124630"); // 校验码后6位，专票可为空，普票不为空
         postMapNormal.put("type","10102"); // 发票类型
 
         int size = 2;
