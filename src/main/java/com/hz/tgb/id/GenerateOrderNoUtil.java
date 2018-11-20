@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.hz.tgb.id;
 
@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class GenerateOrderNoUtil {
 
+    private static final String name = "LOAN";
+
     /***
      * 获取指定长度的订单号(推荐订单号27位)
      * @param length
@@ -28,13 +30,13 @@ public class GenerateOrderNoUtil {
         if (length <= 0) {
             return result;
         }
-        SnowFlake snowFlake = SnowFlakeUtils.getInstance(0, length, "LOAN");
+        SnowFlake snowFlake = SnowFlakeUtils.getInstance(0, length, name);
         // 雪花算法生成的随机id
         long snowRandowmId = snowFlake.nextId();
         String snowRandowmIdStr = String.valueOf(snowRandowmId);
         int randomLength = snowRandowmIdStr.length();
         if (length < randomLength) {
-            result = RandomUtil.getRandomUuidStr(length);
+            result = RandomUtil.getRandomNumByUuid(length);
         } else {
             int paddingLen = length - randomLength;
             result = paddingStr(snowRandowmIdStr, '0', paddingLen);
@@ -42,7 +44,7 @@ public class GenerateOrderNoUtil {
 
         return result;
     }
-    
+
     /***
      * 获取指定长度含日期的订单号(推荐订单号27位)
      * @param length
@@ -56,7 +58,7 @@ public class GenerateOrderNoUtil {
 
     /***
      * 填充指定长度的字符串,右填充
-     * 
+     *
      * @param source
      * @param c
      * @param paddingLen
@@ -68,6 +70,10 @@ public class GenerateOrderNoUtil {
             sb.append(c);
         }
         return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(GenerateOrderNoUtil.getOrderNo(27));
     }
 }
 

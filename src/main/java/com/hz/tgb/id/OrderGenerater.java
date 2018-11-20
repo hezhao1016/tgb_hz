@@ -17,9 +17,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 订单号生成器
- * 
+ *
  * @author Yaphis 2015年4月29日 下午7:12:44
- * 
+ *
  * 订单号生成工具类 - Yaphis的个人页面
  * https://my.oschina.net/yaphis/blog/408933
  */
@@ -37,23 +37,23 @@ public class OrderGenerater {
     private static final Lock lock = new ReentrantLock(true);
 
     private static final int TIMEOUTSECODES = 3;
-    
+
     private OrderGenerater() {
-		// 私有类构造方法
-	}
+        // 私有类构造方法
+    }
 
     /**
      * 生成订单号，生成规则：时间戳 + 机器IP最后两位 + 2位随机数 + 两位自增序列 <br>
      * 采用可重入锁减小锁持有的粒度，提高系统在高并发情况下的性能
-     * 
+     *
      * @return
      */
     public static String generateOrder() {
         StringBuilder builder = new StringBuilder();
         builder.append(getDateTime(FORMATSTRING))
-               .append(getNumberFromMechine())
-               .append(getRandomNum())
-               .append(getIncrement());
+                .append(getNumberFromMechine())
+                .append(getRandomNum())
+                .append(getIncrement());
         return builder.toString();
     }
 
@@ -66,13 +66,13 @@ public class OrderGenerater {
      */
     public static String generateOrder(String prefix, int len) {
         StringBuilder builder = new StringBuilder(prefix);
-        builder.append(RandomUtil.getRandomUuidStr(len - prefix.length()));
+        builder.append(RandomUtil.getRandomNumByUuid(len - prefix.length()));
         return builder.toString();
     }
 
     /**
      * 获取系统当前时间
-     * 
+     *
      * @param formatStr
      * @return
      */
@@ -83,7 +83,7 @@ public class OrderGenerater {
 
     /**
      * 获取自增序列
-     * 
+     *
      * @return
      */
     private static String getIncrement() {
@@ -116,11 +116,11 @@ public class OrderGenerater {
 
     /**
      * 返回两位随机整数
-     * 
+     *
      * @return
      */
     private static String getRandomNum() {
-        int num = new Random(System.nanoTime()).nextInt(100);
+        int num = new Random().nextInt(100);
         if (num < 10) {
             return "0" + num;
         } else {

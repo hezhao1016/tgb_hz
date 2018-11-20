@@ -7,7 +7,6 @@ import java.util.UUID;
  * 随机数工具类
  *
  * @author hezhao
- * @version v01.00.00 $Revision$
  * @date 2015年4月7日
  * @time 下午7:58:49
  */
@@ -30,7 +29,7 @@ public class RandomUtil {
 	 * @param len 指定长度
 	 * @return
 	 */
-	public static String getRandomNumStr(int len) {
+	public static String getRandomNum(int len) {
 		StringBuffer sb = new StringBuffer();
 		Random random = new Random();
 		for (int i = 0; i < len; i++) {
@@ -64,7 +63,7 @@ public class RandomUtil {
 	 * @param length
 	 * @return String
 	 */
-	public static String getRandomNumWordStr(int length) {
+	public static String getRandomNumAndWord(int length) {
 		String val = "";
 
 		Random random = new Random();
@@ -107,7 +106,7 @@ public class RandomUtil {
 	 * @param len
 	 * @return
 	 */
-	public static String getRandomUuidStr(int len) {
+	public static String getRandomNumByUuid(int len) {
 		StringBuffer sb = new StringBuffer();
 		Random random = new Random(UUID.randomUUID().hashCode());
 		for (int i = 0; i < len; i++) {
@@ -137,13 +136,12 @@ public class RandomUtil {
 		return uuid;
 	}
 
-
 	public static void main(String[] args) {
-		System.out.println(getRandomNumStr(6));
+		System.out.println(getRandomNum(6));
 		System.out.println(getRandomStr(6));
-		System.out.println(getRandomNumWordStr(6));
+		System.out.println(getRandomNumAndWord(6));
 		System.out.println(getRandomHexStr(6));
-		System.out.println(getRandomUuidStr(6));
+		System.out.println(getRandomNumByUuid(6));
 		System.out.println(getUuid());
 		System.out.println(getUuidNoLine());
 	}
