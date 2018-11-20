@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.hz.tgb.id;
 
 import com.hz.tgb.common.RandomUtil;

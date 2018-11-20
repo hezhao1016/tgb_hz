@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.hz.tgb.crypto.aes;
 
 import com.hz.tgb.common.ByteUtil;
@@ -18,10 +15,9 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-
 /**
- * @author 80114515
  * 新的AES加解密工具类,用于兼容与Andriod的加解密
+ * @author 80114515
  */
 public class AesNewUtil {
     private static final Logger logger = LoggerFactory.getLogger(AesNewUtil.class);
