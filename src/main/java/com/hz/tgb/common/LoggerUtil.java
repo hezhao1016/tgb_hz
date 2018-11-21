@@ -10,6 +10,10 @@ package com.hz.tgb.common;
  */
 public class LoggerUtil {
 
+	private LoggerUtil() {
+		// 私有类构造方法
+	}
+
 	/**
 	 * 进入方法打印日志
 	 * @param clazz

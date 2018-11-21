@@ -6,14 +6,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * 文件类型
+ *
  * create by hezhao on 2017-08-16
  */
 public final class FileTypeJudge {
 
-    /**
-     * 私有构造器
-     */
     private FileTypeJudge() {
+        // 私有类构造方法
     }
 
     /**

@@ -7,6 +7,10 @@ import java.io.*;
  */
 public class FileUtil {
 
+    private FileUtil() {
+        // 私有类构造方法
+    }
+
     /**
      * 读取文件内容，作为字符串返回
      */

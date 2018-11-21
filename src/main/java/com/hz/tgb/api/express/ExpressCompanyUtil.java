@@ -15,6 +15,10 @@ public class ExpressCompanyUtil {
     /** 物流公司列表 */
     private static final Map<String, String> COMPANY = new HashMap<>(50);
 
+    private ExpressCompanyUtil() {
+        // 私有类构造方法
+    }
+
     static {
         initialCountryMap();
     }

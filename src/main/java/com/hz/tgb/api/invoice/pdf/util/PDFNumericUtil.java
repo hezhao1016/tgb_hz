@@ -11,6 +11,10 @@ import java.util.Locale;
  */
 public class PDFNumericUtil {
 
+    private PDFNumericUtil() {
+        // 私有类构造方法
+    }
+
     public static final BigDecimal DECIMAL_ZERO;
     public static final BigDecimal DECIMAL_PERCENT;
     private static final NumberFormat usFormat;
@@ -19,9 +23,6 @@ public class PDFNumericUtil {
         DECIMAL_ZERO = BigDecimal.ZERO;
         DECIMAL_PERCENT = (new BigDecimal(100)).setScale(0, 4);
         usFormat = NumberFormat.getNumberInstance(Locale.US);
-    }
-
-    public PDFNumericUtil() {
     }
 
     public static BigDecimal multiply(BigDecimal faciend, BigDecimal multiplier) {

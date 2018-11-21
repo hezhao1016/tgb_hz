@@ -9,7 +9,8 @@ import java.util.regex.Pattern;
  */
 public class PDFNumberValidationUtils {
 
-    public PDFNumberValidationUtils() {
+    private PDFNumberValidationUtils() {
+        // 私有类构造方法
     }
 
     private static boolean isMatch(String regex, String orginal) {

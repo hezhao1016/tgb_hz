@@ -10,6 +10,10 @@ import org.slf4j.LoggerFactory;
  */
 public class EmojiUtil {
 
+    private EmojiUtil() {
+        // 私有类构造方法
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(EmojiUtil.class);
 
     /**

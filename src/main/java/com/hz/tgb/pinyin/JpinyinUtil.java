@@ -18,7 +18,7 @@ import com.github.stuxuhai.jpinyin.PinyinHelper;
 public class JpinyinUtil {
 
     private JpinyinUtil() {
-        // 私有构造方法
+        // 私有类构造方法
     }
 
     /**

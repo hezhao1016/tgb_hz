@@ -1,12 +1,14 @@
 package com.hz.tgb.crypto;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.security.MessageDigest;
 
 /**
  * MD5加密工具类
  *
  * @author hezhao
- * @version v01.00.00
+ * @version v1.0
  * @date 2015年4月17日
  * @time 下午5:15:50
  */
@@ -22,41 +24,109 @@ public class MD5Util {
 	}
 
 	/**
-	 * 对字符串进行MD5加密
+	 * 对字符串进行加密
 	 *
 	 * @author hezhao
-	 * @param s
+	 * @param str 字符串
+	 * @param algorithm 加密算法，例如：MD2、MD5、SHA-1、SHA-256、SHA-384、SHA-512
 	 * @return
 	 */
-	public static final String md5(String s) {
+	public static String digest(String str, String algorithm) {
 		try {
-			byte[] strTemp = s.getBytes();
-			MessageDigest mdTemp = MessageDigest.getInstance("MD5");
+			byte[] strTemp = str.getBytes();
+			MessageDigest mdTemp = MessageDigest.getInstance(algorithm);
 			mdTemp.update(strTemp);
 			byte[] md = mdTemp.digest();
 			int j = md.length;
-			char str[] = new char[j * 2];
+			char[] chars = new char[j * 2];
 			int k = 0;
 			for (int i = 0; i < j; i++) {
 				byte byte0 = md[i];
-				str[k++] = hexDigits[byte0 >>> 4 & 0xf];
-				str[k++] = hexDigits[byte0 & 0xf];
+                chars[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                chars[k++] = hexDigits[byte0 & 0xf];
 			}
-			return new String(str);
+			return new String(chars);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
+    /**
+     * 对字符串进行MD2加密
+     *
+     * @author hezhao
+     * @param str 字符串
+     * @return
+     */
+    public static String md2(String str) {
+        return digest(str, "MD2");
+    }
+
+    /**
+     * 对字符串进行SHA-1加密
+     *
+     * @author hezhao
+     * @param str 字符串
+     * @return
+     */
+    public static String sha1(String str) {
+        return digest(str, "SHA-1");
+    }
+
+    /**
+     * 对字符串进行SHA-256加密
+     *
+     * @author hezhao
+     * @param str 字符串
+     * @return
+     */
+    public static String sha256(String str) {
+        return digest(str, "SHA-256");
+    }
+
+    /**
+     * 对字符串进行SHA-384加密
+     *
+     * @author hezhao
+     * @param str 字符串
+     * @return
+     */
+    public static String sha384(String str) {
+        return digest(str, "SHA-384");
+    }
+
+    /**
+     * 对字符串进行SHA-512加密
+     *
+     * @author hezhao
+     * @param str 字符串
+     * @return
+     */
+    public static String sha512(String str) {
+        return digest(str, "SHA-512");
+    }
+
+    //////////////////////////////////////// MD5 //////////////////////////////////////
+    /**
+     * 对字符串进行MD5加密
+     *
+     * @author hezhao
+     * @param str 字符串
+     * @return
+     */
+    public static String md5(String str) {
+        return digest(str, "MD5");
+    }
+
 	/**
 	 * 对字符串自行2次MD5加密MD5(MD5(s))
 	 *
 	 * @author hezhao
-	 * @param s
+	 * @param str 字符串
 	 * @return
 	 */
-	public static final String md5x2(String s) {
-		return md5(md5(s));
+	public static String md5x2(String str) {
+		return md5(md5(str));
 	}
 
 	/**
@@ -70,7 +140,7 @@ public class MD5Util {
 	 *            已加密的字符串
 	 * @return boolean
 	 */
-	public static final boolean check(String strOne, String strTwo) {
+	public static boolean check(String strOne, String strTwo) {
 		if (md5(strOne).equals(strTwo)) {
 			return true;
 		} else {
@@ -78,7 +148,7 @@ public class MD5Util {
 		}
 	}
 
-	//////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////// Hash ///////////////////////////////////////
 	/**
 	 * 对字符串进行MD5加密,需要提供秘钥
 	 *
@@ -114,7 +184,7 @@ public class MD5Util {
 	 *            已加密的字符串
 	 * @return boolean
 	 */
-	public static final boolean checkHash(String strOne, String key, String strTwo) {
+	public static boolean checkHash(String strOne, String key, String strTwo) {
 		if (hash(strOne,key).equals(strTwo)) {
 			return true;
 		} else {
@@ -123,6 +193,7 @@ public class MD5Util {
 	}
 
 	public static void main(String[] args) {
+        System.out.println("===================md5====================");
 		System.out.println(MD5Util.md5("admin"));
 		System.out.println(MD5Util.md5("加密"));
 		System.out.println(MD5Util.md5("20121lkkfaoisdfO$^#@!221"));
@@ -130,8 +201,28 @@ public class MD5Util {
 		System.out.println(MD5Util.check("admin","21232F297A57A5A743894A0E4A801FC3"));
 
 
+		System.out.println("\n==================各种加密=====================");
+        System.out.println(MD5Util.md5x2("admin"));
+        System.out.println(MD5Util.md2("admin"));
+        System.out.println(MD5Util.sha1("admin"));
+        System.out.println(MD5Util.sha256("admin"));
+        System.out.println(MD5Util.sha384("admin"));
+        System.out.println(MD5Util.sha512("admin"));
+
+
+		System.out.println("\n==================hash=====================");
 		System.out.println(hash("admin","123"));
 		System.out.println(checkHash("admin","123","0192023A7BBD73250516F069DF18B500"));
+
+
+		// 推荐使用 Apache加密解密工具类 -> DigestUtils
+		System.out.println("\n===================DigestUtils====================");
+		System.out.println(DigestUtils.md5Hex("admin"));
+		System.out.println(DigestUtils.md2Hex("admin"));
+		System.out.println(DigestUtils.sha1Hex("admin"));
+		System.out.println(DigestUtils.sha256Hex("admin"));
+		System.out.println(DigestUtils.sha384Hex("admin"));
+		System.out.println(DigestUtils.sha512Hex("admin"));
 	}
 
 }

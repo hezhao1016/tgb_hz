@@ -29,6 +29,10 @@ import java.util.regex.Pattern;
  */
 public class PDFReaderUtil {
 
+	private PDFReaderUtil() {
+		// 私有类构造方法
+	}
+
 	public static final String kpje_key = "(小写)";
 	public static final String kpje_key2 = "（小写）";
 	public static final String kpje_key3 = "(大写)";

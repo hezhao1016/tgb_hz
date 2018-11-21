@@ -13,17 +13,21 @@ import java.util.Map;
 public class CountryUtil {
 
     /** 所有的国家信息列表 */
-    public static final List<CountryInfo> COUNTRY_INFO_LIST = new ArrayList<>(233);
+    private static final List<CountryInfo> COUNTRY_INFO_LIST = new ArrayList<>(233);
     /** 电话区号与国家信息键值对 */
-    public static final Map<String, CountryInfo> COUNTRY_PHONE_CODE_MAP = new HashMap<>();
+    private static final Map<String, CountryInfo> COUNTRY_PHONE_CODE_MAP = new HashMap<>();
     /** 电话区号(带+号)与国家信息键值对 */
-    public static final Map<String, CountryInfo> COUNTRY_PHONE_CODE_PLUS_MAP = new HashMap<>();
+    private static final Map<String, CountryInfo> COUNTRY_PHONE_CODE_PLUS_MAP = new HashMap<>();
     /** 英文名称与国家信息键值对 */
-    public static final Map<String, CountryInfo> COUNTRY_ENGLISH_NAME_MAP = new HashMap<>();
+    private static final Map<String, CountryInfo> COUNTRY_ENGLISH_NAME_MAP = new HashMap<>();
     /** 中文名称与国家信息键值对 */
-    public static final Map<String, CountryInfo> COUNTRY_CHINESE_NAME_MAP = new HashMap<>();
+    private static final Map<String, CountryInfo> COUNTRY_CHINESE_NAME_MAP = new HashMap<>();
     /** 国际域名缩写与国家信息键值对 */
-    public static final Map<String, CountryInfo> COUNTRY_SHORT_NAME_MAP = new HashMap<>();
+    private static final Map<String, CountryInfo> COUNTRY_SHORT_NAME_MAP = new HashMap<>();
+
+    private CountryUtil() {
+        // 私有类构造方法
+    }
 
     static {
         initialCountryInfoList();
@@ -239,13 +243,72 @@ public class CountryUtil {
         }
     }
 
+    /**
+     * 获取国家信息
+     * @param map
+     * @param key
+     * @return
+     */
+    private static CountryInfo getCountryInfo(Map<String, CountryInfo> map, String key) {
+        if (StringUtil.isBlank(key)) {
+            return null;
+        }
+
+        return map.get(key);
+    }
+
+    /**
+     * 根据电话区号获取国家信息
+     * @param phoneAreaNo
+     * @return
+     */
+    public static CountryInfo getCountryInfoByPhoneAreaNo(String phoneAreaNo) {
+        return getCountryInfo(COUNTRY_PHONE_CODE_MAP, phoneAreaNo);
+    }
+
+    /**
+     * 根据电话区号(带+号)获取国家信息
+     * @param phoneAreaNoPlus
+     * @return
+     */
+    public static CountryInfo getCountryInfoByPhoneAreaNoPlus(String phoneAreaNoPlus) {
+        return getCountryInfo(COUNTRY_PHONE_CODE_PLUS_MAP, phoneAreaNoPlus);
+    }
+
+    /**
+     * 根据英文名称获取国家信息
+     * @param enName
+     * @return
+     */
+    public static CountryInfo getCountryInfoByEnglishName(String enName) {
+        return getCountryInfo(COUNTRY_ENGLISH_NAME_MAP, enName);
+    }
+
+    /**
+     * 根据中文名称获取国家信息
+     * @param cnName
+     * @return
+     */
+    public static CountryInfo getCountryInfoByChineseName(String cnName) {
+        return getCountryInfo(COUNTRY_CHINESE_NAME_MAP, cnName);
+    }
+
+    /**
+     * 根据国际域名缩写获取国家信息
+     * @param shortName
+     * @return
+     */
+    public static CountryInfo getCountryInfoByShortName(String shortName) {
+        return getCountryInfo(COUNTRY_SHORT_NAME_MAP, shortName);
+    }
+
     public static void main(String[] args) {
         // 根据电话区号查询国家信息
-        CountryInfo countryInfo = CountryUtil.COUNTRY_PHONE_CODE_PLUS_MAP.get("+86");
+        CountryInfo countryInfo = CountryUtil.getCountryInfoByPhoneAreaNoPlus("+86");
         System.out.println(countryInfo);
 
         // 根据缩写查询国家信息
-        CountryInfo countryInfo2 = CountryUtil.COUNTRY_SHORT_NAME_MAP.get("JP");
+        CountryInfo countryInfo2 = CountryUtil.getCountryInfoByShortName("JP");
         System.out.println(countryInfo2);
     }
 

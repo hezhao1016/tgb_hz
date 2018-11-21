@@ -8,6 +8,10 @@ import java.util.Arrays;
  */
 public class ByteUtil {
 
+    private ByteUtil() {
+        // 私有类构造方法
+    }
+
     /***
      * byte数组转换为16进制字符串
      *

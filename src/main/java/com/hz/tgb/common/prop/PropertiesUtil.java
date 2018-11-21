@@ -25,8 +25,12 @@ public class PropertiesUtil {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
 	
-	//属性文件名称
-    private String fileName;  
+	/** 属性文件名称 */
+    private String fileName;
+
+    private PropertiesUtil() {
+        // 私有类构造方法
+    }
   
     /** 
      * @param fileName 文件全路径 

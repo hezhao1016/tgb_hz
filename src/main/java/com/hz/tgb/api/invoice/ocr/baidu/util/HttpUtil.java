@@ -13,6 +13,10 @@ import java.util.Map;
  */
 public class HttpUtil {
 
+    private HttpUtil() {
+        // 私有类构造方法
+    }
+
     public static String post(String requestUrl, String accessToken, String params)
             throws Exception {
         String contentType = "application/x-www-form-urlencoded";

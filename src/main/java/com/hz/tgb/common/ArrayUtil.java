@@ -12,6 +12,10 @@ import java.util.*;
  * @Version V 1.0
  */
 public class ArrayUtil {
+    private ArrayUtil() {
+        // 私有类构造方法
+    }
+
 	/*
 	 * 排序算法的分类如下：
 	 * 1.插入排序（直接插入排序、折半插入排序、希尔排序）；

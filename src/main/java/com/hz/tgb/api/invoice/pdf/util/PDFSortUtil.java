@@ -11,7 +11,8 @@ import java.util.List;
  */
 public class PDFSortUtil {
 
-    public PDFSortUtil() {
+    private PDFSortUtil() {
+        // 私有类构造方法
     }
 
     public static <V> void sort(List<V> list, final String... properties) {

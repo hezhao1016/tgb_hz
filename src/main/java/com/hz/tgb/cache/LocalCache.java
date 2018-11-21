@@ -22,6 +22,10 @@ public class LocalCache {
     /** 默认的缓存时间 */
     private static final long DEFULT_EXPIRE = 30 * 60 * 1000;
 
+    private LocalCache() {
+        // 私有类构造方法
+    }
+
     /**
      * 插入缓存
      * 

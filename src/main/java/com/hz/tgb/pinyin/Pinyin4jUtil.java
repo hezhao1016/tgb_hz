@@ -32,7 +32,7 @@ public class Pinyin4jUtil {
     }
 
     private Pinyin4jUtil(){
-        // 私有构造方法
+        // 私有类构造方法
     }
 
     static{

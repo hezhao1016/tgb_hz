@@ -5,6 +5,10 @@ package com.hz.tgb.common;
  */
 public class MaskUtil {
 
+    private MaskUtil() {
+        // 私有类构造方法
+    }
+
     /***
      * 手机号打码处理
      * 

@@ -17,6 +17,11 @@ import com.google.common.collect.Lists;
  * @Time   2017年8月1日 下午5:49:19
  */
 public class ListUtil {
+
+	private ListUtil() {
+		// 私有类构造方法
+	}
+
 	/*
 	 * 排序算法的分类如下： 1.插入排序（直接插入排序、折半插入排序、希尔排序）； 2.交换排序（冒泡排序、快速排序）；
 	 * 3.选择排序（直接选择排序、堆排序）； 4.归并排序； 5.分配排序（基数排序）。

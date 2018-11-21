@@ -12,6 +12,10 @@ import java.util.Map;
  */
 public class HttpUtil {
 
+    private HttpUtil() {
+        // 私有类构造方法
+    }
+
     /**
      * POST请求
      *

@@ -12,6 +12,10 @@ import java.util.Map;
  */
 public class CommonUtil {
 
+    private CommonUtil() {
+        // 私有类构造方法
+    }
+
     public static String toString(Object obj) {
         return (obj == null) ? "" : obj.toString();
     }
