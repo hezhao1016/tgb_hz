@@ -6,12 +6,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.hz.tgb.crypto.Base64Utils;
 import com.hz.tgb.crypto.MD5Util;
 import com.hz.tgb.file.FileUtil;
-import com.hz.tgb.http.util.HttpClientUtil;
-import com.hz.tgb.http.util.HttpConfig;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 import java.util.Random;
 
 /**
@@ -73,16 +74,21 @@ public class Test1 {
 
         String base64 = Base64Utils.encode(FileUtil.readFileByBytes(imagePath));
 
-        Map<String, String> map = new HashMap<>();
-        map.put("app_key", appKey);
-        map.put("timestamp", String.valueOf(timestamp));
-        map.put("token", token);
-        map.put("image_data", base64);
-        map.put("type", "0"); // 要识别的发票类型: 0: 自动识别(默认值) 1: 增值税发票(大票) 2: 出租车,火车票, 机打发票, 增值税卷票(小票-自动识别)
-        HttpConfig httpConfig = new HttpConfig();
-        httpConfig.setCharset("utf-8");
-        httpConfig.setContentType("application/x-www-form-urlencoded");
-        String json = HttpClientUtil.doPost(host, map, httpConfig);
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(host)
+                .post(new FormBody.Builder()
+                        .add("app_key", appKey)
+                        .add("timestamp", String.valueOf(timestamp))
+                        .add("token", token)
+                        .add("image_data", base64)
+                        .add("type", "0") // 要识别的发票类型: 0: 自动识别(默认值) 1: 增值税发票(大票) 2: 出租车,火车票, 机打发票, 增值税卷票(小票-自动识别)
+                        .build())
+                .build();
+
+        Response response = client.newCall(request).execute();
+
+        String json = response.body().string();
         System.out.println(json);
 
         JSONObject jsonObject = JSON.parseObject(json);
