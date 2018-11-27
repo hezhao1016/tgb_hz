@@ -929,7 +929,7 @@ public class DateUtil {
 	 * @return
 	 */
 	public static String getCurrentDate() {
-		return dateFormat.format(new Date());
+		return dateFormat.format(getNow());
 	}
 
 	/**
@@ -941,7 +941,7 @@ public class DateUtil {
 	 */
 	public static String getCurrentDate(String pattern) {
 		SimpleDateFormat sdf = getFormatInstance(pattern);
-		return sdf.format(new Date());
+		return sdf.format(getNow());
 	}
 
 	/**
@@ -1385,12 +1385,13 @@ public class DateUtil {
 	}
 
 	/**
-	 * 返回一天的开始时间
+	 * 返回一天的开始时间，有误差
 	 *
 	 * @param day
 	 * @return
 	 */
-	public static Date getDayFrom(Date day) {
+	@Deprecated
+	public static Date getDayStart(Date day) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(day);
 		cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -1400,11 +1401,12 @@ public class DateUtil {
 	}
 
 	/**
-	 * 返回一天的结束时间
+	 * 返回一天的结束时间,有误差
 	 *
 	 * @param day
 	 * @return
 	 */
+	@Deprecated
 	public static Date getDayEnd(Date day) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(day);
@@ -1412,6 +1414,46 @@ public class DateUtil {
 		cal.set(Calendar.MINUTE, 59);
 		cal.set(Calendar.SECOND, 59);
 		return cal.getTime();
+	}
+
+	/**
+	 * 返回当天的开始时间 00:00:00
+	 *
+	 * @return
+	 */
+	public static Date getDateStart() {
+		return getDateStart(getNow());
+	}
+
+	/**
+	 * 返回一天的开始时间 00:00:00
+	 *
+	 * @param day
+	 * @return
+	 */
+	public static Date getDateStart(Date day) {
+		Date date = DateUtil.parse(DateUtil.format(day, "yyyy-MM-dd 00:00:00"), DAFAULT_DATETIME_FORMAT);
+		return date;
+	}
+
+	/**
+	 * 返回当天的结束时间 23:59:59
+	 *
+	 * @return
+	 */
+	public static Date getDateEnd() {
+		return getDateEnd(getNow());
+	}
+
+	/**
+	 * 返回一天的结束时间 23:59:59
+	 *
+	 * @param day
+	 * @return
+	 */
+	public static Date getDateEnd(Date day) {
+		Date date = DateUtil.parse(DateUtil.format(day, "yyyy-MM-dd 23:59:59"), DAFAULT_DATETIME_FORMAT);
+		return date;
 	}
 
 	// /**
