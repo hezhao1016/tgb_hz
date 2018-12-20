@@ -1,5 +1,6 @@
 package com.hz.tgb.file;
 
+import com.hz.tgb.common.StringUtil;
 import org.apache.commons.io.input.BOMInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1072,6 +1073,7 @@ public class FileUtil {
 		if (objects == null || objects.length == 0)
 			return;
 		try {
+			mkFile(filePath);
 			File f = new File(filePath);
 			MyObjectOutputStream out = MyObjectOutputStream.newInstance(f,
 					new FileOutputStream(f, isAppend));
@@ -1087,22 +1089,40 @@ public class FileUtil {
 	}
 
 	/**
-	 * 将文件内容写入文件（使用UTF-8编码）
+	 * 将文件内容写入文件[编码格式，默认UTF-8]
 	 *
+	 * @param filePath
+	 *            输出文件路径
 	 * @param content
 	 *            文件内容
-	 * @param outputPath
-	 *            输出文件路径
 	 * @throws Exception
 	 */
-	public static void writeTextUTF8(String content, String outputPath) throws Exception {
+	public static void writeText(String filePath, String content) throws Exception {
+		writeText(filePath, content, "UTF-8");
+	}
+
+	/**
+	 * 将文件内容写入文件
+	 *
+	 * @param filePath
+	 *            输出文件路径
+	 * @param content
+	 *            文件内容
+	 * @param charsetName
+	 *            编码格式，默认UTF-8
+	 * @throws Exception
+	 */
+	public static void writeText(String filePath, String content, String charsetName) throws Exception {
 		if (content == null || content.length() == 0)
 			return;
-		mkFile(outputPath);
-		File file = new File(outputPath);
+
+		if (StringUtil.isBlank(charsetName))
+			charsetName = "UTF-8";
+
+		mkFile(filePath);
+		File file = new File(filePath);
 		FileOutputStream fos = new FileOutputStream(file);
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos,
-				"UTF-8"));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos, charsetName));
 		bw.write(content);
 		bw.flush();
 		bw.close();
@@ -1112,24 +1132,23 @@ public class FileUtil {
 	/**
 	 * 将字符串写到文件内
 	 *
-	 * @param outputPath
+	 * @param filePath
 	 *            输出文件路径
 	 * @param content
-	 *            字符串
-	 * @param isApend
+	 *            文件内容
+	 * @param isAppend
 	 *            是否追加
 	 * @throws IOException
 	 */
-	public static void writeText(String content, String outputPath, boolean isApend) throws IOException {
+	public static void writeText(String filePath, String content, boolean isAppend) throws IOException {
 		if (content == null || content.length() == 0)
 			return;
-		if (new File(outputPath).exists()) {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(outputPath,
-					isApend));
-			bw.write(content);
-			bw.flush();
-			bw.close();
-		}
+
+		mkFile(filePath);
+		BufferedWriter bw = new BufferedWriter(new FileWriter(filePath, isAppend));
+		bw.write(content);
+		bw.flush();
+		bw.close();
 	}
 
 	/**
