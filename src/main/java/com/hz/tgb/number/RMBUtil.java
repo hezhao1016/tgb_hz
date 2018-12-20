@@ -101,7 +101,8 @@ public class RMBUtil {
                 zeroSize = 0;
             } else {
                 ++zeroSize;
-                if (!(getZero) && numUnit != 0) {
+                // if (!(getZero) && numUnit != 0) { // 这些写法会造成如：302，叁佰贰圆整
+                if (!(getZero)) { // 这些写法如：302，叁佰零贰圆整
                     sb.insert(0, CN_UPPER_NUMBER[numUnit]);
                 }
                 if (numIndex == 2) {
