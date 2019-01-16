@@ -20,7 +20,7 @@ public class LocalCache {
     private static final Logger LOG = LoggerFactory.getLogger(LocalCache.class);
 
     /** 默认的缓存时间[7天],单位毫秒 */
-    private static final long DEFAULT_EXPIRE = 7 * 24 * 60 * 60 * 1000;
+    private static final long DEFAULT_EXPIRE = 604800000L;
 
     /** 默认的最大缓存个数[20万个] */
     private static final long MAX_COUNT = 200000;
