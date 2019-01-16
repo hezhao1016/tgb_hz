@@ -36,6 +36,8 @@ public class LocalCache {
      * @param t
      */
     public static <T> void insertCache(String key, T t) {
+        LOG.info("insert to cache >>> key:{} value:{}", key, t);
+
         // 这里简单设计 防止缓存过大导致内存溢出
         if (cacheMap.size() >= MAX_COUNT) {
             LOG.error("current cacheMap size:{},has up to limit!", cacheMap.size());
@@ -52,6 +54,7 @@ public class LocalCache {
      * @param key
      */
     public static void deleteCache(String key) {
+        LOG.info("delete from cache >>> key:{}", key);
         cacheMap.remove(key);
     }
 
@@ -70,6 +73,7 @@ public class LocalCache {
                 cacheMap.remove(key);
                 return null; // 缓存已经过期
             } else {
+                LOG.info("query from cache >>> key:{} value:{}", key, localCache);
                 return localCache;
             }
         }
