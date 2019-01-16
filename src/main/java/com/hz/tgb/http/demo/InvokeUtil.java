@@ -18,7 +18,7 @@ import com.hz.tgb.crypto.aes.BackAES;
  * @Version V 1.0
  */
 public class InvokeUtil {
-	private static Logger logger = LoggerFactory.getLogger(InvokeUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(InvokeUtil.class);
 	private static final String INTERFACE_NAME = "InvokeUtil";
 	private static final String AES_KEY = "dAA%D#V*2a9r4I!V";
 	private static final String SERVER_URL = "http://127.0.0.7/interfacexx/";

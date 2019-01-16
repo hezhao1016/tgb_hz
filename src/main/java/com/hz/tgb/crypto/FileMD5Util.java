@@ -17,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class FileMD5Util {
 
-    private static Logger log = LoggerFactory.getLogger(FileMD5Util.class);
+    private static final Logger log = LoggerFactory.getLogger(FileMD5Util.class);
 
     protected static char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 

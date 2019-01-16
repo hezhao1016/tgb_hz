@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DubboResponseAspect {
 
-    protected Logger LOG = LoggerFactory.getLogger(getClass());
+    protected static final Logger LOG = LoggerFactory.getLogger(DubboResponseAspect.class);
 
     /**
      * 切点

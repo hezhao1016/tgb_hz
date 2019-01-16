@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
  */
 public class EmailUtil 
 {
-	private static Logger logger = LoggerFactory.getLogger(EmailUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(EmailUtil.class);
 	
 	// 邮件发送协议 
     private static final String PROTOCOL = "smtp"; 

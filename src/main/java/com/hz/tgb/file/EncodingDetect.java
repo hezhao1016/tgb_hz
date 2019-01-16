@@ -19,7 +19,7 @@ import java.net.URL;
  */
 public class EncodingDetect {
 
-    protected static Logger LogManager = LoggerFactory.getLogger(EncodingDetect.class);
+    protected static final Logger LogManager = LoggerFactory.getLogger(EncodingDetect.class);
 
     public static String getJavaEncode(String filePath) {
         BytesEncodingDetect s = new BytesEncodingDetect();

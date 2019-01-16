@@ -24,7 +24,7 @@ import javax.swing.ImageIcon;
  */
 public class ImageMarkLogoUtil {
 
-    private final static Logger logger = LoggerFactory.getLogger(ImageMarkLogoUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImageMarkLogoUtil.class);
 	
 	/** 水印透明度 */
 	private static float alpha = 0.5f;

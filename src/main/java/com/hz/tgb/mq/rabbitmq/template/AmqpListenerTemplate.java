@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public abstract class AmqpListenerTemplate<T> implements MessageListener {
 
-    protected Logger LOG = LoggerFactory.getLogger(getClass());
+    protected static final Logger LOG = LoggerFactory.getLogger(AmqpListenerTemplate.class);
 
     @Override
     public void onMessage(Message message) {

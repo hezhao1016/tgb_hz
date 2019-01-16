@@ -18,7 +18,7 @@ import java.util.Map.Entry;
  */
 public class HttpClientUtils {
 
-	private static Logger log = LoggerFactory.getLogger(HttpClientUtils.class);
+	private static final Logger log = LoggerFactory.getLogger(HttpClientUtils.class);
 
 	@Deprecated
 	public static String request(final Map<String, String> reqParams, final String paramName, final String url) {

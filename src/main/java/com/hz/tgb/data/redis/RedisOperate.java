@@ -20,7 +20,7 @@ import java.util.Map;
 @Service
 public class RedisOperate {
 
-    public static Logger logger = LoggerFactory.getLogger(RedisOperate.class);
+    public static final Logger logger = LoggerFactory.getLogger(RedisOperate.class);
 
     /***
      * 缓存key的前缀

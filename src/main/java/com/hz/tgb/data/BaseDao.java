@@ -23,7 +23,7 @@ import java.util.Properties;
  */
 public class BaseDao {
 	
-	private final Logger logger = LoggerFactory.getLogger(BaseDao.class);
+	private static final Logger logger = LoggerFactory.getLogger(BaseDao.class);
 	
 	private final boolean isLog = true;//是否记录SQL日志
 	private final boolean isConfig = false;//是否需要配置文件

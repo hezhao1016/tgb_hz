@@ -13,7 +13,7 @@ import java.util.List;
  * 对象赋值工具类，Bean -> BeanDto.
  */
 public class EntityCopyUtils {
-    private static Logger logger = LoggerFactory.getLogger(EntityCopyUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(EntityCopyUtils.class);
 
     static {
         org.apache.commons.beanutils.BeanUtilsBean.getInstance().getConvertUtils().register(false, false, 0);

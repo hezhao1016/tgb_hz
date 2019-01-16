@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 @Service("redisPool")
 public class RedisPool {
 
-    private static Logger logger = LoggerFactory.getLogger(RedisPool.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisPool.class);
 
     /**
      * if use redis, should check these files:

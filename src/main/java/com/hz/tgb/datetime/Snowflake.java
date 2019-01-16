@@ -14,46 +14,46 @@ public class Snowflake {
     /**
      * 起始的时间戳。
      */
-    private final static long START_TIMESTAMP = 1511435554743L;
+    private static final long START_TIMESTAMP = 1511435554743L;
 
     /**
      * 序列号占用的位数。
      */
-    private final static long SEQUENCE_BITS = 12;
+    private static final long SEQUENCE_BITS = 12;
 
     /**
      * 服务器标识占用的位数。
      */
-    private final static long MACHINE_ID_BITS = 5;
+    private static final long MACHINE_ID_BITS = 5;
 
     /**
      * 数据中心标识占用的位数。
      */
-    private final static long DATACENTER_ID_BITS = 5;
+    private static final long DATACENTER_ID_BITS = 5;
 
     /**
      * 数据中心标识最大值。
      */
-    private final static long MAX_DATACENTER_ID = -1L ^ (-1L << DATACENTER_ID_BITS);
+    private static final long MAX_DATACENTER_ID = -1L ^ (-1L << DATACENTER_ID_BITS);
 
     /**
      * 服务器标识最大值。
      */
-    private final static long MAX_MACHINE_ID = -1L ^ (-1L << MACHINE_ID_BITS);
+    private static final long MAX_MACHINE_ID = -1L ^ (-1L << MACHINE_ID_BITS);
 
     /**
      * 序列号最大值。
      */
-    private final static long MAX_SEQUENCE = -1L ^ (-1L << SEQUENCE_BITS);
+    private static final long MAX_SEQUENCE = -1L ^ (-1L << SEQUENCE_BITS);
 
     /**
      * 每一部分向左的位移。
      */
-    private final static long MACHINE_LEFT = SEQUENCE_BITS;
+    private static final long MACHINE_LEFT = SEQUENCE_BITS;
 
-    private final static long DATACENTER_LEFT = SEQUENCE_BITS + MACHINE_ID_BITS;
+    private static final long DATACENTER_LEFT = SEQUENCE_BITS + MACHINE_ID_BITS;
 
-    private final static long TIMESTAMP_LEFT = DATACENTER_LEFT + DATACENTER_ID_BITS;
+    private static final long TIMESTAMP_LEFT = DATACENTER_LEFT + DATACENTER_ID_BITS;
 
     /**
      * 数据中心标识。

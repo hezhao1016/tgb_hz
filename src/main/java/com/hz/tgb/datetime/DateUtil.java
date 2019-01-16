@@ -114,7 +114,7 @@ public class DateUtil {
 		System.out.println(hour);
 	}
 
-	private static Logger logger = LoggerFactory.getLogger(DateUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
 
 	/**
 	 * 缺省的日期格式 yyyy-MM-dd

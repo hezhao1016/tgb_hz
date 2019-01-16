@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class DateListUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(DateListUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(DateListUtil.class);
 
     private DateListUtil() {
         // 私有类构造方法

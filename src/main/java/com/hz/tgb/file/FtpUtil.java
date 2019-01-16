@@ -22,7 +22,7 @@ import java.io.InputStream;
  */
 public class FtpUtil {
 
-	private static Logger logger = LoggerFactory.getLogger(FtpUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(FtpUtil.class);
 
 	/**
 	 * 向FTP服务器上传文件。

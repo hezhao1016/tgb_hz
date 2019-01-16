@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException;
  */
 public class HashUtil {
 
-    private static Logger log = LoggerFactory.getLogger(HashUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(HashUtil.class);
 
     public HashUtil() {
     }

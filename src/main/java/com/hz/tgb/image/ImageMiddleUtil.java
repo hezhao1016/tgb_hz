@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ImageMiddleUtil {
 
-	private final static Logger logger = LoggerFactory.getLogger(ImageMiddleUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(ImageMiddleUtil.class);
 
 	/**
 	 * 图片压缩方法

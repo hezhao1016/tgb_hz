@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * 登录过滤器
  */
 public class LoginFilter implements Filter {
-	private static Logger logger = LoggerFactory.getLogger(LoginFilter.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginFilter.class);
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {

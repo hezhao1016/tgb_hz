@@ -22,7 +22,7 @@ import java.util.List;
  * @Time 2017年7月28日 上午11:47:16
  */
 public class FileUtil {
-	protected static Logger logger = LoggerFactory.getLogger(FileUtil.class);
+	protected static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
 	/**
 	 * 分隔符

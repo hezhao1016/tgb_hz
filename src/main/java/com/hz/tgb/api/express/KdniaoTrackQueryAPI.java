@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class KdniaoTrackQueryAPI {
 
-    private static Logger logger = LoggerFactory.getLogger(KdniaoTrackQueryAPI.class);
+    private static final Logger logger = LoggerFactory.getLogger(KdniaoTrackQueryAPI.class);
 
     // DEMO
     public static void main(String[] args) {

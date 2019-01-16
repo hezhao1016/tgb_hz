@@ -22,7 +22,7 @@ import redis.clients.jedis.ShardedJedisPool;
  */
 @Service
 public class JedisUtil {
-    private static Logger logger = LoggerFactory.getLogger(JedisUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(JedisUtil.class);
 
     @Autowired
     private ShardedJedisPool shardedJedisPool;

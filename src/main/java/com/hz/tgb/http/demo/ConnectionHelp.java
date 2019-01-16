@@ -18,7 +18,7 @@ import java.util.Date;
  */
 public class ConnectionHelp {
 	//------ 实例化一个日志类 ------
-	private static Logger logger = LoggerFactory.getLogger(ConnectionHelp.class);
+	private static final Logger logger = LoggerFactory.getLogger(ConnectionHelp.class);
 	//------ 密钥 ------
 	public static final String PDK = "lmq";
 	//========== 调用接口路径 start ==========
