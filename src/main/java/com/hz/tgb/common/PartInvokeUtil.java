@@ -29,8 +29,8 @@ public class PartInvokeUtil {
         if (CollectionUtils.isEmpty(ids)) {
             return new ArrayList<>();
         }
-        List<V> list = new ArrayList<>();
         int size = ids.size();
+        List<V> list = new ArrayList<>();
         List<P> subIds;
         if (size > limit) {
             int count = size / limit;
@@ -66,8 +66,9 @@ public class PartInvokeUtil {
         if (ArrayUtils.isEmpty(ids)) {
             return new ArrayList<>();
         }
-        List<V> list = new ArrayList<>();
         int size = ids.length;
+        List<V> list = new ArrayList<>();
+        P[] subIds;
         if (size > limit) {
             int count = size / limit;
             if (size % limit != 0)  count += 1;
@@ -76,7 +77,7 @@ public class PartInvokeUtil {
                 if (i == count - 1) {
                     limit = size - (i * limit);
                 }
-                P[] subIds = Arrays.copyOfRange(ids, length, length + limit);
+                subIds = Arrays.copyOfRange(ids, length, length + limit);
                 length += limit;
                 if (ArrayUtils.isEmpty(subIds)) {
                     break;
@@ -92,7 +93,7 @@ public class PartInvokeUtil {
     /**
      * 分批执行
      * @param invoke 执行函数
-     * @param rows 结果集
+     * @param rows 结果集集合
      * @param limit 一批最大执行的次数
      * @param <T> 结果
      */
@@ -113,6 +114,39 @@ public class PartInvokeUtil {
                 subRows = rows.subList(length, length + limit);
                 length += limit;
                 if (CollectionUtils.isEmpty(subRows)) {
+                    break;
+                }
+                invoke.accept(subRows);
+            }
+        } else {
+            invoke.accept(rows);
+        }
+    }
+
+    /**
+     * 分批执行
+     * @param invoke 执行函数
+     * @param rows 结果集数组
+     * @param limit 一批最大执行的次数
+     * @param <T> 结果
+     */
+    public static <T> void partInvoke(Consumer<T[]> invoke, T[] rows, int limit) {
+        if (ArrayUtils.isEmpty(rows)) {
+            return;
+        }
+        int size = rows.length;
+        T[] subRows;
+        if (size > limit) {
+            int count = size / limit;
+            if (size % limit != 0) count += 1;
+            int length = 0;
+            for (int i = 0; i < count; i++) {
+                if (i == count - 1) {
+                    limit = size - (i * limit);
+                }
+                subRows = Arrays.copyOfRange(rows, length, length + limit);
+                length += limit;
+                if (ArrayUtils.isEmpty(subRows)) {
                     break;
                 }
                 invoke.accept(subRows);
