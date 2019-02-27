@@ -50,9 +50,22 @@ public class DateUtil {
 		System.out.println(getDateStyle("06:45").getValue());
 		System.out.println(addYear("2017", 5));
 
+        System.out.println("===========================Between START=========================");
 		System.out.println(daysBetween(getNow(), parse("2017-06-22")));
-		System.out.println(daysBetween("2017-01-12", "2017-08-22"));
-		System.out.println("===========================2=========================");
+		System.out.println(daysBetween("2017-08-22", "2017-01-22"));
+		System.out.println(daysBetweenNotAbs("2017-08-22", "2017-01-22"));
+
+        System.out.println(monthsBetween("2017-08-22", "2017-01-22"));
+        System.out.println(monthsBetweenNotAbs("2017-08-22", "2017-01-22"));
+
+        long time = DateUtil.dateDiffer("2018-09-18 23:45:11", "2018-09-19 02:45:12", DateEnums.DateStyle.yyyy_MM_dd_HH_mm_ss.getValue());
+        double hour = time / 1000.0 / 60 / 60;
+        System.out.println(hour);
+
+        long time2 = DateUtil.dateDifferNotAbs("2018-09-19 02:45:12", "2018-09-18 23:45:11", DateEnums.DateStyle.yyyy_MM_dd_HH_mm_ss.getValue());
+        double hour2 = time2 / 1000.0 / 60 / 60;
+        System.out.println(hour2);
+        System.out.println("===========================Between END=========================");
 
 		Date addDay = addDay(getNow(), -39);
 		System.out.println(formatDate(addDay));
@@ -108,42 +121,19 @@ public class DateUtil {
 		System.out.println(changeFormat("20181009", "yyyy-MM-dd"));
 		System.out.println(changeFormat("2018年10月09日", DateEnums.DateStyle.yyyy_MM_dd.getValue()));
 		System.out.println(changeFormat("2018-10-09", DateEnums.DateStyle.yyyyMMdd.getValue()));
-
-		long time = DateUtil.dateDiffer("2018-09-18 23:45:11", "2018-09-19 02:45:12", DateEnums.DateStyle.yyyy_MM_dd_HH_mm_ss.getValue());
-		double hour = time / 1000.0 / 60 / 60;
-		System.out.println(hour);
 	}
 
 	private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
 
-	/**
-	 * 缺省的日期格式 yyyy-MM-dd
-	 */
+	/** 缺省的日期格式 yyyy-MM-dd */
 	private static final String DAFAULT_DATE_FORMAT = "yyyy-MM-dd";
-
-	/**
-	 * 默认日期类型格试.
-	 *
-	 * @see DAFAULT_DATE_FORMAT
-	 */
-	private static final SimpleDateFormat dateFormat = new SimpleDateFormat(
-			DAFAULT_DATE_FORMAT);
-
-	/**
-	 * 缺省的日期时间格式 yyyy-MM-dd HH:mm:ss
-	 */
+	private static final SimpleDateFormat dateFormat = new SimpleDateFormat(DAFAULT_DATE_FORMAT);
+	/** 缺省的日期时间格式 yyyy-MM-dd HH:mm:ss */
 	private static final String DAFAULT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
-	private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat(
-			DAFAULT_DATETIME_FORMAT);
-
-	/**
-	 * 缺省的时间格式 HH:mm:ss
-	 */
+	private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat(DAFAULT_DATETIME_FORMAT);
+	/** 缺省的时间格式 HH:mm:ss */
 	private static final String DAFAULT_TIME_FORMAT = "HH:mm:ss";
-
-	private static final SimpleDateFormat timeFormat = new SimpleDateFormat(
-			DAFAULT_TIME_FORMAT);
+	private static final SimpleDateFormat timeFormat = new SimpleDateFormat(DAFAULT_TIME_FORMAT);
 
 	private DateUtil() {
 		// 私有类构造方法
@@ -256,46 +246,77 @@ public class DateUtil {
 	/**
 	 * 返回两个时间之间的差(毫秒数)
 	 *
-	 * @param time1 日期一
-	 * @param time2 日期二
+	 * @param startTime 日期开始
+	 * @param endTime 日期结束
 	 * @return 毫秒数[绝对值]
 	 */
-	public static long dateDiffer(Date time1, Date time2) {
-		if (time1 == null || time2 == null) {
-			return 0;
-		}
-
-		long differ = Math.abs(time1.getTime() - time2.getTime());
-		return differ;
+	public static long dateDiffer(Date startTime, Date endTime) {
+		return Math.abs(dateDifferNotAbs(startTime, endTime));
 	}
 
 	/**
 	 * 返回两个时间之间的差(毫秒数)
 	 *
-	 * @param time1 日期一
-	 * @param time2 日期二
-	 * @param formatStr 格式字符串
+	 * @param startTime 日期开始
+	 * @param endTime 日期结束
+     * @param pattern 日期格式
 	 * @return 毫秒数[绝对值]
 	 */
-	public static long dateDiffer(String time1, String time2, String formatStr) {
-		if (isEmpty(time1) || isEmpty(time2)) {
+	public static long dateDiffer(String startTime, String endTime, String pattern) {
+		return Math.abs(dateDifferNotAbs(startTime, endTime, pattern));
+	}
+
+	/**
+	 * 返回两个时间之间的差(毫秒数)
+	 *
+	 * @param startTime 日期开始
+	 * @param endTime 日期结束
+	 * @return 毫秒数[绝对值]
+	 */
+	public static long dateDiffer(String startTime, String endTime) {
+		return Math.abs(dateDifferNotAbs(startTime, endTime));
+	}
+
+	/**
+	 * 返回两个时间之间的差(毫秒数)
+	 *
+	 * @param startTime 日期开始
+	 * @param endTime 日期结束
+	 * @return 毫秒数
+	 */
+	public static long dateDifferNotAbs(Date startTime, Date endTime) {
+		if (startTime == null || endTime == null) {
+			return 0;
+		}
+		return endTime.getTime() - startTime.getTime();
+	}
+
+	/**
+	 * 返回两个时间之间的差(毫秒数)
+	 *
+	 * @param startTime 日期开始
+	 * @param endTime 日期结束
+	 * @param pattern 日期格式
+	 * @return 毫秒数
+	 */
+	public static long dateDifferNotAbs(String startTime, String endTime, String pattern) {
+		if (isEmpty(startTime) || isEmpty(endTime)) {
 			return 0L;
 		}
-
-		Date date1 = parse(time1, formatStr);
-		Date date2 = parse(time2, formatStr);
-		return dateDiffer(date1, date2);
+		Date startDate = parse(startTime, pattern);
+		Date endDate = parse(endTime, pattern);
+		return dateDifferNotAbs(startDate, endDate);
 	}
 
 	/**
 	 * 返回两个时间之间的差(毫秒数)
 	 *
-	 * @param time1 日期一
-	 * @param time2 日期二
-	 * @return 毫秒数[绝对值]
+	 * @param startTime 日期开始
+	 * @param endTime 日期结束
+	 * @return 毫秒数
 	 */
-	public static long dateDiffer(String time1, String time2) {
-		return dateDiffer(time1, time2, "");
+	public static long dateDifferNotAbs(String startTime, String endTime) {
+		return dateDifferNotAbs(startTime, endTime, null);
 	}
 
 	/**
@@ -303,66 +324,97 @@ public class DateUtil {
 	 *
 	 * @author hezhao
 	 * @Time 2016年8月26日 上午9:48:50
-	 * @param time1
-	 *            日期一
-	 * @param time2
-	 *            日期二
+	 * @param startDate 日期开始
+	 * @param endDate 日期结束
 	 * @return 日期差[绝对值]
 	 */
-	public static int daysBetween(Date time1, Date time2) {
-		if (time1 == null || time2 == null) {
-			return 0;
-		}
-
-		Calendar cDate1 = Calendar.getInstance();
-		Calendar cDate2 = Calendar.getInstance();
-		cDate1.setTime(time1);
-		cDate2.setTime(time2);
-		setTimeToMidnight(cDate1);
-		setTimeToMidnight(cDate2);
-		long todayMs = cDate1.getTimeInMillis();
-		long returnMs = cDate2.getTimeInMillis();
-		long intervalMs = returnMs - todayMs;
-		return Math.abs(millisecondsToDays(intervalMs));
+	public static int daysBetween(Date startDate, Date endDate) {
+        return Math.abs(daysBetweenNotAbs(startDate, endDate));
 	}
 
-	/**
-	 * 计算日期差
-	 *
-	 * @author hezhao
-	 * @Time 2016年8月26日 上午9:48:50
-	 * @param time1
-	 *            日期一
-	 * @param time2
-	 *            日期二
-	 * @param formatStr
-	 *            格式字符串
-	 * @return 日期差[绝对值]
-	 */
-	public static int daysBetween(String time1, String time2, String formatStr) {
-		if (isEmpty(time1) || isEmpty(time2)) {
-			return 0;
-		}
-
-		Date date1 = parse(time1, formatStr);
-		Date date2 = parse(time2, formatStr);
-		return daysBetween(date1, date2);
+    /**
+     * 计算日期差
+     *
+     * @author hezhao
+     * @Time 2016年8月26日 上午9:48:50
+     * @param startDate 日期开始
+     * @param endDate 日期结束
+     * @param pattern 日期格式
+     * @return 日期差[绝对值]
+     */
+	public static int daysBetween(String startDate, String endDate, String pattern) {
+        return Math.abs(daysBetweenNotAbs(startDate, endDate, pattern));
 	}
 
-	/**
-	 * 计算日期差
-	 *
-	 * @author hezhao
-	 * @Time 2016年8月26日 上午9:48:50
-	 * @param time1
-	 *            日期一
-	 * @param time2
-	 *            日期二
-	 * @return 日期差[绝对值]
-	 */
-	public static int daysBetween(String time1, String time2) {
-		return daysBetween(time1, time2, "");
+    /**
+     * 计算日期差
+     *
+     * @author hezhao
+     * @Time 2016年8月26日 上午9:48:50
+     * @param startDate 日期开始
+     * @param endDate 日期结束
+     * @return 日期差[绝对值]
+     */
+	public static int daysBetween(String startDate, String endDate) {
+		return Math.abs(daysBetweenNotAbs(startDate, endDate));
 	}
+
+    /**
+     * 计算日期差
+     *
+     * @author hezhao
+     * @Time 2016年8月26日 上午9:48:50
+     * @param startDate 日期开始
+     * @param endDate 日期结束
+     * @return 日期差
+     */
+    public static int daysBetweenNotAbs(Date startDate, Date endDate) {
+        if (startDate == null || endDate == null) {
+            return 0;
+        }
+        Calendar cDate1 = Calendar.getInstance();
+        Calendar cDate2 = Calendar.getInstance();
+        cDate1.setTime(startDate);
+        cDate2.setTime(endDate);
+        setTimeToMidnight(cDate1);
+        setTimeToMidnight(cDate2);
+        long todayMs = cDate1.getTimeInMillis();
+        long returnMs = cDate2.getTimeInMillis();
+        long intervalMs = returnMs - todayMs;
+        return millisecondsToDays(intervalMs);
+    }
+
+    /**
+     * 计算日期差
+     *
+     * @author hezhao
+     * @Time 2016年8月26日 上午9:48:50
+     * @param startDate 日期开始
+     * @param endDate 日期结束
+     * @param pattern 日期格式
+     * @return 日期差
+     */
+    public static int daysBetweenNotAbs(String startDate, String endDate, String pattern) {
+        if (isEmpty(startDate) || isEmpty(endDate)) {
+            return 0;
+        }
+        Date date1 = parse(startDate, pattern);
+        Date date2 = parse(endDate, pattern);
+        return daysBetweenNotAbs(date1, date2);
+    }
+
+    /**
+     * 计算日期差
+     *
+     * @author hezhao
+     * @Time 2016年8月26日 上午9:48:50
+     * @param startDate 日期开始
+     * @param endDate 日期结束
+     * @return 日期差
+     */
+    public static int daysBetweenNotAbs(String startDate, String endDate) {
+        return daysBetweenNotAbs(startDate, endDate, null);
+    }
 
 	private static int millisecondsToDays(long intervalMs) {
 		return (int) (intervalMs / (1000 * 86400));
@@ -379,63 +431,94 @@ public class DateUtil {
 	 *
 	 * @author hezhao
 	 * @Time 2018年02月24日 上午9:48:50
-	 * @param time1
-	 *            日期一
-	 * @param time2
-	 *            日期二
+	 * @param startDate 日期开始
+	 * @param endDate 日期结束
 	 * @return 月份差[绝对值]
 	 */
-	public static int monthsBetween(Date time1, Date time2) {
-		if (time1 == null || time2 == null) {
-			return 0;
-		}
-
-		Calendar bef = Calendar.getInstance();
-		Calendar aft = Calendar.getInstance();
-		bef.setTime(time1);
-		aft.setTime(time2);
-		int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
-		int month = (aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR)) * 12;
-		return Math.abs(month + result);
+	public static int monthsBetween(Date startDate, Date endDate) {
+		return Math.abs(monthsBetweenNotAbs(startDate, endDate));
 	}
 
-	/**
-	 * 计算月份差
-	 *
-	 * @author hezhao
-	 * @Time 2018年02月24日 上午9:48:50
-	 * @param time1
-	 *            日期一
-	 * @param time2
-	 *            日期二
-	 * @param formatStr
-	 *            格式字符串
-	 * @return 月份差[绝对值]
-	 */
-	public static int monthsBetween(String time1, String time2, String formatStr) {
-		if (isEmpty(time1) || isEmpty(time2)) {
-			return 0;
-		}
-
-		Date date1 = parse(time1, formatStr);
-		Date date2 = parse(time2, formatStr);
-		return monthsBetween(date1, date2);
+    /**
+     * 计算月份差
+     *
+     * @author hezhao
+     * @Time 2018年02月24日 上午9:48:50
+     * @param startDate 日期开始
+     * @param endDate 日期结束
+     * @param pattern 日期格式
+     * @return 月份差[绝对值]
+     */
+	public static int monthsBetween(String startDate, String endDate, String pattern) {
+		return Math.abs(monthsBetweenNotAbs(startDate, endDate, pattern));
 	}
 
-	/**
-	 * 计算月份差
-	 *
-	 * @author hezhao
-	 * @Time 2018年02月24日 上午9:48:50
-	 * @param time1
-	 *            日期一
-	 * @param time2
-	 *            日期二
-	 * @return 月份差[绝对值]
-	 */
-	public static int monthsBetween(String time1, String time2) {
-		return monthsBetween(time1, time2, "");
+    /**
+     * 计算月份差
+     *
+     * @author hezhao
+     * @Time 2018年02月24日 上午9:48:50
+     * @param startDate 日期开始
+     * @param endDate 日期结束
+     * @return 月份差[绝对值]
+     */
+	public static int monthsBetween(String startDate, String endDate) {
+		return Math.abs(monthsBetweenNotAbs(startDate, endDate));
 	}
+
+    /**
+     * 计算月份差
+     *
+     * @author hezhao
+     * @Time 2018年02月24日 上午9:48:50
+     * @param startDate 日期开始
+     * @param endDate 日期结束
+     * @return 月份差
+     */
+    public static int monthsBetweenNotAbs(Date startDate, Date endDate) {
+        if (startDate == null || endDate == null) {
+            return 0;
+        }
+        Calendar bef = Calendar.getInstance();
+        Calendar aft = Calendar.getInstance();
+        bef.setTime(startDate);
+        aft.setTime(endDate);
+        int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
+        int month = (aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR)) * 12;
+        return month + result;
+    }
+
+    /**
+     * 计算月份差
+     *
+     * @author hezhao
+     * @Time 2018年02月24日 上午9:48:50
+     * @param startDate 日期开始
+     * @param endDate 日期结束
+     * @param pattern 日期格式
+     * @return 月份差
+     */
+    public static int monthsBetweenNotAbs(String startDate, String endDate, String pattern) {
+        if (isEmpty(startDate) || isEmpty(endDate)) {
+            return 0;
+        }
+        Date date1 = parse(startDate, pattern);
+        Date date2 = parse(endDate, pattern);
+        return monthsBetweenNotAbs(date1, date2);
+    }
+
+    /**
+     * 计算月份差
+     *
+     * @author hezhao
+     * @Time 2018年02月24日 上午9:48:50
+     * @param startDate 日期开始
+     * @param endDate 日期结束
+     * @return 月份差
+     */
+    public static int monthsBetweenNotAbs(String startDate, String endDate) {
+        return monthsBetweenNotAbs(startDate, endDate, null);
+    }
 
 	/**
 	 * 时间戳转化为时间格式
