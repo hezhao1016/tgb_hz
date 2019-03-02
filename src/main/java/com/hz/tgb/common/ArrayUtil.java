@@ -102,6 +102,24 @@ public class ArrayUtil {
         return false == isEmpty((Object) array);
     }
 
+    /**
+     * 集合是否为空
+     * @param coll
+     * @return
+     */
+    public static boolean isEmpty(Collection coll) {
+        return coll == null || coll.isEmpty();
+    }
+
+    /**
+     * 集合是否为非空
+     * @param coll
+     * @return
+     */
+    public static boolean isNotEmpty(Collection coll) {
+        return !isEmpty(coll);
+    }
+
 	/**
 	 * 最后一个元素是不是存了元素
 	 * @author hezhao
@@ -1633,30 +1651,30 @@ public class ArrayUtil {
 	}
 
     // ---------------------------------------------------------------------- join
-	/**
-	 * 将数组转为字符串，逗号分隔，如 [1,2,3]
-	 *
-	 * @author hezhao
-	 * @Time 2016年8月18日 下午4:54:04
-	 * @param array
-	 * @return
-	 */
-	public static <T> String join(T[] array) {
-		if (array == null)
-			return "null";
-		int iMax = array.length - 1;
-		if (iMax == -1)
-			return "[]";
+    /**
+     * 将数组转为字符串，逗号分隔，如 [1,2,3]
+     *
+     * @author hezhao
+     * @Time 2016年8月18日 下午4:54:04
+     * @param array
+     * @return
+     */
+    public static <T> String join(T[] array) {
+        if (array == null)
+            return "null";
+        int iMax = array.length - 1;
+        if (iMax == -1)
+            return "[]";
 
-		StringBuilder sb = new StringBuilder();
-		sb.append('[');
-		for (int i = 0; ; i++) {
-			sb.append(array[i]);
-			if (i == iMax)
-				return sb.append(']').toString();
-			sb.append(", ");
-		}
-	}
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+        for (int i = 0; ; i++) {
+            sb.append(array[i] == null ? "null" : String.valueOf(array[i]));
+            if (i == iMax)
+                return sb.append(']').toString();
+            sb.append(", ");
+        }
+    }
 
 	/**
 	 * 将数组转为字符串，逗号分隔，如 [1,2,3]
@@ -1742,33 +1760,29 @@ public class ArrayUtil {
 		return join(toStringArray(array));
 	}
 
-	/**
-	 * 将数组转为字符串,并以某个字符相连，如 1#2#3
-	 *
-	 * @author hezhao
-	 * @Time 2017年8月1日 下午5:02:35
-	 * @param array
-	 * @param splitStr
-	 * @return
-	 */
-	public static <T> String join(T[] array, String splitStr) {
-		StringBuilder sb = new StringBuilder();
-		if (isEmpty(array)) {
-			return "";
-		}
-		if (array.length == 1)
-			return String.valueOf(array[0]);
-		int iMax = array.length - 1;
-		for (int i = 0; i < array.length; i++) {
-			if (i == iMax) {
-				sb.append(array[i]);
-			} else {
-				sb.append(array[i] + splitStr);
-			}
-		}
-
-		return sb.toString();
-	}
+    /**
+     * 将数组转为字符串,并以某个字符相连，如 1#2#3
+     *
+     * @author hezhao
+     * @Time 2017年8月1日 下午5:02:35
+     * @param array
+     * @param splitStr
+     * @return
+     */
+    public static <T> String join(T[] array, String splitStr) {
+        if (isEmpty(array))
+            return "";
+        if (array.length == 1)
+            return String.valueOf(array[0]);
+        int iMax = array.length - 1;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; ; i++) {
+            sb.append(array[i] == null ? "null" : String.valueOf(array[i]));
+            if (i == iMax)
+                return sb.toString();
+            sb.append(splitStr);
+        }
+    }
 
 	/**
 	 * 将数组转为字符串,并以某个字符相连，如 1#2#3
@@ -1854,51 +1868,43 @@ public class ArrayUtil {
 		return join(toStringArray(array), splitStr);
 	}
 
-	/**
-	 * 拼接Set集合，并以某个字符相连，如 1#2#3
-	 * @param set
-	 * @return
-	 */
-	public static <T> String joinSet(Set<T> set, String splitStr) {
-		if (set == null || set.size() == 0)
-			return "";
-		if (set.size() == 1){
-			for (T t : set) {
-				return String.valueOf(t);
-			}
-		}
+    /**
+     * 拼接List集合,并以某个字符相连，如 1#2#3
+     * @param list
+     * @return
+     */
+    public static <T> String join(List<T> list, String splitStr) {
+        if (isEmpty(list))
+            return "";
+        if (list.size() == 1)
+            return String.valueOf(list.get(0));
+        int iMax = list.size() - 1;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; ; i++) {
+            sb.append(list.get(i) == null ? "null" : String.valueOf(list.get(i)));
+            if (i == iMax)
+                return sb.toString();
+            sb.append(splitStr);
+        }
+    }
 
-		StringBuilder sb = new StringBuilder();
+    /**
+     * 拼接Set集合，并以某个字符相连，如 1#2#3
+     * @param set
+     * @return
+     */
+    public static <T> String join(Set<T> set, String splitStr) {
+        if (isEmpty(set))
+            return "";
+        if (set.size() == 1)
+            for (T t : set) return String.valueOf(t);
 
-		for (T t : set) {
-			sb.append(String.valueOf(t) + splitStr);
-		}
-		return sb.toString().substring(0, sb.length() - 1);
-	}
-
-	/**
-	 * 拼接List集合,并以某个字符相连，如 1#2#3
-	 * @param list
-	 * @return
-	 */
-	public static <T> String joinList(List<T> list, String splitStr) {
-		if (list == null || list.size() == 0)
-			return "";
-		if (list.size() == 1){
-			return String.valueOf(list.get(0));
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		for (int i = 0; i < list.size(); i++) {
-			if (i == list.size() - 1) {
-				sb.append(String.valueOf(list.get(i)));
-			} else {
-				sb.append(String.valueOf(list.get(i)) + splitStr);
-			}
-		}
-		return sb.toString();
-	}
+        StringBuilder sb = new StringBuilder();
+        for (T t : set) {
+            sb.append(t == null ? "null" : String.valueOf(t)).append(splitStr);
+        }
+        return sb.toString().substring(0, sb.length() - 1);
+    }
 
 
     // ---------------------------------------------------------------------- 排序算法开始
