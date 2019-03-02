@@ -1578,10 +1578,10 @@ public class DateUtil {
 			return null;
 
 		for (DateEnums.DateStyle style : DateEnums.DateStyle.values()) {
-			Date dateTmp = null;
+			Date dateTmp;
 			SimpleDateFormat sdf = new SimpleDateFormat(style.getValue());
 			try {
-				dateTmp = (Date) sdf.parse(date);
+				dateTmp = sdf.parse(date);
 				if (dateTmp != null && date.equals(sdf.format(dateTmp))) {
 					return style;
 				}
