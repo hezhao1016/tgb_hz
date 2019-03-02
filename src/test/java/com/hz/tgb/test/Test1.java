@@ -268,7 +268,7 @@ public class Test1 {
             }
         }
 
-        System.out.println(ArrayUtil.joinList(dateList,", "));
+        System.out.println(ArrayUtil.join(dateList,", "));
     }
 
 }
