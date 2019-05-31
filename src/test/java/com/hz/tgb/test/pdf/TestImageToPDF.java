@@ -1,7 +1,6 @@
 package com.hz.tgb.test.pdf;
 
 import com.hz.tgb.file.FileUtil;
-import com.hz.tgb.image.ImageUtil;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -44,8 +43,8 @@ public class TestImageToPDF {
         PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
         // 缩放图片, 不清晰
-        // ImageUtil.resize("C:/Users/Administrator/Pictures/TIM图片20180925144712.png", "D:/fapiao_s.png", 913, 591);
-        // cn.hutool.core.util.ImageUtil.scale(new File("C:/Users/Administrator/Pictures/TIM图片20180925144712.png"), new File("D:/fapiao_s.png"), 913, 591, null);
+        // ImageHelper.resize("C:/Users/Administrator/Pictures/TIM图片20180925144712.png", "D:/fapiao_s.png", 913, 591);
+        // cn.hutool.core.util.ImageHelper.scale(new File("C:/Users/Administrator/Pictures/TIM图片20180925144712.png"), new File("D:/fapiao_s.png"), 913, 591, null);
 
         // 创建PDImageXObject对象
         PDImageXObject pdImage = PDImageXObject.createFromFile("C:/Users/Administrator/Pictures/TIM图片20180927182211.jpg", document);

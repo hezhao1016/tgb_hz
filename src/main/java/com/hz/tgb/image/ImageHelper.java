@@ -1,45 +1,28 @@
 package com.hz.tgb.image;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.util.Iterator;
+import com.hz.tgb.file.FileUtil;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
-
-import com.hz.tgb.file.FileUtil;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URL;
+import java.util.Iterator;
 
 /**
  * 纯JAVA实现的图片处理工具类
  * @author hezhao
  * @Time   2017年8月1日 下午7:42:12
  */
-public class ImageUtil {
+public class ImageHelper {
 
     /**
      * 抓屏程序
@@ -613,8 +596,8 @@ public class ImageUtil {
 
     public static void main(String[] args) {
         try {
-            ImageUtil.captureScreen("D:/img.png");
-            ImageUtil.resize("D:/a.png", "D:/b.png", 1178, 761);
+            ImageHelper.captureScreen("D:/img.png");
+            ImageHelper.resize("D:/a.png", "D:/b.png", 1178, 761);
         } catch (Exception e) {
             e.printStackTrace();
         }

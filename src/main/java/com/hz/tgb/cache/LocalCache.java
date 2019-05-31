@@ -4,7 +4,7 @@ import com.hz.tgb.entity.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
 /**
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class LocalCache {
 
-    private static final Map<String, LocalCacheObj<Object>> cacheMap = new HashMap<String, LocalCacheObj<Object>>();
+    private static final Map<String, LocalCacheObj<Object>> cacheMap = new ConcurrentHashMap<>();
 
     private static final Logger LOG = LoggerFactory.getLogger(LocalCache.class);
 
