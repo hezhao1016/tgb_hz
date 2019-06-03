@@ -1,7 +1,5 @@
 package com.hz.tgb.reflect;
 
-import com.alibaba.dubbo.common.utils.ClassHelper;
-
 import java.lang.reflect.*;
 import java.net.URL;
 import java.security.CodeSource;
