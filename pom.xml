@@ -658,6 +658,8 @@
             <artifactId>okio</artifactId>
             <version>1.14.0</version>
         </dependency>
+
+        <!-- Shiro 权限 -->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
