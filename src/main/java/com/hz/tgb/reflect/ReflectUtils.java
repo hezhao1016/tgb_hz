@@ -1,5 +1,7 @@
 package com.hz.tgb.reflect;
 
+import com.alibaba.dubbo.common.utils.ClassHelper;
+
 import java.lang.reflect.*;
 import java.net.URL;
 import java.security.CodeSource;
@@ -7,6 +9,7 @@ import java.security.ProtectionDomain;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -93,6 +96,8 @@ public final class ReflectUtils {
 
     private static final ConcurrentMap<String, Method>  Signature_METHODS_CACHE = new ConcurrentHashMap<String, Method>();
 
+    private ReflectUtils(){}
+
     public static boolean isPrimitives(Class<?> cls) {
         if (cls.isArray()) {
             return isPrimitive(cls.getComponentType());
@@ -132,14 +137,12 @@ public final class ReflectUtils {
      * @param o instance.
      * @return compatible or not.
      */
-    public static boolean isCompatible(Class<?> c, Object o)
-    {
+    public static boolean isCompatible(Class<?> c, Object o) {
         boolean pt = c.isPrimitive();
         if( o == null )
             return !pt;
 
-        if( pt )
-        {
+        if( pt ) {
             if( c == int.class )
                 c = Integer.class;
             else if( c == boolean.class )
@@ -169,8 +172,7 @@ public final class ReflectUtils {
      * @param os object array.
      * @return compatible or not.
      */
-    public static boolean isCompatible(Class<?>[] cs, Object[] os)
-    {
+    public static boolean isCompatible(Class<?>[] cs, Object[] os) {
         int len = cs.length;
         if( len != os.length ) return false;
         if( len == 0 ) return true;
@@ -201,17 +203,13 @@ public final class ReflectUtils {
      * @param c class.
      * @return name.
      */
-    public static String getName(Class<?> c)
-    {
-        if( c.isArray() )
-        {
+    public static String getName(Class<?> c) {
+        if( c.isArray() ) {
             StringBuilder sb = new StringBuilder();
-            do
-            {
+            do {
                 sb.append("[]");
                 c = c.getComponentType();
-            }
-            while( c.isArray() );
+            } while( c.isArray() );
 
             return c.getName() + sb.toString();
         }
@@ -248,14 +246,12 @@ public final class ReflectUtils {
      * @param m method.
      * @return name.
      */
-    public static String getName(final Method m)
-    {
+    public static String getName(final Method m) {
         StringBuilder ret = new StringBuilder();
         ret.append(getName(m.getReturnType())).append(' ');
         ret.append(m.getName()).append('(');
         Class<?>[] parameterTypes = m.getParameterTypes();
-        for(int i=0;i<parameterTypes.length;i++)
-        {
+        for(int i=0;i<parameterTypes.length;i++) {
             if( i > 0 )
                 ret.append(',');
             ret.append(getName(parameterTypes[i]));
@@ -289,12 +285,10 @@ public final class ReflectUtils {
      * @param c constructor.
      * @return name.
      */
-    public static String getName(final Constructor<?> c)
-    {
+    public static String getName(final Constructor<?> c) {
         StringBuilder ret = new StringBuilder("(");
         Class<?>[] parameterTypes = c.getParameterTypes();
-        for(int i=0;i<parameterTypes.length;i++)
-        {
+        for(int i=0;i<parameterTypes.length;i++) {
             if( i > 0 )
                 ret.append(',');
             ret.append(getName(parameterTypes[i]));
@@ -311,18 +305,15 @@ public final class ReflectUtils {
      * @param c class.
      * @return desc.
      */
-    public static String getDesc(Class<?> c)
-    {
+    public static String getDesc(Class<?> c) {
         StringBuilder ret = new StringBuilder();
 
-        while( c.isArray() )
-        {
+        while( c.isArray() ) {
             ret.append('[');
             c = c.getComponentType();
         }
 
-        if( c.isPrimitive() )
-        {
+        if( c.isPrimitive() ) {
             String t = c.getName();
             if( "void".equals(t) ) ret.append(JVM_VOID);
             else if( "boolean".equals(t) ) ret.append(JVM_BOOLEAN);
@@ -333,9 +324,7 @@ public final class ReflectUtils {
             else if( "int".equals(t) ) ret.append(JVM_INT);
             else if( "long".equals(t) ) ret.append(JVM_LONG);
             else if( "short".equals(t) ) ret.append(JVM_SHORT);
-        }
-        else
-        {
+        } else {
             ret.append('L');
             ret.append(c.getName().replace('.', '/'));
             ret.append(';');
@@ -350,8 +339,7 @@ public final class ReflectUtils {
      * @param cs class array.
      * @return desc.
      */
-    public static String getDesc(final Class<?>[] cs)
-    {
+    public static String getDesc(final Class<?>[] cs) {
         if( cs.length == 0 )
             return "";
 
@@ -369,8 +357,7 @@ public final class ReflectUtils {
      * @param m method.
      * @return desc.
      */
-    public static String getDesc(final Method m)
-    {
+    public static String getDesc(final Method m) {
         StringBuilder ret = new StringBuilder(m.getName()).append('(');
         Class<?>[] parameterTypes = m.getParameterTypes();
         for(int i=0;i<parameterTypes.length;i++)
@@ -386,8 +373,7 @@ public final class ReflectUtils {
      * @param c constructor.
      * @return desc
      */
-    public static String getDesc(final Constructor<?> c)
-    {
+    public static String getDesc(final Constructor<?> c) {
         StringBuilder ret = new StringBuilder("(");
         Class<?>[] parameterTypes = c.getParameterTypes();
         for(int i=0;i<parameterTypes.length;i++)
@@ -403,8 +389,7 @@ public final class ReflectUtils {
      * @param m method.
      * @return desc.
      */
-    public static String getDescWithoutMethodName(Method m)
-    {
+    public static String getDescWithoutMethodName(Method m) {
         StringBuilder ret = new StringBuilder();
         ret.append('(');
         Class<?>[] parameterTypes = m.getParameterTypes();
@@ -421,12 +406,10 @@ public final class ReflectUtils {
      * @param name name.
      * @return desc.
      */
-    public static String name2desc(String name)
-    {
+    public static String name2desc(String name) {
         StringBuilder sb = new StringBuilder();
         int c = 0,index = name.indexOf('[');
-        if( index > 0 )
-        {
+        if( index > 0 ) {
             c = ( name.length() - index ) / 2;
             name = name.substring(0,index);
         }
@@ -451,14 +434,11 @@ public final class ReflectUtils {
      * @param desc desc.
      * @return name.
      */
-    public static String desc2name(String desc)
-    {
+    public static String desc2name(String desc) {
         StringBuilder sb = new StringBuilder();
         int c = desc.lastIndexOf('[') + 1;
-        if( desc.length() == c+1 )
-        {
-            switch( desc.charAt(c) )
-            {
+        if( desc.length() == c+1 ) {
+            switch( desc.charAt(c) ) {
                 case JVM_VOID: { sb.append("void"); break; }
                 case JVM_BOOLEAN: { sb.append("boolean"); break; }
                 case JVM_BYTE: { sb.append("byte"); break; }
@@ -471,13 +451,193 @@ public final class ReflectUtils {
                 default:
                     throw new RuntimeException();
             }
-        }
-        else
-        {
+        } else {
             sb.append(desc.substring(c+1, desc.length()-1).replace('/','.'));
         }
         while( c-- > 0 ) sb.append("[]");
         return sb.toString();
+    }
+
+    public static Class<?> forName(String name) {
+        try {
+            return name2class(name);
+        } catch (ClassNotFoundException var2) {
+            throw new IllegalStateException("Not found class " + name + ", cause: " + var2.getMessage(), var2);
+        }
+    }
+
+    public static Class<?> name2class(String name) throws ClassNotFoundException {
+        return name2class(ClassHelper.getClassLoader(), name);
+    }
+
+    private static Class<?> name2class(ClassLoader cl, String name) throws ClassNotFoundException {
+        int c = 0;
+        int index = name.indexOf(91);
+        if (index > 0) {
+            c = (name.length() - index) / 2;
+            name = name.substring(0, index);
+        }
+
+        if (c > 0) {
+            StringBuilder sb = new StringBuilder();
+
+            while(c-- > 0) {
+                sb.append("[");
+            }
+
+            if ("void".equals(name)) {
+                sb.append('V');
+            } else if ("boolean".equals(name)) {
+                sb.append('Z');
+            } else if ("byte".equals(name)) {
+                sb.append('B');
+            } else if ("char".equals(name)) {
+                sb.append('C');
+            } else if ("double".equals(name)) {
+                sb.append('D');
+            } else if ("float".equals(name)) {
+                sb.append('F');
+            } else if ("int".equals(name)) {
+                sb.append('I');
+            } else if ("long".equals(name)) {
+                sb.append('J');
+            } else if ("short".equals(name)) {
+                sb.append('S');
+            } else {
+                sb.append('L').append(name).append(';');
+            }
+
+            name = sb.toString();
+        } else {
+            if ("void".equals(name)) {
+                return Void.TYPE;
+            }
+
+            if ("boolean".equals(name)) {
+                return Boolean.TYPE;
+            }
+
+            if ("byte".equals(name)) {
+                return Byte.TYPE;
+            }
+
+            if ("char".equals(name)) {
+                return Character.TYPE;
+            }
+
+            if ("double".equals(name)) {
+                return Double.TYPE;
+            }
+
+            if ("float".equals(name)) {
+                return Float.TYPE;
+            }
+
+            if ("int".equals(name)) {
+                return Integer.TYPE;
+            }
+
+            if ("long".equals(name)) {
+                return Long.TYPE;
+            }
+
+            if ("short".equals(name)) {
+                return Short.TYPE;
+            }
+        }
+
+        if (cl == null) {
+            cl = ClassHelper.getClassLoader();
+        }
+
+        Class<?> clazz = (Class)NAME_CLASS_CACHE.get(name);
+        if (clazz == null) {
+            clazz = Class.forName(name, true, cl);
+            NAME_CLASS_CACHE.put(name, clazz);
+        }
+
+        return clazz;
+    }
+
+    public static Class<?> desc2class(String desc) throws ClassNotFoundException {
+        return desc2class(ClassHelper.getClassLoader(), desc);
+    }
+
+    private static Class<?> desc2class(ClassLoader cl, String desc) throws ClassNotFoundException {
+        switch(desc.charAt(0)) {
+            case 'B':
+                return Byte.TYPE;
+            case 'C':
+                return Character.TYPE;
+            case 'D':
+                return Double.TYPE;
+            case 'E':
+            case 'G':
+            case 'H':
+            case 'K':
+            case 'M':
+            case 'N':
+            case 'O':
+            case 'P':
+            case 'Q':
+            case 'R':
+            case 'T':
+            case 'U':
+            case 'W':
+            case 'X':
+            case 'Y':
+            default:
+                throw new ClassNotFoundException("Class not found: " + desc);
+            case 'F':
+                return Float.TYPE;
+            case 'I':
+                return Integer.TYPE;
+            case 'J':
+                return Long.TYPE;
+            case 'L':
+                desc = desc.substring(1, desc.length() - 1).replace('/', '.');
+                break;
+            case 'S':
+                return Short.TYPE;
+            case 'V':
+                return Void.TYPE;
+            case 'Z':
+                return Boolean.TYPE;
+            case '[':
+                desc = desc.replace('/', '.');
+        }
+
+        if (cl == null) {
+            cl = ClassHelper.getClassLoader();
+        }
+
+        Class<?> clazz = (Class)DESC_CLASS_CACHE.get(desc);
+        if (clazz == null) {
+            clazz = Class.forName(desc, true, cl);
+            DESC_CLASS_CACHE.put(desc, clazz);
+        }
+
+        return clazz;
+    }
+
+    public static Class<?>[] desc2classArray(String desc) throws ClassNotFoundException {
+        Class<?>[] ret = desc2classArray(ClassHelper.getClassLoader(), desc);
+        return ret;
+    }
+
+    private static Class<?>[] desc2classArray(ClassLoader cl, String desc) throws ClassNotFoundException {
+        if (desc.length() == 0) {
+            return EMPTY_CLASS_ARRAY;
+        } else {
+            List<Class<?>> cs = new ArrayList();
+            Matcher m = DESC_PATTERN.matcher(desc);
+
+            while(m.find()) {
+                cs.add(desc2class(cl, m.group()));
+            }
+
+            return (Class[])cs.toArray(EMPTY_CLASS_ARRAY);
+        }
     }
 
     /**
@@ -519,7 +679,7 @@ public final class ReflectUtils {
         } else {
             Class<?>[] types = new Class<?>[parameterTypes.length];
             for (int i = 0; i < parameterTypes.length; i ++) {
-                types[i] = com.alibaba.dubbo.common.utils.ReflectUtils.name2class(parameterTypes[i]);
+                types[i] = name2class(parameterTypes[i]);
             }
             method = clazz.getMethod(methodName, types);
 
@@ -536,11 +696,26 @@ public final class ReflectUtils {
         return sb.toString();
     }
 
+    /**
+     * 根据方法名从类中找出方法。
+     * @param clazz
+     * @param methodName
+     * @return
+     * @throws NoSuchMethodException
+     * @throws ClassNotFoundException
+     */
     public static Method findMethodByMethodName(Class<?> clazz, String methodName)
             throws NoSuchMethodException, ClassNotFoundException {
         return findMethodByMethodSignature(clazz, methodName, null);
     }
 
+    /**
+     * 获取构造函数
+     * @param clazz
+     * @param paramType
+     * @return
+     * @throws NoSuchMethodException
+     */
     public static Constructor<?> findConstructor(Class<?> clazz, Class<?> paramType) throws NoSuchMethodException {
         Constructor<?> targetConstructor;
         try {
@@ -704,6 +879,11 @@ public final class ReflectUtils {
                 && !field.isSynthetic();
     }
 
+    /**
+     * 获取属性集合
+     * @param cl
+     * @return
+     */
     public static Map<String, Field> getBeanPropertyFields(Class cl) {
         Map<String, Field> properties = new HashMap();
         for (; cl != null; cl = cl.getSuperclass()) {
@@ -719,6 +899,11 @@ public final class ReflectUtils {
         return properties;
     }
 
+    /**
+     * 获取方法集合
+     * @param cl
+     * @return
+     */
     public static Map<String, Method> getBeanPropertyReadMethods(Class cl) {
         Map<String, Method> properties = new HashMap();
         for (; cl != null; cl = cl.getSuperclass()) {
@@ -734,5 +919,4 @@ public final class ReflectUtils {
         return properties;
     }
 
-    private ReflectUtils(){}
 }
